@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Smaart Rack Console — Time Alignment</title>
+<style>
+  :root{
+    --bg:#0c0f14; --bg2:#141a22; --bg3:#1b232e; --line:#2a3542;
+    --tx:#eaf0f7; --dim:#93a1b2; --blue:#4aa3ff; --blueDim:#1f6fbf;
+    --grn:#3ddc84; --amb:#ffb84d; --red:#ff6b52;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--tx);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:17px; line-height:1.5; padding-bottom:90px;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:860px; margin:0 auto; padding:0 14px;}
+
+  /* Sticky rule bar */
+  .sticky{position:sticky; top:0; z-index:50; background:linear-gradient(180deg,#0c0f14 70%,rgba(12,15,20,.0));
+    padding:10px 0 8px;}
+  .rulebar{background:var(--bg3); border:1px solid var(--line); border-radius:12px; padding:11px 14px;}
+  .rulebar .r1{font-size:15px; font-weight:800; letter-spacing:.2px;}
+  .rulebar .r1 b{color:var(--amb);}
+  .rulebar .r2{font-size:13.5px; color:var(--dim); margin-top:3px;}
+  .rulebar .r2 b{color:var(--blue);}
+
+  header.top{padding:16px 0 4px;}
+  header.top h1{font-size:23px; margin:0; letter-spacing:.2px;}
+  header.top p{margin:3px 0 0; color:var(--dim); font-size:14px;}
+
+  section{background:var(--bg2); border:1px solid var(--line); border-radius:14px; margin:14px 0; overflow:hidden;}
+  .sh{display:flex; align-items:center; gap:10px; padding:13px 16px; cursor:pointer; user-select:none;}
+  .sh .n{width:26px; height:26px; flex:0 0 26px; border-radius:50%; background:var(--blueDim); color:#fff;
+    font-size:14px; font-weight:800; display:flex; align-items:center; justify-content:center;}
+  .sh h2{font-size:18px; margin:0; flex:1;}
+  .sh .caret{color:var(--dim); font-size:15px; transition:transform .15s;}
+  section.collapsed .body{display:none;}
+  section.collapsed .caret{transform:rotate(-90deg);}
+  .body{padding:2px 16px 15px;}
+
+  /* Tappable steps */
+  .step{display:flex; gap:12px; align-items:flex-start; padding:12px 12px; margin:8px 0;
+    background:var(--bg3); border:1px solid var(--line); border-radius:11px; cursor:pointer;}
+  .step .bx{width:26px; height:26px; flex:0 0 26px; border-radius:7px; border:2px solid #3a4a5c;
+    display:flex; align-items:center; justify-content:center; font-size:17px; color:transparent; margin-top:1px;}
+  .step .tx{flex:1; font-size:16px;}
+  .step .tx small{display:block; color:var(--dim); font-size:13.5px; margin-top:2px;}
+  .step.done{border-color:#26543b; background:#12261c;}
+  .step.done .bx{background:var(--grn); border-color:var(--grn); color:#06210f;}
+  .step.done .tx{color:#bfeccf;}
+  .step b{color:#fff;} .step .k{font-family:ui-monospace,Menlo,Consolas,monospace; background:#0c1219; border:1px solid var(--line); border-radius:5px; padding:0 5px; font-size:14px; color:#cfe0f2;}
+  .step .btn{color:var(--blue); font-weight:800;}
+
+  .callout{border-radius:11px; padding:11px 13px; margin:10px 0; font-size:14.5px;}
+  .callout .lbl{display:block; font-size:11px; font-weight:800; letter-spacing:.6px; text-transform:uppercase; margin-bottom:3px;}
+  .c-warn{background:#241310; border:1px solid #5a2a1c;} .c-warn .lbl{color:var(--red);}
+  .c-key{background:#0f1c2b; border:1px solid #234668;} .c-key .lbl{color:var(--blue);}
+  .c-tip{background:#0f2119; border:1px solid #1f5138;} .c-tip .lbl{color:var(--grn);}
+  .callout b{color:#fff;}
+
+  /* Results log */
+  table.log{width:100%; border-collapse:collapse; margin-top:6px;}
+  table.log th{font-size:11.5px; text-transform:uppercase; letter-spacing:.4px; color:var(--dim);
+    text-align:left; padding:6px 6px; border-bottom:1px solid var(--line);}
+  table.log td{padding:6px 5px; border-bottom:1px solid #202832; vertical-align:middle;}
+  table.log input{width:100%; background:#0c1219; border:1px solid var(--line); color:var(--tx);
+    border-radius:8px; padding:10px 8px; font-size:16px; font-family:inherit;}
+  table.log input.ms{text-align:center;}
+  .zone-in{font-weight:700;}
+  .pol,.ok{width:100%; min-height:42px; border-radius:8px; border:1px solid var(--line); background:#0c1219;
+    color:var(--dim); font-size:14px; font-weight:800; cursor:pointer; font-family:inherit;}
+  .pol.flip{background:#3a1c14; border-color:#7a3a24; color:var(--amb);}
+  .ok.on{background:#12331f; border-color:#2c6b41; color:var(--grn); font-size:20px;}
+  .colms{width:74px;} .colpol{width:70px;} .colok{width:52px;}
+  .minibtn{display:inline-block; background:var(--bg3); border:1px solid var(--line); color:var(--blue);
+    border-radius:9px; padding:9px 14px; font-size:14px; font-weight:700; cursor:pointer; margin-top:10px;}
+
+  /* Calculator */
+  .calc{display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end;}
+  .calc .f{flex:1; min-width:120px;}
+  .calc label{display:block; font-size:12px; color:var(--dim); margin-bottom:4px; text-transform:uppercase; letter-spacing:.4px;}
+  .calc input{width:100%; background:#0c1219; border:1px solid var(--line); color:var(--tx); border-radius:9px; padding:11px; font-size:17px;}
+  .calc .out{font-size:15px; color:var(--dim); margin-top:8px;}
+  .calc .out b{color:var(--grn); font-size:19px;}
+
+  /* Troubleshooting list */
+  .tsrow{padding:10px 0; border-bottom:1px solid #202832;}
+  .tsrow:last-child{border-bottom:none;}
+  .tsrow .p{font-weight:800; color:#fff; font-size:15px;}
+  .tsrow .f{color:var(--dim); font-size:14.5px; margin-top:2px;}
+
+  /* Bottom action bar */
+  .actionbar{position:fixed; left:0; right:0; bottom:0; z-index:60; background:rgba(10,13,18,.94);
+    border-top:1px solid var(--line); padding:12px 14px; display:flex; gap:10px; backdrop-filter:blur(6px);}
+  .actionbar .wrapa{max-width:860px; margin:0 auto; display:flex; gap:10px; width:100%;}
+  .abtn{flex:1; text-align:center; border-radius:11px; padding:14px; font-size:16px; font-weight:800; cursor:pointer; border:1px solid var(--line);}
+  .abtn.primary{background:var(--blue); color:#04121f; border-color:var(--blue);}
+  .abtn.ghost{background:var(--bg3); color:var(--tx);}
+
+  /* Export panel */
+  #expwrap{display:none; position:fixed; inset:0; z-index:80; background:rgba(4,7,11,.82); padding:20px;}
+  #expwrap .card{max-width:640px; margin:6vh auto 0; background:var(--bg2); border:1px solid var(--line); border-radius:14px; padding:16px;}
+  #expwrap h3{margin:0 0 6px; font-size:18px;}
+  #expwrap p{margin:0 0 10px; color:var(--dim); font-size:14px;}
+  #exptext{width:100%; height:230px; background:#0c1219; color:var(--tx); border:1px solid var(--line); border-radius:10px; padding:12px; font-family:ui-monospace,Menlo,Consolas,monospace; font-size:14px;}
+  #expwrap .row{display:flex; gap:10px; margin-top:12px;}
+  .foot{color:#5f6b7a; font-size:12.5px; text-align:center; margin:18px 0 6px;}
+
+  /* Narrow phones: drop Notes column so zone labels show fully */
+  @media (max-width:480px){
+    table.log th:last-child, table.log td:last-child{display:none;}
+    .colms{width:66px;} .colpol{width:64px;} .colok{width:46px;}
+  }
+  /* Print → light, static */
+  @media print{
+    :root{--bg:#fff;--bg2:#fff;--bg3:#f4f6f8;--line:#c9d2dc;--tx:#12202e;--dim:#4a5665;}
+    body{padding-bottom:0;} .sticky{position:static;} .actionbar,#expwrap,.caret{display:none;}
+    section{break-inside:avoid; border:1px solid #c9d2dc;} .step{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>Time-Alignment Rack Console</h1>
+    <p>d&amp;b rig · Mains + Subs + Front Fills · delays applied in R1 · <b style="color:#eaf0f7">alignment only</b></p>
+  </header>
+
+  <div class="sticky">
+    <div class="rulebar">
+      <div class="r1">THE RULE: delay the speaker that arrives <b>FIRST</b>.</div>
+      <div class="r2">Core move you'll repeat: <b>Find</b> = measure arrival → <b>Insert</b> = lock Smaart's time to it (makes phase readable).</div>
+    </div>
+  </div>
+
+  <!-- 1 SETUP -->
+  <section>
+    <div class="sh" onclick="fold(this)"><div class="n">1</div><h2>Setup check</h2><div class="caret">▾</div></div>
+    <div class="body">
+      <div class="step" onclick="tap(this)"><div class="bx">✓</div><div class="tx">TM1 → EVO4 <b>in 1</b>; reference → EVO4 <b>in 2</b>; <b>+48V ON</b>.</div></div>
+      <div class="step" onclick="tap(this)"><div class="bx">✓</div><div class="tx">Avantis <b>Signal Gen → Pink Noise</b> → to Mains/Subs/Fills <b>and</b> one spare matrix = your reference back to in 2.</div></div>
+      <div class="step" onclick="tap(this)"><div class="bx">✓</div><div class="tx">Smaart: <span class="k">Options→Audio I/O</span> = EVO4, 48k. TF: <b>Meas = MIC (in1)</b>, <b>Ref = REF (in2)</b>.</div></div>
+      <div class="step" onclick="tap(this)"><div class="bx">✓</div><div class="tx">Gains: both meters <b>−18 to −12 dBFS</b>, green, no clip.</div></div>
+      <div class="step" onclick="tap(this)"><div class="bx">✓</div><div class="tx">R1 delay unit = <b>ms</b> <span class="k">Extras→Options→Project</span>.</div></div>
+      <div class="step" onclick="tap(this)"><div class="bx">✓</div><div class="tx">Mic on a <b>stand</b>, ear height, on-axis. <small>Never handheld — your hand wrecks the data.</small></div></div>
+      <div class="callout c-warn"><span class="lbl">Phantom gotcha</span>The EVO4's 48V feeds <b>both</b> inputs. Fine for the mic; a balanced console output tolerates it. If the reference distorts/thumps → use a <b>DI</b> or a no-phantom path.</div>
+    </div>
+  </section>
+
+  <!-- 2 PROVE -->
+  <section>
+    <div class="sh" onclick="fold(this)"><div class="n">2</div><h2>Prove the data first</h2><div class="caret">▾</div></div>
+    <div class="body">
+      <div class="step" onclick="tap(this)"><div class="bx">✓</div><div class="tx">Solo one Main. <span class="btn">Find</span> → <span class="btn">Insert</span>.</div></div>
+      <div class="step" onclick="tap(this)"><div class="bx">✓</div><div class="tx"><b>Coherence</b> high &amp; solid in your band? <small>If hashy: more level, more averaging, mic closer/on-axis, off reflections. Don't align on bad data.</small></div></div>
+    </div>
+  </section>
+
+  <!-- 3 SUBS -->
+  <section>
+    <div class="sh" onclick="fold(this)"><div class="n">3</div><h2>Subs → Mains</h2><div class="caret">▾</div></div>
+    <div class="body">
+      <div class="step" onclick="tap(this)"><div class="bx">✓</div><div class="tx">Mic where <b>both</b> main &amp; sub have energy.</div></div>
+      <div class="step" onclick="tap(this)"><div class="bx">✓</div><div class="tx">Solo <b>Main</b>: <span class="btn">Find</span> → <span class="btn">Insert</span>, then <b>capture</b> the trace (target = MAIN).</div></div>
+      <div class="step" onclick="tap(this)"><div class="bx">✓</div><div class="tx">Leave delay set. Solo <b>Sub</b>, <span class="btn">Find</span> — that's the gap. Add delay in R1 to the <b>earlier</b> one (shorter Find #).</div></div>
+      <div class="step" onclick="tap(this)"><div class="bx">✓</div><div class="tx"><b>Fine-tune on phase:</b> in the crossover overlap (~<b>80–100 Hz</b>, mags within 10 dB), nudge R1 delay until the sub's phase sits <b>on top of</b> MAIN's.</div></div>
+      <div class="step" onclick="tap(this)"><div class="bx">✓</div><div class="tx">Unmute both → want a summation <b>bump</b>, not a dip.</div></div>
+      <div class="callout c-warn"><span class="lbl">Traces parallel but ~180° apart?</span>Polarity, not delay. <b>Flip sub polarity in R1</b>, re-check. Delay can't fix a flip.</div>
+    </div>
+  </section>
+
+  <!-- 4 FILLS -->
+  <section>
+    <div class="sh" onclick="fold(this)"><div class="n">4</div><h2>Front Fills → Mains <span style="color:var(--dim);font-size:14px;font-weight:400">(delta trick)</span></h2><div class="caret">▾</div></div>
+    <div class="body">
+      <div class="step" onclick="tap(this)"><div class="bx">✓</div><div class="tx">Mic at a <b>front seat the fill covers</b>, on-axis.</div></div>
+      <div class="step" onclick="tap(this)"><div class="bx">✓</div><div class="tx">Solo <b>Main</b>: <span class="btn">Find</span> → <span class="btn">Insert</span>.</div></div>
+      <div class="step" onclick="tap(this)"><div class="bx">✓</div><div class="tx">Solo <b>Fill</b> (leave delay set): <span class="btn">Find</span>. The <b>delta = delay to add to the fill</b>.</div></div>
+      <div class="step" onclick="tap(this)"><div class="bx">✓</div><div class="tx">Type that into the <b>Fill</b> channel delay in R1.</div></div>
+      <div class="step" onclick="tap(this)"><div class="bx">✓</div><div class="tx">Re-<span class="btn">Find</span> the fill → delta should be <b>≈ 0</b> = aligned.</div></div>
+      <div class="callout c-tip"><span class="lbl">Note</span>Fills are almost always <b>early</b> → they get delayed to wait for the mains. Multiple fills = measure &amp; match each at the seat it serves.</div>
+    </div>
+  </section>
+
+  <!-- 5 VERIFY -->
+  <section>
+    <div class="sh" onclick="fold(this)"><div class="n">5</div><h2>Verify &amp; hand off</h2><div class="caret">▾</div></div>
+    <div class="body">
+      <div class="step" onclick="tap(this)"><div class="bx">✓</div><div class="tx">Unmute all. Check middle / side / front row.</div></div>
+      <div class="step" onclick="tap(this)"><div class="bx">✓</div><div class="tx"><b>Self-test:</b> muting one side of a pair should make it <b>drop</b>. Gets <b>louder</b>? They were cancelling — realign.</div></div>
+      <div class="step" onclick="tap(this)"><div class="bx">✓</div><div class="tx">Spot-check the opposite L/R side matches.</div></div>
+      <div class="step" onclick="tap(this)"><div class="bx">✓</div><div class="tx">Log every delay below, <b>save R1 project</b>, screenshot Smaart.</div></div>
+      <div class="step" onclick="tap(this)"><div class="bx">✓</div><div class="tx"><b>Turn OFF the Avantis pink noise</b> before handoff.</div></div>
+    </div>
+  </section>
+
+  <!-- RESULTS LOG -->
+  <section>
+    <div class="sh" onclick="fold(this)"><div class="n" style="background:var(--grn);color:#06210f">✎</div><h2>Results log</h2><div class="caret">▾</div></div>
+    <div class="body">
+      <p style="color:var(--dim);font-size:14px;margin:4px 0 8px">Type the delay you entered in R1 per zone as you go. Tap <b>Pol</b> to flag a polarity flip, and the circle when that zone's aligned. Hit <b>Copy log</b> at the end for your handoff record.</p>
+      <table class="log">
+        <thead><tr><th>Zone</th><th class="colms">Delay ms</th><th class="colpol">Pol</th><th class="colok">✓</th><th>Notes</th></tr></thead>
+        <tbody id="logbody">
+          <tr><td><input class="zone-in" value="Main L"></td><td><input class="ms" inputmode="decimal" placeholder="—"></td><td><button class="pol" onclick="pol(this)">Norm</button></td><td><button class="ok" onclick="ok(this)">○</button></td><td><input placeholder="ref / notes"></td></tr>
+          <tr><td><input class="zone-in" value="Main R"></td><td><input class="ms" inputmode="decimal" placeholder="—"></td><td><button class="pol" onclick="pol(this)">Norm</button></td><td><button class="ok" onclick="ok(this)">○</button></td><td><input placeholder="ref / notes"></td></tr>
+          <tr><td><input class="zone-in" value="Subs"></td><td><input class="ms" inputmode="decimal" placeholder="—"></td><td><button class="pol" onclick="pol(this)">Norm</button></td><td><button class="ok" onclick="ok(this)">○</button></td><td><input placeholder="to Main @ xover"></td></tr>
+          <tr><td><input class="zone-in" value="Front Fill 1"></td><td><input class="ms" inputmode="decimal" placeholder="—"></td><td><button class="pol" onclick="pol(this)">Norm</button></td><td><button class="ok" onclick="ok(this)">○</button></td><td><input placeholder="to Main"></td></tr>
+          <tr><td><input class="zone-in" value="Front Fill 2"></td><td><input class="ms" inputmode="decimal" placeholder="—"></td><td><button class="pol" onclick="pol(this)">Norm</button></td><td><button class="ok" onclick="ok(this)">○</button></td><td><input placeholder="to Main"></td></tr>
+        </tbody>
+      </table>
+      <span class="minibtn" onclick="addZone()">+ Add zone</span>
+    </div>
+  </section>
+
+  <!-- HELPER -->
+  <section>
+    <div class="sh" onclick="fold(this)"><div class="n" style="background:#3a4a5c">≈</div><h2>Distance ↔ delay helper</h2><div class="caret">▾</div></div>
+    <div class="body">
+      <div class="calc">
+        <div class="f"><label>Path difference (feet)</label><input id="ft" inputmode="decimal" oninput="conv('ft')" placeholder="e.g. 10"></div>
+        <div class="f"><label>= delay (ms)</label><input id="msC" inputmode="decimal" oninput="conv('ms')" placeholder="e.g. 8.8"></div>
+      </div>
+      <div class="out" id="calcout"><b>1.13 ft ≈ 1 ms.</b> Use as a sanity check — if Smaart says 47 ms for boxes 8 ft apart, you're reading a reflection or the wrong system.</div>
+    </div>
+  </section>
+
+  <!-- TROUBLESHOOTING -->
+  <section class="collapsed">
+    <div class="sh" onclick="fold(this)"><div class="n" style="background:var(--red)">!</div><h2>If it fights you</h2><div class="caret">▾</div></div>
+    <div class="body">
+      <div class="tsrow"><div class="p">No trace / no signal</div><div class="f">EVO4 selected? Inputs assigned? Phantom on? Pink routed &amp; audible? Meters moving?</div></div>
+      <div class="tsrow"><div class="p">One side reads, other flat</div><div class="f">Mic/ref swapped, or a gain is down. Verify which input is which.</div></div>
+      <div class="tsrow"><div class="p">Low coherence / hashy</div><div class="f">More level, more averaging, mic closer/on-axis, off reflections.</div></div>
+      <div class="tsrow"><div class="p">Find won't lock / jumps</div><div class="f">Solo one system only; raise level/averaging. Long delays → bigger FFT (time constant ≥ 3× delay).</div></div>
+      <div class="tsrow"><div class="p">Phase won't overlap</div><div class="f">Polarity — flip &amp; retry. Look only at the crossover region.</div></div>
+      <div class="tsrow"><div class="p">Dip at crossover</div><div class="f">Still off, or needs a polarity flip. Redo delay, re-measure the sum.</div></div>
+      <div class="tsrow"><div class="p">Reference distorting</div><div class="f">48V upsetting the tap — use a DI or a no-phantom path.</div></div>
+      <div class="tsrow"><div class="p">Delays sound wrong</div><div class="f">R1 unit = ms? Editing the right amp channel?</div></div>
+    </div>
+  </section>
+
+  <div class="foot">Smaart v9 Suite / d&amp;b R1 — alignment only, EQ is a separate pass. Ticks &amp; log live in this session; Copy log to keep them.</div>
+</div>
+
+<!-- Bottom actions -->
+<div class="actionbar"><div class="wrapa">
+  <div class="abtn ghost" onclick="resetTicks()">Reset ticks</div>
+  <div class="abtn primary" onclick="openExport()">Copy log</div>
+</div></div>
+
+<!-- Export overlay -->
+<div id="expwrap">
+  <div class="card">
+    <h3>Your as-tuned log</h3>
+    <p>Copy this to your notes, or screenshot it — it's your handoff record. (Values live only in this session.)</p>
+    <textarea id="exptext" readonly></textarea>
+    <div class="row">
+      <div class="abtn primary" onclick="doCopy()">Copy to clipboard</div>
+      <div class="abtn ghost" onclick="closeExport()">Close</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function tap(el){ el.classList.toggle('done'); }
+  function fold(sh){ sh.parentElement.classList.toggle('collapsed'); }
+  function pol(b){ if(b.classList.toggle('flip')) b.textContent='FLIP'; else b.textContent='Norm'; }
+  function ok(b){ if(b.classList.toggle('on')) b.textContent='✓'; else b.textContent='○'; }
+  function resetTicks(){ document.querySelectorAll('.step.done').forEach(function(s){s.classList.remove('done');}); }
+  function addZone(){
+    var tr=document.createElement('tr');
+    tr.innerHTML='<td><input class="zone-in" placeholder="zone"></td>'+
+      '<td><input class="ms" inputmode="decimal" placeholder="—"></td>'+
+      '<td><button class="pol" onclick="pol(this)">Norm</button></td>'+
+      '<td><button class="ok" onclick="ok(this)">○</button></td>'+
+      '<td><input placeholder="notes"></td>';
+    document.getElementById('logbody').appendChild(tr);
+  }
+  function conv(from){
+    var ft=document.getElementById('ft'), ms=document.getElementById('msC');
+    if(from==='ft'){ var v=parseFloat(ft.value); ms.value = isNaN(v)?'':(v/1.13).toFixed(1); }
+    else { var w=parseFloat(ms.value); ft.value = isNaN(w)?'':(w*1.13).toFixed(1); }
+  }
+  function buildLog(){
+    var rows=document.querySelectorAll('#logbody tr'); var out='SMAART TIME-ALIGNMENT — AS-TUNED LOG\n';
+    out+='(d&b rig · alignment only)\n----------------------------------------\n';
+    rows.forEach(function(r){
+      var z=r.querySelector('.zone-in').value||'—';
+      var m=r.querySelector('.ms').value; m=m?(m+' ms'):'(none)';
+      var p=r.querySelector('.pol').classList.contains('flip')?'POL FLIP':'norm';
+      var a=r.querySelector('.ok').classList.contains('on')?'aligned ✓':'—';
+      var n=r.querySelector('td:last-child input').value||'';
+      out+=z+':  '+m+'  |  '+p+'  |  '+a+(n?('  |  '+n):'')+'\n';
+    });
+    out+='----------------------------------------\n';
+    return out;
+  }
+  function openExport(){ document.getElementById('exptext').value=buildLog(); document.getElementById('expwrap').style.display='block'; }
+  function closeExport(){ document.getElementById('expwrap').style.display='none'; }
+  function doCopy(){
+    var t=document.getElementById('exptext'); t.select(); t.setSelectionRange(0,99999);
+    try{ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(t.value); } else { document.execCommand('copy'); } }
+    catch(e){ document.execCommand('copy'); }
+  }
+</script>
+</body>
+</html>
