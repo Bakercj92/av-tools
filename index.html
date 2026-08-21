@@ -504,7 +504,7 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
       </div>
 
       <div class="tabs" role="tablist" aria-label="Sections">
-        <button class="tab" role="tab" id="tab-tools" aria-selected="true" aria-controls="panel-tools">Tools <span class="cnt">6</span></button>
+        <button class="tab" role="tab" id="tab-tools" aria-selected="true" aria-controls="panel-tools">Tools <span class="cnt">7</span></button>
         <button class="tab" role="tab" id="tab-guides" aria-selected="false" aria-controls="panel-guides">Guides <span class="cnt">1</span></button>
       </div>
 
@@ -559,6 +559,15 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
           <span class="body">
             <span class="ttl">Power <span class="kind">Calc</span></span>
             <span class="desc">Three-phase load balance, feeder voltage drop, amp-rack draw and generator sizing &mdash; US 120/208&nbsp;V Wye.</span>
+          </span>
+          <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+        </button>
+
+        <button class="card" data-go="rf">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4.9 19a10 10 0 0 1 0-14M19.1 5a10 10 0 0 1 0 14M8 15.5a5 5 0 0 1 0-7M16 8.5a5 5 0 0 1 0 7"/><circle cx="12" cy="12" r="1.4"/><path d="M12 13.4V21"/></svg></span>
+          <span class="body">
+            <span class="ttl">RF Coordinator <span class="kind">Calc</span></span>
+            <span class="desc">US UHF wireless &mdash; channel/frequency, third-order intermod, the 600 / 700&nbsp;MHz no-go bands, and your systems&rsquo; ranges.</span>
           </span>
           <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
         </button>
@@ -1204,6 +1213,154 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
       </div>
     </section>
 
+    <!-- ============ RF COORDINATOR ============ -->
+    <section class="view" id="view-rf">
+      <div class="toolhead">
+        <h2>RF Coordinator</h2>
+        <p>US UHF wireless. TV channel to frequency, third-order intermod, the 600 / 700&nbsp;MHz no-go bands, and your systems&rsquo; tuning ranges.</p>
+      </div>
+
+      <div class="seg" role="group" aria-label="Mode">
+        <button id="rf-m-chan" aria-pressed="true">Ch&#8596;Freq</button>
+        <button id="rf-m-im" aria-pressed="false">Intermod</button>
+        <button id="rf-m-nogo" aria-pressed="false">No-go</button>
+        <button id="rf-m-sys" aria-pressed="false">Systems</button>
+      </div>
+
+      <!-- ---- CHANNEL <-> FREQ ---- -->
+      <div id="rf-panel-chan">
+        <div class="field">
+          <label>Enter a&hellip;</label>
+          <div class="chiprow" id="rf-dir-chips">
+            <button class="chip" data-rfdir="ch" aria-pressed="true">TV channel</button>
+            <button class="chip" data-rfdir="fq">Frequency</button>
+          </div>
+        </div>
+        <div class="field" id="rf-ch-field">
+          <label for="rf-ch-in">UHF channel (14&ndash;69)</label>
+          <div class="inputrow">
+            <input id="rf-ch-in" type="number" inputmode="numeric" value="30" min="14" step="1">
+            <span class="unit"><button tabindex="-1" style="cursor:default">ch</button></span>
+          </div>
+        </div>
+        <div class="field" id="rf-fq-field" style="display:none">
+          <label for="rf-fq-in">Frequency</label>
+          <div class="inputrow">
+            <input id="rf-fq-in" type="number" inputmode="decimal" value="545" step="any">
+            <span class="unit"><button tabindex="-1" style="cursor:default">MHz</button></span>
+          </div>
+        </div>
+        <div class="readout" id="rf-ch-ro">
+          <div class="rlabel" id="rf-ch-rlabel">Channel band</div>
+          <div class="big"><span id="rf-ch-big">&mdash;</span> <span class="u" id="rf-ch-bigu"></span></div>
+          <div class="subrow">
+            <div class="sub"><span class="k" id="rf-ch-k1">Channel</span><b id="rf-ch-v1">&mdash;</b></div>
+            <div class="sub"><span class="k" id="rf-ch-k2">Center</span><b id="rf-ch-v2">&mdash;</b></div>
+            <div class="sub"><span class="k" id="rf-ch-k3">Width</span><b id="rf-ch-v3">6 MHz</b></div>
+            <div class="sub"><span class="k" id="rf-ch-k4">Status</span><b id="rf-ch-v4">&mdash;</b></div>
+          </div>
+        </div>
+        <div class="callout mono" id="rf-ch-note">
+          <div class="cl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg> <span>Legality</span></div>
+          <p id="rf-ch-note-t">&mdash;</p>
+        </div>
+        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><span>Each UHF channel is 6&nbsp;MHz. Lower edge = 6&times;N + 386&nbsp;MHz (ch&nbsp;14 = 470&ndash;476). Channels 14&ndash;36 (470&ndash;608) are the usable band; 38&ndash;51 went to the 600&nbsp;MHz auction, 52+ are the 700&nbsp;MHz band.</span></div>
+        <div class="csources">Channel map: FCC / ITU 6&nbsp;MHz UHF allotment. Usable range post-repack (July 2020): TV ch 14&ndash;36.</div>
+      </div>
+
+      <!-- ---- INTERMOD ---- -->
+      <div id="rf-panel-im" style="display:none">
+        <div class="field">
+          <label for="rf-im-in">Frequencies you&rsquo;re running (MHz)</label>
+          <div class="inputrow">
+            <input id="rf-im-in" type="text" inputmode="decimal" value="500.000, 512.000, 524.000" placeholder="e.g. 530.0, 536.4, 590.0">
+          </div>
+          <div class="chiprow" style="margin-top:9px" id="rf-im-guard-chips">
+            <button class="chip" data-imguard="0.25" aria-pressed="true">Guard &plusmn;250&nbsp;kHz</button>
+            <button class="chip" data-imguard="0.4">&plusmn;400&nbsp;kHz</button>
+          </div>
+        </div>
+        <div class="readout" id="rf-im-ro">
+          <div class="rlabel">Third-order intermod</div>
+          <div class="big"><span id="rf-im-big">&mdash;</span></div>
+          <div class="subrow">
+            <div class="sub"><span class="k">Frequencies</span><b id="rf-im-n">&mdash;</b></div>
+            <div class="sub"><span class="k">Pairs checked</span><b id="rf-im-pairs">&mdash;</b></div>
+            <div class="sub"><span class="k">Closest spacing</span><b id="rf-im-space">&mdash;</b></div>
+            <div class="sub"><span class="k">Guard</span><b id="rf-im-guard">&plusmn;250 kHz</b></div>
+          </div>
+        </div>
+        <div class="callout warn" id="rf-im-warn" style="display:none">
+          <div class="cl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 20h20L12 2z"/><path d="M12 9v5M12 17h.01"/></svg> <span>Collisions</span></div>
+          <p id="rf-im-warn-t">&mdash;</p>
+        </div>
+        <div class="refsec">
+          <h4>Third-order products &middot; 2A&minus;B, 2B&minus;A</h4>
+          <div class="reftable" id="rf-im-table"></div>
+        </div>
+        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><span>Two-transmitter 3rd-order products land one channel-spacing outside each pair &mdash; the usual dropout culprit. Keep &ge;250&nbsp;kHz between any product and any carrier (Shure). Full coordination also checks 3-transmitter products (A+B&minus;C) and receiver IM; this covers 2-transmitter only.</span></div>
+        <div class="csources">Formulas &amp; 250&nbsp;kHz margin: Shure, &ldquo;All About Wireless: Intermodulation Distortion.&rdquo;</div>
+      </div>
+
+      <!-- ---- NO-GO ---- -->
+      <div id="rf-panel-nogo" style="display:none">
+        <div class="field">
+          <label for="rf-ng-in">Frequency to check (MHz)</label>
+          <div class="inputrow">
+            <input id="rf-ng-in" type="text" inputmode="decimal" value="629.000" placeholder="e.g. 629 or 530, 645, 705">
+          </div>
+        </div>
+        <div class="readout" id="rf-ng-ro">
+          <div class="rlabel">Legal to transmit?</div>
+          <div class="big"><span id="rf-ng-big">&mdash;</span></div>
+          <div class="subrow" id="rf-ng-sub"></div>
+        </div>
+        <div class="callout warn" id="rf-ng-warn" style="display:none">
+          <div class="cl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 20h20L12 2z"/><path d="M12 9v5M12 17h.01"/></svg> <span>No-go</span></div>
+          <p id="rf-ng-warn-t">&mdash;</p>
+        </div>
+        <div class="refsec">
+          <h4>US UHF band map &middot; post-repack</h4>
+          <div class="reftable" id="rf-ng-map"></div>
+        </div>
+        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><span>The 600&nbsp;MHz band (617&ndash;652 &amp; 663&ndash;698) is licensed to T-Mobile and others &mdash; transmitting a mic there is illegal. The 700&nbsp;MHz band (698&ndash;806) has been off-limits since 2010. Channel&nbsp;37 (608&ndash;614) is protected; only the 614&ndash;616 guard and 653&ndash;663 duplex-gap slivers allow low-power (&le;20&nbsp;mW) use.</span></div>
+        <div class="csources">Edges: FCC 600&nbsp;MHz band plan &amp; &sect;15.236 / Part&nbsp;74 wireless-mic rules.</div>
+      </div>
+
+      <!-- ---- MY SYSTEMS ---- -->
+      <div id="rf-panel-sys" style="display:none">
+        <div class="field">
+          <label>System</label>
+          <div class="chiprow" id="rf-sys-chips">
+            <button class="chip" data-sys="slxd" aria-pressed="true">SLX-D</button>
+            <button class="chip" data-sys="ulxd">ULX-D</button>
+            <button class="chip" data-sys="ad">Axient</button>
+            <button class="chip" data-sys="g4">ew IEM G4</button>
+            <button class="chip" data-sys="psm300">PSM 300</button>
+            <button class="chip" data-sys="psm1000">PSM 1000</button>
+          </div>
+        </div>
+        <div class="readout" id="rf-sys-ro">
+          <div class="rlabel" id="rf-sys-name">&mdash;</div>
+          <div class="big"><span id="rf-sys-span">&mdash;</span> <span class="u">MHz</span></div>
+          <div class="subrow">
+            <div class="sub"><span class="k">Type</span><b id="rf-sys-type">&mdash;</b></div>
+            <div class="sub"><span class="k">US UHF</span><b id="rf-sys-status">&mdash;</b></div>
+          </div>
+        </div>
+        <div class="refsec">
+          <h4 id="rf-sys-title">Current US bands</h4>
+          <div class="reftable" id="rf-sys-bands"></div>
+        </div>
+        <div class="callout gold" id="rf-sys-flag" style="display:none">
+          <div class="cl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 20h20L12 2z"/><path d="M12 9v5M12 17h.01"/></svg> <span>Note</span></div>
+          <p id="rf-sys-flag-t">&mdash;</p>
+        </div>
+        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><span>Each unit tunes <b>one</b> band, not the whole span &mdash; check the band code on the back of the transmitter. Anything above 608&nbsp;MHz here is an intentional low-power guard / duplex-gap sliver; nothing sits in the illegal 617&ndash;698 or 700&nbsp;MHz spectrum.</span></div>
+        <div class="csources">Ranges from Shure &amp; Sennheiser US product pages &amp; user guides (2026, post-repack).</div>
+      </div>
+    </section>
+
     <!-- ============ SMAART GUIDE ============ -->
     <section class="view" id="view-smaart">
       <div class="console">
@@ -1456,7 +1613,7 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
   });
 
   /* ---------- router ---------- */
-  var titles={home:"",delay:"Delay & Distance",db:"dB Helper",conv:"Converter",spl:"SPL & Exposure",net:"Networking",power:"Power",smaart:"Smaart v9 Alignment"};
+  var titles={home:"",delay:"Delay & Distance",db:"dB Helper",conv:"Converter",spl:"SPL & Exposure",net:"Networking",power:"Power",rf:"RF Coordinator",smaart:"Smaart v9 Alignment"};
   var stack=[];
   var backBtn=document.getElementById("backBtn");
   var brand=document.getElementById("brand");
@@ -1977,6 +2134,201 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
       uw.addEventListener("click",function(){unit="kW";press(uw,true);press(uk,false);calc();});
       chipGroup("#pw-pf-chips .chip","data-pf",function(v){pfI.value=v;calc();});
       calc();
+    })();
+  })();
+
+  /* ================= RF COORDINATOR ================= */
+  (function(){
+    var V=document.getElementById("view-rf"); if(!V)return;
+    function num(el){var v=parseFloat(el.value);return isFinite(v)?v:NaN;}
+    function row(p,f){return '<div class="tsrow"><div class="p">'+p+'</div><div class="f">'+f+'</div></div>';}
+
+    /* mode toggle */
+    var modes=[["rf-m-chan","rf-panel-chan"],["rf-m-im","rf-panel-im"],["rf-m-nogo","rf-panel-nogo"],["rf-m-sys","rf-panel-sys"]];
+    var mBtns=[];
+    for(var mi=0;mi<modes.length;mi++)mBtns.push(document.getElementById(modes[mi][0]));
+    function setMode(idx){for(var i=0;i<modes.length;i++){press(mBtns[i],i===idx);document.getElementById(modes[i][1]).style.display=(i===idx)?"block":"none";}}
+    for(var mj=0;mj<mBtns.length;mj++)(function(b,i){b.addEventListener("click",function(){setMode(i);});})(mBtns[mj],mj);
+
+    /* shared legality of a frequency in MHz -> {s:text, c:class} */
+    function legality(f){
+      if(!isFinite(f))return {s:"—",c:"na"};
+      if(f<470)return {s:"Below the UHF TV band (not coordinated here).",c:"na"};
+      if(f<608)return {s:"Legal — UHF wireless band (TV ch 14–36).",c:"ok"};
+      if(f<614)return {s:"Channel 37 (608–614) — protected for radio astronomy / medical telemetry. No mics.",c:"bad"};
+      if(f<616)return {s:"Guard band (614–616) — low power only, ≤20 mW EIRP.",c:"low"};
+      if(f<617)return {s:"Guard band (616–617) — no mics.",c:"bad"};
+      if(f<652)return {s:"600 MHz downlink (617–652) — ILLEGAL to transmit (600 MHz service band).",c:"bad"};
+      if(f<653)return {s:"Duplex-gap guard (652–653) — no mics.",c:"bad"};
+      if(f<657)return {s:"Duplex gap (653–657) — Part 74 licensed only, ≤20 mW EIRP.",c:"low"};
+      if(f<663)return {s:"Duplex gap (657–663) — unlicensed low power only, ≤20 mW EIRP.",c:"low"};
+      if(f<=698)return {s:"600 MHz uplink (663–698) — ILLEGAL to transmit (600 MHz service band).",c:"bad"};
+      if(f<=806)return {s:"700 MHz band (698–806) — ILLEGAL to transmit.",c:"bad"};
+      return {s:"Above the 700 MHz band (not coordinated here).",c:"na"};
+    }
+    function statusWord(c){return c==="ok"?"Legal":c==="bad"?"No-go":c==="low"?"Low-power":"—";}
+    function parseFreqs(s){var out=[],parts=(s||"").split(/[\s,;]+/);for(var i=0;i<parts.length;i++){if(parts[i]==="")continue;var v=parseFloat(parts[i]);if(isFinite(v)&&v>0)out.push(v);}return out;}
+
+    /* ---- 1. CHANNEL <-> FREQ ---- */
+    (function(){
+      var dir="ch";
+      var chF=document.getElementById("rf-ch-field"),fqF=document.getElementById("rf-fq-field");
+      var chI=document.getElementById("rf-ch-in"),fqI=document.getElementById("rf-fq-in");
+      var ro=document.getElementById("rf-ch-ro"),noteT=document.getElementById("rf-ch-note-t");
+      var big=document.getElementById("rf-ch-big"),bigu=document.getElementById("rf-ch-bigu");
+      function edges(N){var lo=6*N+386;return {lo:lo,hi:lo+6,c:lo+3};}
+      function setRO(leg){ro.classList.toggle("ok",leg.c==="ok");ro.classList.toggle("warn",leg.c==="bad");}
+      function sub(i,k,v){document.getElementById("rf-ch-k"+i).textContent=k;document.getElementById("rf-ch-v"+i).textContent=v;}
+      function blank(msg){big.textContent="—";bigu.textContent="";sub(1,"Channel","—");sub(2,"Center","—");sub(3,"Width","6 MHz");sub(4,"Status","—");noteT.textContent=msg;ro.classList.remove("ok","warn");}
+      function calc(){
+        if(dir==="ch"){
+          document.getElementById("rf-ch-rlabel").textContent="Channel band";
+          var N=Math.round(num(chI));
+          if(!(N>=14&&N<=83)){blank("Enter a UHF channel from 14 up.");return;}
+          var e=edges(N),leg=legality(e.c);
+          big.textContent=fmtFixed(e.lo,0)+"–"+fmtFixed(e.hi,0);bigu.textContent="MHz";
+          sub(1,"Channel","Ch "+N);sub(2,"Center",fmtFixed(e.c,0)+" MHz");sub(3,"Width","6 MHz");sub(4,"Status",statusWord(leg.c));
+          noteT.textContent=leg.s;setRO(leg);
+        } else {
+          document.getElementById("rf-ch-rlabel").textContent="TV channel";
+          var f=num(fqI);
+          if(!isFinite(f)){blank("Enter a frequency in MHz.");return;}
+          var leg=legality(f);
+          if(f<470||f>806){big.textContent="—";bigu.textContent="";sub(1,"Frequency",fmtFixed(f,3)+" MHz");sub(2,"Channel","not UHF TV");sub(3,"Center","—");sub(4,"Status",statusWord(leg.c));noteT.textContent=leg.s;setRO(leg);return;}
+          var N=Math.floor((f-470)/6)+14,e=edges(N);
+          big.textContent="Ch "+N;bigu.textContent="";
+          sub(1,"Frequency",fmtFixed(f,3)+" MHz");sub(2,"Band edges",fmtFixed(e.lo,0)+"–"+fmtFixed(e.hi,0)+" MHz");sub(3,"Center",fmtFixed(e.c,0)+" MHz");sub(4,"Status",statusWord(leg.c));
+          noteT.textContent=leg.s;setRO(leg);
+        }
+      }
+      chI.addEventListener("input",calc);fqI.addEventListener("input",calc);
+      var chips=V.querySelectorAll("#rf-dir-chips .chip");
+      for(var i=0;i<chips.length;i++)(function(c){c.addEventListener("click",function(){
+        dir=c.getAttribute("data-rfdir");
+        for(var j=0;j<chips.length;j++)press(chips[j],chips[j]===c);
+        chF.style.display=(dir==="ch")?"block":"none";fqF.style.display=(dir==="fq")?"block":"none";
+        calc();
+      });})(chips[i]);
+      calc();
+    })();
+
+    /* ---- 2. INTERMOD / SPACING ---- */
+    (function(){
+      var inp=document.getElementById("rf-im-in");
+      var ro=document.getElementById("rf-im-ro"),warn=document.getElementById("rf-im-warn"),warnT=document.getElementById("rf-im-warn-t"),tbl=document.getElementById("rf-im-table");
+      var guard=0.25;
+      function fF(x){return fmtFixed(x,3);}
+      function hit(p,fs){for(var i=0;i<fs.length;i++){if(Math.abs(p-fs[i])<=guard)return i;}return -1;}
+      function calc(){
+        var fs=parseFreqs(inp.value);
+        document.getElementById("rf-im-guard").textContent="±"+fmt(guard*1000,0)+" kHz";
+        document.getElementById("rf-im-n").textContent=fs.length;
+        var pairs=fs.length*(fs.length-1)/2;
+        document.getElementById("rf-im-pairs").textContent=pairs;
+        if(fs.length<2){document.getElementById("rf-im-big").textContent="—";document.getElementById("rf-im-space").textContent="—";tbl.innerHTML=row("—","Enter at least two frequencies, comma or space separated.");warn.style.display="none";ro.classList.remove("ok","warn");return;}
+        var minsp=Infinity;
+        for(var i=0;i<fs.length;i++)for(var j=i+1;j<fs.length;j++){var d=Math.abs(fs[i]-fs[j]);if(d<minsp)minsp=d;}
+        document.getElementById("rf-im-space").textContent=fmt(minsp,3)+" MHz";
+        var rows="",coll=[];
+        for(var a=0;a<fs.length;a++)for(var b=a+1;b<fs.length;b++){
+          var A=fs[a],B=fs[b],p1=2*A-B,p2=2*B-A,h1=hit(p1,fs),h2=hit(p2,fs);
+          if(h1>=0)coll.push({A:A,B:B,p:p1,on:fs[h1]});
+          if(h2>=0)coll.push({A:A,B:B,p:p2,on:fs[h2]});
+          var t1=fF(p1)+(h1>=0?" ⚠ hits "+fF(fs[h1]):""),t2=fF(p2)+(h2>=0?" ⚠ hits "+fF(fs[h2]):"");
+          rows+=row(fF(A)+" &amp; "+fF(B),"2A−B = "+t1+"<br>2B−A = "+t2);
+        }
+        tbl.innerHTML=rows;
+        var nc=coll.length;
+        document.getElementById("rf-im-big").textContent=nc===0?"Clean":(nc+" collision"+(nc===1?"":"s"));
+        ro.classList.toggle("ok",nc===0);ro.classList.toggle("warn",nc>0);
+        if(nc>0){
+          var lines=[];for(var k=0;k<coll.length;k++){var c=coll[k];lines.push(fF(c.A)+" / "+fF(c.B)+" → "+fF(c.p)+" MHz lands on "+fF(c.on)+" MHz");}
+          warn.style.display="block";
+          warnT.innerHTML="Third-order products within ±"+fmt(guard*1000,0)+" kHz of a channel you’re using:<br>"+lines.join("<br>")+"<br>Move one carrier of each flagged pair, or reassign the channel it lands on.";
+        } else { warn.style.display="none"; }
+      }
+      inp.addEventListener("input",calc);
+      var gc=V.querySelectorAll("#rf-im-guard-chips .chip");
+      for(var i=0;i<gc.length;i++)(function(c){c.addEventListener("click",function(){guard=parseFloat(c.getAttribute("data-imguard"));for(var j=0;j<gc.length;j++)press(gc[j],gc[j]===c);calc();});})(gc[i]);
+      calc();
+    })();
+
+    /* ---- 3. 600/700 NO-GO ---- */
+    (function(){
+      var inp=document.getElementById("rf-ng-in");
+      var ro=document.getElementById("rf-ng-ro"),sub=document.getElementById("rf-ng-sub"),warn=document.getElementById("rf-ng-warn"),warnT=document.getElementById("rf-ng-warn-t");
+      function calc(){
+        var fs=parseFreqs(inp.value),big=document.getElementById("rf-ng-big");
+        if(fs.length===0){big.textContent="—";sub.innerHTML="";warn.style.display="none";ro.classList.remove("ok","warn");return;}
+        var anybad=false,anylow=false,bad=[],html="";
+        for(var i=0;i<fs.length;i++){
+          var leg=legality(fs[i]),word=leg.c==="ok"?"legal":leg.c==="bad"?"NO-GO":leg.c==="low"?"low-pwr":"—";
+          html+='<div class="sub"><span class="k">'+fmtFixed(fs[i],3)+' MHz</span><b>'+word+'</b></div>';
+          if(leg.c==="bad"){anybad=true;bad.push(fmtFixed(fs[i],3)+" MHz — "+leg.s);}
+          if(leg.c==="low")anylow=true;
+        }
+        sub.innerHTML=html;
+        if(anybad){big.textContent=(fs.length===1?"ILLEGAL":"NO-GO");ro.classList.add("warn");ro.classList.remove("ok");}
+        else if(anylow){big.textContent="LOW POWER";ro.classList.remove("warn","ok");}
+        else {big.textContent="LEGAL";ro.classList.add("ok");ro.classList.remove("warn");}
+        if(anybad){warn.style.display="block";warnT.innerHTML=bad.join("<br>");}else{warn.style.display="none";}
+      }
+      inp.addEventListener("input",calc);
+      document.getElementById("rf-ng-map").innerHTML=
+        row("470–608 MHz","TV ch 14–36 — legal UHF wireless band")+
+        row("608–614 MHz","Channel 37 — protected, no mics")+
+        row("614–616 MHz","Guard band — low power only, ≤20 mW")+
+        row("617–652 MHz","600 MHz downlink — ILLEGAL")+
+        row("652–663 MHz","Duplex gap — 653–663 low power only, ≤20 mW")+
+        row("663–698 MHz","600 MHz uplink — ILLEGAL")+
+        row("698–806 MHz","700 MHz band — ILLEGAL");
+      calc();
+    })();
+
+    /* ---- 4. MY SYSTEMS ---- */
+    (function(){
+      var SYS={
+        slxd:{name:"Shure SLX-D",span:"470–608",type:"Digital mic",status:"Legal band",bands:[
+          ["G57 · SLX-D+","470–608","single wide band, no notch"],
+          ["G58 · classic","470–514",""],
+          ["H55 · classic","514–558",""],
+          ["J52 · classic","558–602 + 614–616","614–616 = low-power guard"]],
+          flag:"Classic SLX-D J52 has a 614–616 MHz low-power guard sliver. SLX-D+ (G57) is the current single-band model."},
+        ulxd:{name:"Shure ULX-D",span:"470–608",type:"Digital mic",status:"Legal band",bands:[
+          ["G50","470–534",""],["H50","534–598",""],["J50A","572–608",""],
+          ["V50 · VHF","174–216","VHF, separate rules"],
+          ["X52 · 900","902–928","900 MHz ISM, separate rules"]],
+          flag:""},
+        ad:{name:"Shure Axient Digital",span:"470–608",type:"Digital mic",status:"Legal + gap",bands:[
+          ["G57","470–608 (+614–616)","614–616 low-power guard"],
+          ["K54 · duplex gap","606–608 / 614–616 / 653–663","low power only, ≤20 mW"],
+          ["X55 · 900","941–960","900 MHz, separate rules"]],
+          flag:"K54 is a duplex-gap band — legal only at low power (≤20 mW); its 653–657 slice is Part 74 licensed."},
+        g4:{name:"Sennheiser ew IEM G4",span:"470–608",type:"IEM",status:"Legal band",bands:[
+          ["A1","470–516",""],["A","516–558",""],["G","566–608",""]],
+          flag:"No US band covers 558–566 MHz. The B band (626–668) was dropped in the US — it sits in the 600 MHz no-go."},
+        psm300:{name:"Shure PSM 300",span:"488–590",type:"IEM",status:"Legal band",bands:[
+          ["G20","488–512",""],["H20","518–542",""],["J13","566–590",""]],
+          flag:"IEM transmitter; each band tunes about 24 MHz."},
+        psm1000:{name:"Shure PSM 1000",span:"470–608",type:"IEM",status:"Legal band",bands:[
+          ["G10","470–542",""],["J8A","554–608 + 614–616","614–616 low-power guard"]],
+          flag:"P10T is discontinued new (successor: Axient Digital PSM). Ranges apply to units already in the field."}
+      };
+      var cur="slxd";
+      function draw(){
+        var s=SYS[cur];
+        document.getElementById("rf-sys-name").textContent=s.name;
+        document.getElementById("rf-sys-span").textContent=s.span;
+        document.getElementById("rf-sys-type").textContent=s.type;
+        document.getElementById("rf-sys-status").textContent=s.status;
+        var html="";for(var i=0;i<s.bands.length;i++){var b=s.bands[i];html+=row(b[0],b[1]+" MHz"+(b[2]?" · "+b[2]:""));}
+        document.getElementById("rf-sys-bands").innerHTML=html;
+        var flag=document.getElementById("rf-sys-flag"),flagT=document.getElementById("rf-sys-flag-t");
+        if(s.flag){flag.style.display="block";flagT.textContent=s.flag;}else{flag.style.display="none";}
+      }
+      var chips=V.querySelectorAll("#rf-sys-chips .chip");
+      for(var i=0;i<chips.length;i++)(function(c){c.addEventListener("click",function(){cur=c.getAttribute("data-sys");for(var j=0;j<chips.length;j++)press(chips[j],chips[j]===c);draw();});})(chips[i]);
+      draw();
     })();
   })();
 
