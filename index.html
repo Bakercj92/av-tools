@@ -274,6 +274,16 @@ main{flex:1;padding-bottom:40px}
 .iconbtn.pt-del:hover{border-color:var(--bad)}
 .pt-empty{text-align:center;color:var(--faint);font-size:13.5px;padding:26px 14px;border:1px dashed var(--border);border-radius:12px;margin:10px 0}
 
+/* ---- multi-band planner ---- */
+.pp-bands{display:flex;gap:6px;overflow-x:auto;padding:2px 0 10px;scrollbar-width:thin}
+.pp-band{flex:0 0 auto;background:var(--surface);border:1px solid var(--border-strong);border-radius:999px;color:var(--muted);font-family:"Barlow Semi Condensed",sans-serif;font-weight:600;font-size:14px;padding:8px 15px;cursor:pointer;white-space:nowrap}
+.pp-band.active{color:var(--accent);background:var(--accent-soft);border-color:var(--accent)}
+.pp-band-add{flex:0 0 auto;background:transparent;border:1px dashed var(--border-strong);border-radius:999px;color:var(--muted);font-weight:700;font-size:15px;line-height:1;padding:8px 14px;cursor:pointer;white-space:nowrap}
+.pp-bandbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:2px 0 12px}
+.pp-bandbar .grow{flex:1}
+.linkbtn.pp-band-del{color:var(--bad)}
+#pp-subtabs{margin-bottom:14px}
+
 /* ============ LCD READOUT ============ */
 .readout{
   margin:20px 0 8px;border-radius:16px;background:var(--lcd-bg);
@@ -1394,15 +1404,28 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
     <section class="view" id="view-patch">
       <div class="toolhead">
         <h2>Patch</h2>
-        <p>Festival input list &mdash; build it on your phone, reorder fast, and hand it to the next tech. Plus your default Avantis&nbsp;&rarr;&nbsp;LM44&nbsp;&rarr;&nbsp;d&amp;b signal flow.</p>
+        <p>Festival patch planner &mdash; a self-contained plot per band. Build the input list on your phone, reorder fast, and hand it to the next tech.</p>
       </div>
 
-      <div class="seg" role="group" aria-label="Mode">
-        <button id="pt-mode-list" aria-pressed="true">Input list</button>
-        <button id="pt-mode-flow" aria-pressed="false">Signal flow</button>
+      <div class="pp-bands" id="pp-bands" role="tablist" aria-label="Bands"></div>
+      <div class="pp-bandbar">
+        <span class="grow"></span>
+        <button class="linkbtn" id="pp-band-rename">Rename</button>
+        <button class="linkbtn" id="pp-band-dup">Duplicate</button>
+        <button class="linkbtn pp-band-del" id="pp-band-del">Delete</button>
+      </div>
+      <div id="pp-rename-wrap" style="display:none">
+        <div class="pt-f"><label>Band name</label><input type="text" id="pp-rename-inp" aria-label="Band name" placeholder="Band name"></div>
       </div>
 
-      <div id="pt-panel-list">
+      <div class="seg" role="group" aria-label="View" id="pp-subtabs">
+        <button id="pp-sub-patch" aria-pressed="true">Patch</button>
+        <button id="pp-sub-snake" aria-pressed="false">Sub/Snake</button>
+        <button id="pp-sub-mon" aria-pressed="false">Monitors</button>
+        <button id="pp-sub-sum" aria-pressed="false">Summary</button>
+      </div>
+
+      <div id="pp-view-patch">
         <div class="pt-bar">
           <button class="cbtn primary" id="pt-add">+ Add channel</button>
           <button class="linkbtn" id="pt-tmpl">Load template</button>
@@ -1421,51 +1444,20 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
         <div class="pt-bar" style="margin-top:20px">
           <button class="cbtn" id="pt-copy">Copy text</button>
           <button class="cbtn" id="pt-csv">Copy CSV</button>
-          <button class="cbtn primary" id="pt-share">Share</button>
         </div>
-        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><span id="pt-status-t">Saved to this phone automatically. <b>Share</b> sends a link that opens this exact list on another tech&rsquo;s phone.</span></div>
+        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><span id="pt-status-t">Saved to this phone automatically, per band. Share &amp; PDF export land in a later phase.</span></div>
       </div>
 
-      <div id="pt-panel-flow" style="display:none">
-        <div class="refsec">
-          <h4>Stage &rarr; FOH</h4>
-          <div class="reftable">
-            <div class="tsrow"><div class="p">GX4816 stagebox</div><div class="f">48 mic in / 16 line out, 96&nbsp;kHz dLive preamps.</div></div>
-            <div class="tsrow"><div class="p">&rarr; SLink (gigaACE)</div><div class="f">One Cat run into the Avantis SLink port; head-amp gain lives on the Avantis.</div></div>
-          </div>
-        </div>
+      <div id="pp-view-snake" style="display:none">
+        <div class="pt-empty">Sub/Snake mapping &mdash; coming next phase. Define your stage boxes and map channels to their physical slots here.</div>
+      </div>
 
-        <div class="refsec">
-          <h4>FOH &rarr; Monitors</h4>
-          <div class="reftable">
-            <div class="tsrow"><div class="p">Avantis gigaACE card</div><div class="f">&rarr; SQ5 SLink &mdash; digital split to the monitor desk.</div></div>
-            <div class="tsrow"><div class="p">Gain sharing</div><div class="f">Preamp control stays with the Avantis; the SQ5 rides the split.</div></div>
-          </div>
-        </div>
+      <div id="pp-view-mon" style="display:none">
+        <div class="pt-empty">Monitor mixes &mdash; coming next phase. Nameable mixes, adjustable count, assign channels to each.</div>
+      </div>
 
-        <div class="refsec">
-          <h4>Drive &rarr; Amps</h4>
-          <div class="reftable">
-            <div class="tsrow"><div class="p">Avantis &rarr; LM44</div><div class="f">4 drive lines (XLR or AES) into the Lake LM44.</div></div>
-            <div class="tsrow"><div class="p">Guest desk</div><div class="f">A touring FOH desk&rsquo;s drives (XLR/AES) also land on the LM44 &mdash; flip it to change who drives the PA.</div></div>
-            <div class="tsrow"><div class="p">LM44 &rarr; D40/D80</div><div class="f">AES out to the amp stack &rarr; V-Series / Y10P / SL-Sub.</div></div>
-          </div>
-        </div>
-
-        <div class="refsec">
-          <h4>Control &mdash; R1</h4>
-          <div class="reftable">
-            <div class="tsrow"><div class="p">FOH laptop &rarr; DN1</div><div class="f">d&amp;b DN1 Ethernet switch on the amp rack &rarr; D40/D80 (OCA/AES70) for R1.</div></div>
-          </div>
-        </div>
-
-        <div class="callout mono">
-          <div class="cl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg> <span>No Dante in this rig</span></div>
-          <p>Console links are <b>gigaACE over SLink</b>; the amps are fed <b>AES from the LM44</b> &mdash; the D40/D80 have no onboard Dante anyway. <b>Dante alt</b> when a show calls for it: Avantis Dante card &rarr; d&amp;b DS10 bridge &rarr; AES to the amps.</p>
-        </div>
-        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><span>Clocking, latency and static-IP facts for the network live in the <b>Networking</b> tool.</span></div>
-        <div class="pt-bar"><button class="linkbtn" data-go="net">Open Networking tool &rarr;</button></div>
-        <div class="csources">Verified on A&amp;H (Avantis, GX4816, SQ SLink), Lab.gruppen / Lake (LM44) and d&amp;b (D40/D80, DN1, DS10) product docs.</div>
+      <div id="pp-view-sum" style="display:none">
+        <div class="pt-empty">Summary &mdash; coming next phase. A clean read-only printout of the selected band, plus whole-festival export.</div>
       </div>
     </section>
 
@@ -2439,22 +2431,17 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
     })();
   })();
 
-  /* ================= PATCH BUILDER ================= */
+  /* ================= PATCH PLANNER (multi-band) ================= */
   (function(){
     var PV=document.getElementById("view-patch"); if(!PV) return;
-    var listEl=document.getElementById("pt-list");
-    var countEl=document.getElementById("pt-count");
-    var listPanel=document.getElementById("pt-panel-list");
-    var flowPanel=document.getElementById("pt-panel-flow");
-    var mList=document.getElementById("pt-mode-list"), mFlow=document.getElementById("pt-mode-flow");
-    var KEY="fak-patch-v1";
+    var KEY="fak-patch-v2";
+    var saveT=null, guard=false;
 
-    mList.addEventListener("click",function(){press(mList,true);press(mFlow,false);listPanel.style.display="";flowPanel.style.display="none";});
-    mFlow.addEventListener("click",function(){press(mFlow,true);press(mList,false);flowPanel.style.display="";listPanel.style.display="none";});
-
-    var rows=[];      // {n,m,s,p,t,x,open}
-    var guard=false;  // true = shared list opened, not yet edited -> don't overwrite this phone's saved list
-    var saveT=null;
+    /* ---------- model ---------- */
+    function newChannel(){return {n:"",cat:"",col:"",m:"",fl:"",p:false,s:"",x:"",t:"",open:false};}
+    function newBand(name){return {name:name||"Band 1",sub:"patch",ch:[],snakes:[],mons:[],notes:""};}
+    var state={ver:2,active:0,bands:[]};
+    function band(){return state.bands[state.active];}
 
     var TEMPLATE=[
       ["Kick In","Beta 91A","",1,"",""],["Kick Out","Beta 52","Short boom",0,"",""],
@@ -2467,14 +2454,98 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
       ["Keys R","DI","",1,"",""],["Lead Vox","Beta 58A","Tall boom",0,"",""],
       ["BV 1","SM58","Tall boom",0,"",""],["BV 2","SM58","Tall boom",0,"",""]
     ];
-    function fromArr(a){return {n:a[0]||"",m:a[1]||"",s:a[2]||"",p:!!a[3],t:a[4]||"",x:a[5]||"",open:false};}
+    function tmplRow(a){return {n:a[0]||"",cat:"",col:"",m:a[1]||"",fl:"",p:!!a[3],s:a[2]||"",x:a[5]||"",t:a[4]||"",open:false};}
 
-    function dataArr(){return rows.map(function(r){return [r.n,r.m,r.s,r.p?1:0,r.t,r.x];});}
-    function persistNow(){if(guard)return;save(KEY,JSON.stringify(dataArr()));}
+    /* ---------- persistence (v2 = whole multi-band state) ---------- */
+    function serialize(){
+      return JSON.stringify({v:2,a:state.active,b:state.bands.map(function(bd){
+        return {n:bd.name,s:bd.sub,
+          c:bd.ch.map(function(r){return [r.n,r.cat,r.col,r.m,r.fl,r.p?1:0,r.s,r.x,r.t];}),
+          sn:bd.snakes||[],mo:bd.mons||[],no:bd.notes||""};
+      })});
+    }
+    function chFromArr(a){return {n:a[0]||"",cat:a[1]||"",col:a[2]||"",m:a[3]||"",fl:a[4]||"",p:!!a[5],s:a[6]||"",x:a[7]||"",t:a[8]||"",open:false};}
+    function deserialize(str){
+      try{var o=JSON.parse(str);if(!o||!(o.b instanceof Array))return false;
+        var bands=o.b.map(function(bd){return {name:bd.n||"Band",sub:bd.s||"patch",
+          ch:((bd.c)||[]).map(chFromArr),snakes:bd.sn||[],mons:bd.mo||[],notes:bd.no||""};});
+        if(!bands.length)return false;
+        state.bands=bands;
+        state.active=Math.max(0,Math.min(o.a||0,bands.length-1));
+        return true;
+      }catch(e){return false;}
+    }
+    function persistNow(){if(guard)return;save(KEY,serialize());}
     function persistSoon(){if(guard)return;if(saveT)clearTimeout(saveT);saveT=setTimeout(persistNow,400);}
     function touch(){guard=false;}
 
+    /* ---------- shared helpers ---------- */
     function esc(v){return String(v==null?"":v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+    function status(msg){var st=document.getElementById("pt-status-t");if(st)st.innerHTML=msg;}
+    function arm(btn,armed,action){
+      if(btn._armed){clearTimeout(btn._armT);btn._armed=false;btn.textContent=btn._orig;action();return;}
+      btn._orig=btn.textContent;btn._armed=true;btn.textContent=armed;
+      btn._armT=setTimeout(function(){btn._armed=false;btn.textContent=btn._orig;},3000);
+    }
+    function flash(btn,msg){var o=btn.textContent;btn.textContent=msg;setTimeout(function(){btn.textContent=o;},1400);}
+    function copyText(t){
+      try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t);return true;}}catch(e){}
+      try{var ta=document.createElement("textarea");ta.value=t;ta.style.position="fixed";ta.style.top="-1000px";document.body.appendChild(ta);ta.focus();ta.select();var ok=document.execCommand("copy");document.body.removeChild(ta);return ok;}catch(e2){return false;}
+    }
+
+    /* ---------- band bar ---------- */
+    var bandsEl=document.getElementById("pp-bands");
+    var renameWrap=document.getElementById("pp-rename-wrap"), renameInp=document.getElementById("pp-rename-inp");
+    function renderBands(){
+      bandsEl.innerHTML="";
+      state.bands.forEach(function(bd,i){
+        var t=document.createElement("button");t.type="button";t.className="pp-band"+(i===state.active?" active":"");
+        t.textContent=bd.name||("Band "+(i+1));t.setAttribute("role","tab");t.setAttribute("aria-selected",i===state.active?"true":"false");
+        t.addEventListener("click",function(){switchBand(i);});
+        bandsEl.appendChild(t);
+      });
+      var add=document.createElement("button");add.type="button";add.className="pp-band-add";add.textContent="+";add.setAttribute("aria-label","Add band");
+      add.addEventListener("click",addBand);bandsEl.appendChild(add);
+    }
+    function switchBand(i){if(i<0||i>=state.bands.length)return;closeRename();state.active=i;renderBands();renderSub();persistNow();}
+    function addBand(){closeRename();state.bands.push(newBand("Band "+(state.bands.length+1)));state.active=state.bands.length-1;renderBands();renderSub();persistNow();}
+    function dupBand(){
+      closeRename();
+      var src=band();
+      var nb={name:(src.name||"Band")+" copy",sub:src.sub||"patch",
+        ch:src.ch.map(function(r){return {n:r.n,cat:r.cat,col:r.col,m:r.m,fl:r.fl,p:r.p,s:r.s,x:r.x,t:r.t,open:false};}),
+        snakes:JSON.parse(JSON.stringify(src.snakes||[])),mons:JSON.parse(JSON.stringify(src.mons||[])),notes:src.notes||""};
+      state.bands.splice(state.active+1,0,nb);state.active++;renderBands();renderSub();persistNow();
+    }
+    function delBand(btn){
+      if(state.bands.length<=1){status("Can’t delete the only band — add another first.");return;}
+      arm(btn,"Delete band?",function(){
+        state.bands.splice(state.active,1);
+        if(state.active>=state.bands.length)state.active=state.bands.length-1;
+        closeRename();renderBands();renderSub();persistNow();
+      });
+    }
+    function openRename(){renameInp.value=band().name;renameWrap.style.display="";renameInp.focus();try{renameInp.select();}catch(e){}}
+    function closeRename(){renameWrap.style.display="none";}
+    renameInp.addEventListener("input",function(){band().name=renameInp.value;renderBands();persistSoon();});
+    renameInp.addEventListener("keydown",function(e){if(e.key==="Enter"||e.keyCode===13){closeRename();persistNow();}});
+    renameInp.addEventListener("blur",function(){persistNow();});
+    document.getElementById("pp-band-dup").addEventListener("click",dupBand);
+    document.getElementById("pp-band-rename").addEventListener("click",function(){if(!renameWrap.style.display||renameWrap.style.display==="none"){openRename();}else{closeRename();}});
+    document.getElementById("pp-band-del").addEventListener("click",function(){delBand(this);});
+
+    /* ---------- sub-tabs ---------- */
+    var subBtns={patch:document.getElementById("pp-sub-patch"),snake:document.getElementById("pp-sub-snake"),mon:document.getElementById("pp-sub-mon"),sum:document.getElementById("pp-sub-sum")};
+    var subViews={patch:document.getElementById("pp-view-patch"),snake:document.getElementById("pp-view-snake"),mon:document.getElementById("pp-view-mon"),sum:document.getElementById("pp-view-sum")};
+    function renderSub(){
+      var cur=(band().sub)||"patch"; if(!subViews[cur])cur="patch";
+      for(var k in subViews){if(subViews.hasOwnProperty(k)){subViews[k].style.display=(k===cur)?"":"none";press(subBtns[k],k===cur);}}
+      if(cur==="patch")renderList();
+    }
+    Object.keys(subBtns).forEach(function(k){subBtns[k].addEventListener("click",function(){band().sub=k;renderSub();persistNow();});});
+
+    /* ---------- channel list (reuses .pt-* styles) ---------- */
+    var listEl=document.getElementById("pt-list"), countEl=document.getElementById("pt-count");
     var ICONS={
       up:'<path d="M6 15l6-6 6 6"/>',down:'<path d="M6 9l6 6 6-6"/>',
       dup:'<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/>',
@@ -2495,21 +2566,22 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
       inp.addEventListener("input",function(){cb(inp.value);});
       f.appendChild(inp);return f;
     }
-
-    function render(){
+    function rowsArr(){return band().ch;}
+    function idxOf(card){return rowsArr().indexOf(card._row);}
+    function renderList(){
       listEl.innerHTML="";
-      if(!rows.length){
+      var R=rowsArr();
+      if(!R.length){
         var e=document.createElement("div");e.className="pt-empty";
         e.textContent="No channels yet. Add one, or load the standard template.";
         listEl.appendChild(e);
       }else{
-        for(var i=0;i<rows.length;i++)listEl.appendChild(rowEl(i));
+        for(var i=0;i<R.length;i++)listEl.appendChild(rowEl(i));
       }
-      countEl.textContent=rows.length?(rows.length+" ch"):"";
+      countEl.textContent=R.length?(R.length+" ch"):"";
     }
-    function idxOf(card){return rows.indexOf(card._row);}
     function rowEl(i){
-      var r=rows[i];
+      var R=rowsArr(), r=R[i];
       var card=document.createElement("div");card.className="tcard pt-row"+(r.open?" open":"");
       card._row=r;
       var h=document.createElement("button");h.type="button";h.className="tcard-h";
@@ -2522,7 +2594,7 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
       var cv=document.createElement("span");cv.className="cv";
       cv.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>';
       h.appendChild(dot);h.appendChild(b);h.appendChild(cv);
-      h.addEventListener("click",function(){r.open=!r.open;card.classList.toggle("open",r.open);h.setAttribute("aria-expanded",r.open?"true":"false");});
+      h.addEventListener("click",function(){r.open=!r.open;card.classList.toggle("open",r.open);h.setAttribute("aria-expanded",r.open?"true":"false");persistSoon();});
       card.appendChild(h);
       var body=document.createElement("div");body.className="tcard-b";
       body.appendChild(field("Name / source",r.n,"e.g. Lead Vox",function(v){r.n=v;touch();b.innerHTML=headHTML(r,idxOf(card));persistSoon();}));
@@ -2537,7 +2609,7 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
       ctr.appendChild(iconBtn("up","Move up",function(){move(idxOf(card),-1);}));
       ctr.appendChild(iconBtn("down","Move down",function(){move(idxOf(card),1);}));
       var sp=document.createElement("span");sp.className="spacer";ctr.appendChild(sp);
-      ctr.appendChild(iconBtn("dup","Duplicate",function(){dup(idxOf(card));}));
+      ctr.appendChild(iconBtn("dup","Duplicate",function(){dupRow(idxOf(card));}));
       ctr.appendChild(iconBtn("del","Delete",function(){removeRow(idxOf(card));}));
       body.appendChild(ctr);
       card.appendChild(body);
@@ -2555,22 +2627,16 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
       off.addEventListener("click",function(){r.p=false;paint();touch();persistNow();});
       paint();u.appendChild(on);u.appendChild(off);f.appendChild(u);return f;
     }
-
-    function move(i,dir){var j=i+dir;if(i<0||j<0||j>=rows.length)return;var t=rows[i];rows[i]=rows[j];rows[j]=t;touch();render();persistNow();}
-    function dup(i){if(i<0)return;var r=rows[i];rows.splice(i+1,0,{n:r.n,m:r.m,s:r.s,p:r.p,t:r.t,x:r.x,open:false});touch();render();persistNow();}
-    function removeRow(i){if(i<0)return;rows.splice(i,1);touch();render();persistNow();}
-    function addRow(){rows.push({n:"",m:"",s:"",p:false,t:"",x:"",open:true});touch();render();persistNow();
+    function move(i,dir){var R=rowsArr();var j=i+dir;if(i<0||j<0||j>=R.length)return;var t=R[i];R[i]=R[j];R[j]=t;touch();renderList();persistNow();}
+    function dupRow(i){var R=rowsArr();if(i<0)return;var r=R[i];R.splice(i+1,0,{n:r.n,cat:r.cat,col:r.col,m:r.m,fl:r.fl,p:r.p,s:r.s,x:r.x,t:r.t,open:false});touch();renderList();persistNow();}
+    function removeRow(i){var R=rowsArr();if(i<0)return;R.splice(i,1);touch();renderList();persistNow();}
+    function addRow(){var R=rowsArr();var nc=newChannel();nc.open=true;R.push(nc);touch();renderList();persistNow();
       var cards=listEl.querySelectorAll(".pt-row");if(cards.length){var last=cards[cards.length-1];try{last.scrollIntoView({block:"center"});}catch(e){}var inp=last.querySelector('input[type="text"]');if(inp)inp.focus();}}
 
-    function arm(btn,armed,action){
-      if(btn._armed){clearTimeout(btn._armT);btn._armed=false;btn.textContent=btn._orig;action();return;}
-      btn._orig=btn.textContent;btn._armed=true;btn.textContent=armed;
-      btn._armT=setTimeout(function(){btn._armed=false;btn.textContent=btn._orig;},3000);
-    }
-
+    /* ---------- export (active band) ---------- */
     function toText(){
-      var L=["FIELD AUDIO KIT — PATCH LIST",""];
-      for(var i=0;i<rows.length;i++){var r=rows[i];
+      var R=rowsArr(); var L=["FIELD AUDIO KIT — PATCH LIST","Band: "+(band().name||""),""];
+      for(var i=0;i<R.length;i++){var r=R[i];
         var parts=[(i+1)+". "+(r.n||"(unnamed)")];
         if(r.m)parts.push(r.m);
         if(r.s)parts.push(r.s);
@@ -2580,62 +2646,42 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
         if(r.t)line+="  ("+r.t+")";
         L.push(line);
       }
-      L.push("");L.push(rows.length+" channel"+(rows.length===1?"":"s"));
+      L.push("");L.push(R.length+" channel"+(R.length===1?"":"s"));
       return L.join("\n");
     }
     function csvCell(v){v=(v==null?"":String(v));if(/[",\n\r]/.test(v))v='"'+v.replace(/"/g,'""')+'"';return v;}
     function toCSV(){
-      var out=["Ch,Name,Mic/DI,Stand,48V,Stage/Snake,Notes"];
-      for(var i=0;i<rows.length;i++){var r=rows[i];
+      var R=rowsArr(); var out=["Ch,Name,Mic/DI,Stand,48V,Stage/Snake,Notes"];
+      for(var i=0;i<R.length;i++){var r=R[i];
         out.push([(i+1),csvCell(r.n),csvCell(r.m),csvCell(r.s),(r.p?"Y":"N"),csvCell(r.x),csvCell(r.t)].join(","));
       }
       return out.join("\r\n");
     }
 
-    function b64urlEnc(str){var u=unescape(encodeURIComponent(str));return btoa(u).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");}
-    function b64urlDec(s){s=String(s).replace(/-/g,"+").replace(/_/g,"/");while(s.length%4)s+="=";return decodeURIComponent(escape(atob(s)));}
-    function encodeRows(){return "1"+b64urlEnc(JSON.stringify(rows.map(function(r){return [r.n,r.m,r.s,r.p?1:0,r.t,r.x];})));}
-    function decodeRows(payload){try{if(!payload||payload.charAt(0)!=="1")return null;var arr=JSON.parse(b64urlDec(payload.slice(1)));if(!(arr instanceof Array))return null;return arr.map(fromArr);}catch(e){return null;}}
-    function shareURL(){return location.href.split("#")[0]+"#patchload="+encodeRows();}
-
-    function copyText(t){
-      try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t);return true;}}catch(e){}
-      try{var ta=document.createElement("textarea");ta.value=t;ta.style.position="fixed";ta.style.top="-1000px";document.body.appendChild(ta);ta.focus();ta.select();var ok=document.execCommand("copy");document.body.removeChild(ta);return ok;}catch(e2){return false;}
-    }
-    function flash(btn,msg){var o=btn.textContent;btn.textContent=msg;setTimeout(function(){btn.textContent=o;},1400);}
-    function status(msg){var st=document.getElementById("pt-status-t");if(st)st.innerHTML=msg;}
-
+    /* ---------- wire patch controls ---------- */
     document.getElementById("pt-add").addEventListener("click",addRow);
     document.getElementById("pt-add2").addEventListener("click",addRow);
     document.getElementById("pt-tmpl").addEventListener("click",function(){
       var btn=this;
-      if(rows.length){arm(btn,"Replace list?",function(){rows=TEMPLATE.map(fromArr);touch();render();persistNow();});}
-      else{rows=TEMPLATE.map(fromArr);touch();render();persistNow();}
+      if(rowsArr().length){arm(btn,"Replace list?",function(){band().ch=TEMPLATE.map(tmplRow);touch();renderList();persistNow();});}
+      else{band().ch=TEMPLATE.map(tmplRow);touch();renderList();persistNow();}
     });
-    document.getElementById("pt-clear").addEventListener("click",function(){arm(this,"Clear all?",function(){rows=[];touch();render();persistNow();});});
-    document.getElementById("pt-copy").addEventListener("click",function(){if(!rows.length){status("Nothing to copy yet — add a channel first.");return;}copyText(toText());flash(this,"Copied ✓");});
-    document.getElementById("pt-csv").addEventListener("click",function(){if(!rows.length){status("Nothing to copy yet — add a channel first.");return;}copyText(toCSV());flash(this,"Copied ✓");});
-    document.getElementById("pt-share").addEventListener("click",function(){
-      if(!rows.length){status("Add a channel before sharing.");return;}
-      var url=shareURL(),btn=this;
-      if(navigator.share){navigator.share({title:"Patch list",text:"Field patch list ("+rows.length+" ch)",url:url}).then(function(){}).catch(function(){});}
-      else{var ok=copyText(url);flash(btn,ok?"Link copied ✓":"Copy failed");status("Sharing isn’t available here — the link is copied. Paste it to a tech; opening it loads this list on their phone. (Works on the live site.)");}
-    });
+    document.getElementById("pt-clear").addEventListener("click",function(){arm(this,"Clear all?",function(){band().ch=[];touch();renderList();persistNow();});});
+    document.getElementById("pt-copy").addEventListener("click",function(){if(!rowsArr().length){status("Nothing to copy yet — add a channel first.");return;}copyText(toText());flash(this,"Copied ✓");});
+    document.getElementById("pt-csv").addEventListener("click",function(){if(!rowsArr().length){status("Nothing to copy yet — add a channel first.");return;}copyText(toCSV());flash(this,"Copied ✓");});
 
+    /* ---------- init ---------- */
     function init(){
       var hash=location.hash||"";
-      var idx=hash.indexOf("patchload=");
-      if(idx>=0){
-        var shared=decodeRows(hash.slice(idx+10));
-        if(shared&&shared.length){rows=shared;guard=true;status("Shared list loaded ("+rows.length+" ch). Edit anything to keep it on this phone.");}
+      if(hash.indexOf("patchload=")>=0){
         try{location.hash="#patch";}catch(e){}
+        status("Heads up: old share links aren’t supported in the new planner — ask the tech to re-share.");
       }
-      if(!rows.length){
-        var saved=load(KEY);
-        if(saved){try{var arr=JSON.parse(saved);if(arr instanceof Array)rows=arr.map(fromArr);}catch(e){}}
-        else{rows=TEMPLATE.map(fromArr);}
+      var saved=load(KEY);
+      if(!(saved&&deserialize(saved))){
+        state.bands=[newBand("Band 1")];state.active=0;
       }
-      render();
+      renderBands();renderSub();
     }
     init();
   })();
