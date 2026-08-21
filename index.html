@@ -254,6 +254,26 @@ main{flex:1;padding-bottom:40px}
 .linkbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
 .linkbtn svg{width:15px;height:15px}
 
+/* ============ PATCH BUILDER ============ */
+.pt-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0}
+.pt-bar .grow{flex:1}
+.pt-count{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--faint)}
+.pt-row .tcard-h{padding:11px 12px}
+.pt-ch{font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600;color:var(--accent)}
+.pt-nm{color:var(--text);font-weight:600}
+.pt-src{color:var(--muted);font-weight:500;font-size:13.5px}
+.pt-f{margin:11px 0}
+.pt-f > label{display:block;font-family:"Barlow Semi Condensed",sans-serif;font-weight:600;font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.pt-f input[type="text"]{width:100%;box-sizing:border-box;background:var(--surface);border:1px solid var(--border-strong);border-radius:10px;color:var(--text);font-family:"Barlow",sans-serif;font-size:15px;padding:10px 12px}
+.pt-f input[type="text"]:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.pt-grid{display:flex;gap:10px}
+.pt-grid > .pt-f{flex:1;min-width:0}
+.pt-ctrls{display:flex;gap:8px;align-items:center;margin-top:13px;padding-top:12px;border-top:1px solid var(--border)}
+.pt-ctrls .spacer{flex:1}
+.iconbtn.pt-del{color:var(--bad)}
+.iconbtn.pt-del:hover{border-color:var(--bad)}
+.pt-empty{text-align:center;color:var(--faint);font-size:13.5px;padding:26px 14px;border:1px dashed var(--border);border-radius:12px;margin:10px 0}
+
 /* ============ LCD READOUT ============ */
 .readout{
   margin:20px 0 8px;border-radius:16px;background:var(--lcd-bg);
@@ -504,7 +524,7 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
       </div>
 
       <div class="tabs" role="tablist" aria-label="Sections">
-        <button class="tab" role="tab" id="tab-tools" aria-selected="true" aria-controls="panel-tools">Tools <span class="cnt">7</span></button>
+        <button class="tab" role="tab" id="tab-tools" aria-selected="true" aria-controls="panel-tools">Tools <span class="cnt">8</span></button>
         <button class="tab" role="tab" id="tab-guides" aria-selected="false" aria-controls="panel-guides">Guides <span class="cnt">1</span></button>
       </div>
 
@@ -568,6 +588,15 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
           <span class="body">
             <span class="ttl">RF Coordinator <span class="kind">Calc</span></span>
             <span class="desc">US UHF wireless &mdash; channel/frequency, third-order intermod, the 600 / 700&nbsp;MHz no-go bands, and your systems&rsquo; ranges.</span>
+          </span>
+          <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+        </button>
+
+        <button class="card" data-go="patch">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h12M8 12h12M8 18h11"/><circle cx="4" cy="6" r="1.1"/><circle cx="4" cy="12" r="1.1"/><circle cx="4" cy="18" r="1.1"/></svg></span>
+          <span class="body">
+            <span class="ttl">Patch <span class="kind">List</span></span>
+            <span class="desc">Festival input list &mdash; add, reorder and share channels on your phone, plus your Avantis&nbsp;&rarr;&nbsp;LM44&nbsp;&rarr;&nbsp;d&amp;b signal-flow card.</span>
           </span>
           <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
         </button>
@@ -1361,6 +1390,85 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
       </div>
     </section>
 
+    <!-- ============ PATCH BUILDER ============ -->
+    <section class="view" id="view-patch">
+      <div class="toolhead">
+        <h2>Patch</h2>
+        <p>Festival input list &mdash; build it on your phone, reorder fast, and hand it to the next tech. Plus your default Avantis&nbsp;&rarr;&nbsp;LM44&nbsp;&rarr;&nbsp;d&amp;b signal flow.</p>
+      </div>
+
+      <div class="seg" role="group" aria-label="Mode">
+        <button id="pt-mode-list" aria-pressed="true">Input list</button>
+        <button id="pt-mode-flow" aria-pressed="false">Signal flow</button>
+      </div>
+
+      <div id="pt-panel-list">
+        <div class="pt-bar">
+          <button class="cbtn primary" id="pt-add">+ Add channel</button>
+          <button class="linkbtn" id="pt-tmpl">Load template</button>
+          <span class="grow"></span>
+          <span class="pt-count" id="pt-count"></span>
+        </div>
+
+        <div id="pt-list"></div>
+
+        <div class="pt-bar">
+          <button class="linkbtn" id="pt-add2">+ Add channel</button>
+          <span class="grow"></span>
+          <button class="linkbtn" id="pt-clear">Clear all</button>
+        </div>
+
+        <div class="pt-bar" style="margin-top:20px">
+          <button class="cbtn" id="pt-copy">Copy text</button>
+          <button class="cbtn" id="pt-csv">Copy CSV</button>
+          <button class="cbtn primary" id="pt-share">Share</button>
+        </div>
+        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><span id="pt-status-t">Saved to this phone automatically. <b>Share</b> sends a link that opens this exact list on another tech&rsquo;s phone.</span></div>
+      </div>
+
+      <div id="pt-panel-flow" style="display:none">
+        <div class="refsec">
+          <h4>Stage &rarr; FOH</h4>
+          <div class="reftable">
+            <div class="tsrow"><div class="p">GX4816 stagebox</div><div class="f">48 mic in / 16 line out, 96&nbsp;kHz dLive preamps.</div></div>
+            <div class="tsrow"><div class="p">&rarr; SLink (gigaACE)</div><div class="f">One Cat run into the Avantis SLink port; head-amp gain lives on the Avantis.</div></div>
+          </div>
+        </div>
+
+        <div class="refsec">
+          <h4>FOH &rarr; Monitors</h4>
+          <div class="reftable">
+            <div class="tsrow"><div class="p">Avantis gigaACE card</div><div class="f">&rarr; SQ5 SLink &mdash; digital split to the monitor desk.</div></div>
+            <div class="tsrow"><div class="p">Gain sharing</div><div class="f">Preamp control stays with the Avantis; the SQ5 rides the split.</div></div>
+          </div>
+        </div>
+
+        <div class="refsec">
+          <h4>Drive &rarr; Amps</h4>
+          <div class="reftable">
+            <div class="tsrow"><div class="p">Avantis &rarr; LM44</div><div class="f">4 drive lines (XLR or AES) into the Lake LM44.</div></div>
+            <div class="tsrow"><div class="p">Guest desk</div><div class="f">A touring FOH desk&rsquo;s drives (XLR/AES) also land on the LM44 &mdash; flip it to change who drives the PA.</div></div>
+            <div class="tsrow"><div class="p">LM44 &rarr; D40/D80</div><div class="f">AES out to the amp stack &rarr; V-Series / Y10P / SL-Sub.</div></div>
+          </div>
+        </div>
+
+        <div class="refsec">
+          <h4>Control &mdash; R1</h4>
+          <div class="reftable">
+            <div class="tsrow"><div class="p">FOH laptop &rarr; DN1</div><div class="f">d&amp;b DN1 Ethernet switch on the amp rack &rarr; D40/D80 (OCA/AES70) for R1.</div></div>
+          </div>
+        </div>
+
+        <div class="callout mono">
+          <div class="cl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg> <span>No Dante in this rig</span></div>
+          <p>Console links are <b>gigaACE over SLink</b>; the amps are fed <b>AES from the LM44</b> &mdash; the D40/D80 have no onboard Dante anyway. <b>Dante alt</b> when a show calls for it: Avantis Dante card &rarr; d&amp;b DS10 bridge &rarr; AES to the amps.</p>
+        </div>
+        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><span>Clocking, latency and static-IP facts for the network live in the <b>Networking</b> tool.</span></div>
+        <div class="pt-bar"><button class="linkbtn" data-go="net">Open Networking tool &rarr;</button></div>
+        <div class="csources">Verified on A&amp;H (Avantis, GX4816, SQ SLink), Lab.gruppen / Lake (LM44) and d&amp;b (D40/D80, DN1, DS10) product docs.</div>
+      </div>
+    </section>
+
     <!-- ============ SMAART GUIDE ============ -->
     <section class="view" id="view-smaart">
       <div class="console">
@@ -1613,7 +1721,7 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
   });
 
   /* ---------- router ---------- */
-  var titles={home:"",delay:"Delay & Distance",db:"dB Helper",conv:"Converter",spl:"SPL & Exposure",net:"Networking",power:"Power",rf:"RF Coordinator",smaart:"Smaart v9 Alignment"};
+  var titles={home:"",delay:"Delay & Distance",db:"dB Helper",conv:"Converter",spl:"SPL & Exposure",net:"Networking",power:"Power",rf:"RF Coordinator",patch:"Patch",smaart:"Smaart v9 Alignment"};
   var stack=[];
   var backBtn=document.getElementById("backBtn");
   var brand=document.getElementById("brand");
@@ -2329,6 +2437,207 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
       for(var i=0;i<chips.length;i++)(function(c){c.addEventListener("click",function(){cur=c.getAttribute("data-sys");for(var j=0;j<chips.length;j++)press(chips[j],chips[j]===c);draw();});})(chips[i]);
       draw();
     })();
+  })();
+
+  /* ================= PATCH BUILDER ================= */
+  (function(){
+    var PV=document.getElementById("view-patch"); if(!PV) return;
+    var listEl=document.getElementById("pt-list");
+    var countEl=document.getElementById("pt-count");
+    var listPanel=document.getElementById("pt-panel-list");
+    var flowPanel=document.getElementById("pt-panel-flow");
+    var mList=document.getElementById("pt-mode-list"), mFlow=document.getElementById("pt-mode-flow");
+    var KEY="fak-patch-v1";
+
+    mList.addEventListener("click",function(){press(mList,true);press(mFlow,false);listPanel.style.display="";flowPanel.style.display="none";});
+    mFlow.addEventListener("click",function(){press(mFlow,true);press(mList,false);flowPanel.style.display="";listPanel.style.display="none";});
+
+    var rows=[];      // {n,m,s,p,t,x,open}
+    var guard=false;  // true = shared list opened, not yet edited -> don't overwrite this phone's saved list
+    var saveT=null;
+
+    var TEMPLATE=[
+      ["Kick In","Beta 91A","",1,"",""],["Kick Out","Beta 52","Short boom",0,"",""],
+      ["Snare Top","SM57","Short boom",0,"",""],["Snare Btm","e604","Clip",0,"",""],
+      ["Hi-Hat","SM81","Short boom",1,"",""],["Rack Tom","e604","Clip",0,"",""],
+      ["Floor Tom","e604","Clip",0,"",""],["OH L","KM184","Tall boom",1,"",""],
+      ["OH R","KM184","Tall boom",1,"",""],["Bass DI","DI","",1,"",""],
+      ["Bass Mic","MD421","Short boom",0,"",""],["Gtr SL","SM57","Short boom",0,"",""],
+      ["Gtr SR","MD421","Short boom",0,"",""],["Keys L","DI","",1,"",""],
+      ["Keys R","DI","",1,"",""],["Lead Vox","Beta 58A","Tall boom",0,"",""],
+      ["BV 1","SM58","Tall boom",0,"",""],["BV 2","SM58","Tall boom",0,"",""]
+    ];
+    function fromArr(a){return {n:a[0]||"",m:a[1]||"",s:a[2]||"",p:!!a[3],t:a[4]||"",x:a[5]||"",open:false};}
+
+    function dataArr(){return rows.map(function(r){return [r.n,r.m,r.s,r.p?1:0,r.t,r.x];});}
+    function persistNow(){if(guard)return;save(KEY,JSON.stringify(dataArr()));}
+    function persistSoon(){if(guard)return;if(saveT)clearTimeout(saveT);saveT=setTimeout(persistNow,400);}
+    function touch(){guard=false;}
+
+    function esc(v){return String(v==null?"":v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+    var ICONS={
+      up:'<path d="M6 15l6-6 6 6"/>',down:'<path d="M6 9l6 6 6-6"/>',
+      dup:'<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/>',
+      del:'<path d="M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2m2 0-1 13H7L6 7"/>'
+    };
+    function iconBtn(kind,label,cb){
+      var b=document.createElement("button");b.type="button";b.className="iconbtn"+(kind==="del"?" pt-del":"");
+      b.setAttribute("aria-label",label);b.title=label;
+      b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+ICONS[kind]+'</svg>';
+      b.addEventListener("click",cb);return b;
+    }
+    function headHTML(r,i){return '<span class="pt-ch">'+(i+1)+'</span> <span class="pt-nm">'+(esc(r.n)||"(unnamed)")+'</span>'+(r.m?' <span class="pt-src">'+esc(r.m)+'</span>':'');}
+    function field(label,val,ph,cb){
+      var f=document.createElement("div");f.className="pt-f";
+      var l=document.createElement("label");l.textContent=label;f.appendChild(l);
+      var inp=document.createElement("input");inp.type="text";inp.value=val||"";inp.setAttribute("aria-label",label);
+      if(ph)inp.placeholder=ph;
+      inp.addEventListener("input",function(){cb(inp.value);});
+      f.appendChild(inp);return f;
+    }
+
+    function render(){
+      listEl.innerHTML="";
+      if(!rows.length){
+        var e=document.createElement("div");e.className="pt-empty";
+        e.textContent="No channels yet. Add one, or load the standard template.";
+        listEl.appendChild(e);
+      }else{
+        for(var i=0;i<rows.length;i++)listEl.appendChild(rowEl(i));
+      }
+      countEl.textContent=rows.length?(rows.length+" ch"):"";
+    }
+    function idxOf(card){return rows.indexOf(card._row);}
+    function rowEl(i){
+      var r=rows[i];
+      var card=document.createElement("div");card.className="tcard pt-row"+(r.open?" open":"");
+      card._row=r;
+      var h=document.createElement("button");h.type="button";h.className="tcard-h";
+      h.setAttribute("aria-expanded",r.open?"true":"false");
+      var dot=document.createElement("span");dot.className="dot";
+      dot.style.background=r.p?"var(--accent)":"transparent";
+      dot.style.boxShadow=r.p?"none":"inset 0 0 0 1px var(--border-strong)";
+      dot.title=r.p?"48V on":"48V off";
+      var b=document.createElement("b");b.innerHTML=headHTML(r,i);
+      var cv=document.createElement("span");cv.className="cv";
+      cv.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>';
+      h.appendChild(dot);h.appendChild(b);h.appendChild(cv);
+      h.addEventListener("click",function(){r.open=!r.open;card.classList.toggle("open",r.open);h.setAttribute("aria-expanded",r.open?"true":"false");});
+      card.appendChild(h);
+      var body=document.createElement("div");body.className="tcard-b";
+      body.appendChild(field("Name / source",r.n,"e.g. Lead Vox",function(v){r.n=v;touch();b.innerHTML=headHTML(r,idxOf(card));persistSoon();}));
+      body.appendChild(field("Mic / DI",r.m,"e.g. SM58 / DI",function(v){r.m=v;touch();b.innerHTML=headHTML(r,idxOf(card));persistSoon();}));
+      var grid=document.createElement("div");grid.className="pt-grid";
+      grid.appendChild(field("Stand",r.s,"e.g. Tall boom",function(v){r.s=v;touch();persistSoon();}));
+      grid.appendChild(phantomField(r,dot));
+      body.appendChild(grid);
+      body.appendChild(field("Stage spot / sub-snake",r.x,"e.g. DSR / Snake B 3",function(v){r.x=v;touch();persistSoon();}));
+      body.appendChild(field("Notes",r.t,"e.g. shared with BV mic",function(v){r.t=v;touch();persistSoon();}));
+      var ctr=document.createElement("div");ctr.className="pt-ctrls";
+      ctr.appendChild(iconBtn("up","Move up",function(){move(idxOf(card),-1);}));
+      ctr.appendChild(iconBtn("down","Move down",function(){move(idxOf(card),1);}));
+      var sp=document.createElement("span");sp.className="spacer";ctr.appendChild(sp);
+      ctr.appendChild(iconBtn("dup","Duplicate",function(){dup(idxOf(card));}));
+      ctr.appendChild(iconBtn("del","Delete",function(){removeRow(idxOf(card));}));
+      body.appendChild(ctr);
+      card.appendChild(body);
+      return card;
+    }
+    function phantomField(r,dot){
+      var f=document.createElement("div");f.className="pt-f";
+      var l=document.createElement("label");l.textContent="48V phantom";f.appendChild(l);
+      var u=document.createElement("div");u.className="unit";
+      var on=document.createElement("button");on.type="button";on.textContent="48V";
+      var off=document.createElement("button");off.type="button";off.textContent="Off";
+      function paint(){on.setAttribute("aria-pressed",r.p?"true":"false");off.setAttribute("aria-pressed",r.p?"false":"true");
+        if(dot){dot.style.background=r.p?"var(--accent)":"transparent";dot.style.boxShadow=r.p?"none":"inset 0 0 0 1px var(--border-strong)";dot.title=r.p?"48V on":"48V off";}}
+      on.addEventListener("click",function(){r.p=true;paint();touch();persistNow();});
+      off.addEventListener("click",function(){r.p=false;paint();touch();persistNow();});
+      paint();u.appendChild(on);u.appendChild(off);f.appendChild(u);return f;
+    }
+
+    function move(i,dir){var j=i+dir;if(i<0||j<0||j>=rows.length)return;var t=rows[i];rows[i]=rows[j];rows[j]=t;touch();render();persistNow();}
+    function dup(i){if(i<0)return;var r=rows[i];rows.splice(i+1,0,{n:r.n,m:r.m,s:r.s,p:r.p,t:r.t,x:r.x,open:false});touch();render();persistNow();}
+    function removeRow(i){if(i<0)return;rows.splice(i,1);touch();render();persistNow();}
+    function addRow(){rows.push({n:"",m:"",s:"",p:false,t:"",x:"",open:true});touch();render();persistNow();
+      var cards=listEl.querySelectorAll(".pt-row");if(cards.length){var last=cards[cards.length-1];try{last.scrollIntoView({block:"center"});}catch(e){}var inp=last.querySelector('input[type="text"]');if(inp)inp.focus();}}
+
+    function arm(btn,armed,action){
+      if(btn._armed){clearTimeout(btn._armT);btn._armed=false;btn.textContent=btn._orig;action();return;}
+      btn._orig=btn.textContent;btn._armed=true;btn.textContent=armed;
+      btn._armT=setTimeout(function(){btn._armed=false;btn.textContent=btn._orig;},3000);
+    }
+
+    function toText(){
+      var L=["FIELD AUDIO KIT — PATCH LIST",""];
+      for(var i=0;i<rows.length;i++){var r=rows[i];
+        var parts=[(i+1)+". "+(r.n||"(unnamed)")];
+        if(r.m)parts.push(r.m);
+        if(r.s)parts.push(r.s);
+        if(r.p)parts.push("48V");
+        if(r.x)parts.push("@"+r.x);
+        var line=parts.join(" — ");
+        if(r.t)line+="  ("+r.t+")";
+        L.push(line);
+      }
+      L.push("");L.push(rows.length+" channel"+(rows.length===1?"":"s"));
+      return L.join("\n");
+    }
+    function csvCell(v){v=(v==null?"":String(v));if(/[",\n\r]/.test(v))v='"'+v.replace(/"/g,'""')+'"';return v;}
+    function toCSV(){
+      var out=["Ch,Name,Mic/DI,Stand,48V,Stage/Snake,Notes"];
+      for(var i=0;i<rows.length;i++){var r=rows[i];
+        out.push([(i+1),csvCell(r.n),csvCell(r.m),csvCell(r.s),(r.p?"Y":"N"),csvCell(r.x),csvCell(r.t)].join(","));
+      }
+      return out.join("\r\n");
+    }
+
+    function b64urlEnc(str){var u=unescape(encodeURIComponent(str));return btoa(u).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");}
+    function b64urlDec(s){s=String(s).replace(/-/g,"+").replace(/_/g,"/");while(s.length%4)s+="=";return decodeURIComponent(escape(atob(s)));}
+    function encodeRows(){return "1"+b64urlEnc(JSON.stringify(rows.map(function(r){return [r.n,r.m,r.s,r.p?1:0,r.t,r.x];})));}
+    function decodeRows(payload){try{if(!payload||payload.charAt(0)!=="1")return null;var arr=JSON.parse(b64urlDec(payload.slice(1)));if(!(arr instanceof Array))return null;return arr.map(fromArr);}catch(e){return null;}}
+    function shareURL(){return location.href.split("#")[0]+"#patchload="+encodeRows();}
+
+    function copyText(t){
+      try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t);return true;}}catch(e){}
+      try{var ta=document.createElement("textarea");ta.value=t;ta.style.position="fixed";ta.style.top="-1000px";document.body.appendChild(ta);ta.focus();ta.select();var ok=document.execCommand("copy");document.body.removeChild(ta);return ok;}catch(e2){return false;}
+    }
+    function flash(btn,msg){var o=btn.textContent;btn.textContent=msg;setTimeout(function(){btn.textContent=o;},1400);}
+    function status(msg){var st=document.getElementById("pt-status-t");if(st)st.innerHTML=msg;}
+
+    document.getElementById("pt-add").addEventListener("click",addRow);
+    document.getElementById("pt-add2").addEventListener("click",addRow);
+    document.getElementById("pt-tmpl").addEventListener("click",function(){
+      var btn=this;
+      if(rows.length){arm(btn,"Replace list?",function(){rows=TEMPLATE.map(fromArr);touch();render();persistNow();});}
+      else{rows=TEMPLATE.map(fromArr);touch();render();persistNow();}
+    });
+    document.getElementById("pt-clear").addEventListener("click",function(){arm(this,"Clear all?",function(){rows=[];touch();render();persistNow();});});
+    document.getElementById("pt-copy").addEventListener("click",function(){if(!rows.length){status("Nothing to copy yet — add a channel first.");return;}copyText(toText());flash(this,"Copied ✓");});
+    document.getElementById("pt-csv").addEventListener("click",function(){if(!rows.length){status("Nothing to copy yet — add a channel first.");return;}copyText(toCSV());flash(this,"Copied ✓");});
+    document.getElementById("pt-share").addEventListener("click",function(){
+      if(!rows.length){status("Add a channel before sharing.");return;}
+      var url=shareURL(),btn=this;
+      if(navigator.share){navigator.share({title:"Patch list",text:"Field patch list ("+rows.length+" ch)",url:url}).then(function(){}).catch(function(){});}
+      else{var ok=copyText(url);flash(btn,ok?"Link copied ✓":"Copy failed");status("Sharing isn’t available here — the link is copied. Paste it to a tech; opening it loads this list on their phone. (Works on the live site.)");}
+    });
+
+    function init(){
+      var hash=location.hash||"";
+      var idx=hash.indexOf("patchload=");
+      if(idx>=0){
+        var shared=decodeRows(hash.slice(idx+10));
+        if(shared&&shared.length){rows=shared;guard=true;status("Shared list loaded ("+rows.length+" ch). Edit anything to keep it on this phone.");}
+        try{location.hash="#patch";}catch(e){}
+      }
+      if(!rows.length){
+        var saved=load(KEY);
+        if(saved){try{var arr=JSON.parse(saved);if(arr instanceof Array)rows=arr.map(fromArr);}catch(e){}}
+        else{rows=TEMPLATE.map(fromArr);}
+      }
+      render();
+    }
+    init();
   })();
 
   /* ---------- deep link on load ---------- */
