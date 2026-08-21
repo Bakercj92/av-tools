@@ -526,7 +526,7 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
 
       <div class="tabs" role="tablist" aria-label="Sections">
         <button class="tab" role="tab" id="tab-tools" aria-selected="true" aria-controls="panel-tools">Tools <span class="cnt">8</span></button>
-        <button class="tab" role="tab" id="tab-guides" aria-selected="false" aria-controls="panel-guides">Guides <span class="cnt">3</span></button>
+        <button class="tab" role="tab" id="tab-guides" aria-selected="false" aria-controls="panel-guides">Guides <span class="cnt">4</span></button>
         <button class="tab" role="tab" id="tab-ref" aria-selected="false" aria-controls="panel-ref">Reference <span class="cnt">4</span></button>
       </div>
 
@@ -626,6 +626,14 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
           <span class="body">
             <span class="ttl">Gain Structure <span class="kind">Guide</span></span>
             <span class="desc">Set the level once, keep unity to the amp &mdash; preamp &rarr; Avantis &rarr; LM44 &rarr; D40/D80. Your numbers, your chain.</span>
+          </span>
+          <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+        </button>
+        <button class="card" data-go="rfflow">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49M7.76 16.24a6 6 0 0 1 0-8.49M19.07 4.93a10 10 0 0 1 0 14.14M4.93 19.07a10 10 0 0 1 0-14.14"/></svg></span>
+          <span class="body">
+            <span class="ttl">RF Coordination <span class="kind">Guide</span></span>
+            <span class="desc">Scan &rarr; coordinate &rarr; deploy &rarr; walk it, mics and IEMs in one plan. The tool does the maths; this is the field order. Copy-out frequency plan.</span>
           </span>
           <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
         </button>
@@ -2012,6 +2020,147 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
         <p class="csources">Gain structure &mdash; preamp to amp. Sources: Allen &amp; Heath (levels &amp; metering in A&amp;H digital consoles); Sound&nbsp;on&nbsp;Sound (digital reference levels &mdash; SMPTE RP155 / EBU R68); d&amp;b D40 datasheet (input specs); Lake LM44 datasheet. Numbers are for your Avantis / LM44 / D40&ndash;D80. Ticks live in this session only.</p>
       </div>
     </section>
+    <!-- ============ GUIDE — RF COORDINATION WORKFLOW ============ -->
+    <section class="view" id="view-rfflow">
+      <div class="console">
+        <div class="rulebar">
+          <div class="r1">THE RULE: <b>scan &rarr; coordinate &rarr; deploy &rarr; walk it</b>. Mics and IEMs in ONE plan, backups ready.</div>
+          <div class="r2">The <b>RF tool</b> runs the maths (intermod, no-go, ch&harr;freq). This is the on-site order of operations. Tap <b>Stuck?</b> for the gotchas.</div>
+        </div>
+
+        <div class="chead">
+          <h2>RF Coordination &mdash; Scan to Showtime</h2>
+          <p>Your kit: SLX-D &middot; ULX-D &middot; Axient (mics) + ew&nbsp;G4 &middot; PSM&nbsp;300 &middot; PSM&nbsp;1000 (IEMs), US UHF 470&ndash;608&nbsp;MHz. Coordinate mics and IEMs together, keep backups, re-scan before doors. The RF Coordinator tool runs the numbers; this is the workflow. Tap a step to tick it; tap a heading to fold.</p>
+        </div>
+
+        <!-- 1 PLAN -->
+        <div class="csec">
+          <button class="csec-h"><span class="n">1</span><h3>Plan <small>before you scan</small></h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Inventory every RF unit on site &mdash; brand, model, <b>band</b> &mdash; yours <b>and</b> anyone else's (comms, broadcast, the support act).</div></div></div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Your bands: SLX-D &middot; ULX-D &middot; Axient &middot; G4 &middot; PSM&nbsp;1000 all sit <b>470&ndash;608&nbsp;MHz</b>; PSM&nbsp;300 is <b>488&ndash;590</b>. Nothing of yours is legal above 608 &mdash; the RF tool's No-go view has the illegal edges.</div></div></div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Count channels with <b>mics + IEMs together</b> &mdash; every IEM pack is a transmitter sitting right next to your mic receivers.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dw"><span class="lab">Why</span><p>IEM transmitters are strong, always-on RF sources at close range. Coordinate them <b>in the same plan</b> as the mics or their intermod products will land on a receiver and drop it.</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2 SCAN -->
+        <div class="csec">
+          <button class="csec-h"><span class="n">2</span><h3>Scan the room <small>see what you must avoid</small></h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Your mic &amp; IEM transmitters <b>OFF</b>; everything else that runs during the show <b>ON</b> (comms, video, other acts' RF).</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dw"><span class="lab">Why</span><p>You're scanning for what you must design <b>around</b>. Your own transmitters off (you'll place them next); everyone else's on, so the scan is the real showtime RF picture &mdash; not a quiet load-in.</p></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Scan <b>the whole venue</b> &mdash; stage, FOH, and outside &mdash; through the <b>same antennas &amp; cabling</b> the rig will actually use.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl ds"><span class="lab">Stuck? &mdash; nothing clean anywhere</span><ol class="path"><li>A video wall or LED rig can flatten a whole band &mdash; move antennas away from it, or shift your channels to a clearer part of the spectrum.</li><li>Scan through the real distribution (splitter, cable runs) &mdash; a scan at the receiver isn't what the antenna at the stage actually sees.</li></ol></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Exclude active <b>TV channels</b> for this location, plus anything the scan shows above your noise floor. The RF tool's No-go view has the US illegal bands baked in.</div></div></div>
+          </div>
+        </div>
+
+        <!-- 3 COORDINATE -->
+        <div class="csec">
+          <button class="csec-h"><span class="n">3</span><h3>Coordinate <small>the tool runs the maths</small></h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Compute an <b>intermod-free</b> set: 3rd-order <b>2A&minus;B / 2B&minus;A</b>, kept <b>&ge;250&nbsp;kHz</b> off any carrier. The RF Coordinator's Intermod check does exactly this.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dw"><span class="lab">Why</span><p>Two transmitters breed a third-order product at 2A&minus;B and 2B&minus;A. Keep every assigned carrier and its products at least a guard band apart and they stop landing on each other. Open the tool &mdash; don't do this on paper.</p></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Best (strongest, cleanest) frequencies &rarr; your <b>most important</b> channels &mdash; lead vox, the can't-fail pack.</div></div></div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Grab a <b>backup</b> per channel &mdash; a spare intermod-free freq to jump to if one goes dirty mid-show.</div></div></div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Log each assignment in the <b>frequency plan</b> below as you go (&sect;5).</div></div></div>
+
+            <button class="tolink" data-go="rf">
+              <span class="lic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49M7.76 16.24a6 6 0 0 1 0-8.49M19.07 4.93a10 10 0 0 1 0 14.14M4.93 19.07a10 10 0 0 1 0-14.14"/></svg></span>
+              <span class="t"><b>RF Coordinator tool</b><small>Intermod (2A&minus;B/2B&minus;A), no-go bands, ch&harr;freq, your systems &mdash; the maths.</small></span>
+              <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 DEPLOY -->
+        <div class="csec">
+          <button class="csec-h"><span class="n">4</span><h3>Deploy &amp; walk it <small>before the act does</small></h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Set each receiver, then <b>sync</b> the transmitter (IR) to its frequency. Groups/channels match the plan &mdash; double-check before you button up.</div></div></div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Antennas: <b>line-of-sight</b> to the packs, sensible gain, not buried behind steel, drape, or bodies.</div></div></div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>Walk-test</b> the full coverage area with each pack live &mdash; find dropouts now. Squelch tight enough to mute RF hash, loose enough not to choke the edge of coverage.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl ds"><span class="lab">Stuck? &mdash; pack drops in one spot</span><ol class="path"><li>It's coverage / line-of-sight, not coordination &mdash; move or add an antenna toward that dead spot.</li><li>Diversity receiver still dropping? Antenna too far, or shadowed by staging/LED. Raise it, move it forward.</li></ol></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>Re-scan before doors</b> &mdash; video walls, LED, and other acts' gear come on during the day and change the picture.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dg"><span class="lab">Good</span><p>A quiet re-scan that matches your morning plan &mdash; nothing new landed on your frequencies.</p></div>
+                <div class="dl ds"><span class="lab">Stuck? &mdash; something new appeared</span><ol class="path"><li>Move only the <b>affected</b> channels to their <b>backups</b> &mdash; don't re-coordinate the whole show if you don't have to.</li><li>New wide interference &rarr; re-run the coordination for that band.</li></ol></div>
+              </div>
+            </div>
+
+            <div class="cwarn"><span class="lbl">Re-scan before doors</span>The RF room at load-in is not the RF room at showtime. Anything that powered up during the day &mdash; video walls, LED, a support act's kit &mdash; can land on a frequency that was clean this morning. One more scan before doors saves the show.</div>
+          </div>
+        </div>
+
+        <!-- 5 FREQUENCY PLAN -->
+        <div class="csec">
+          <button class="csec-h"><span class="n log">5</span><h3>Your frequency plan <small>log it, copy it, share it</small></h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <p class="chint">Log each channel as you assign it &mdash; mics and IEMs. Tap <b>Copy plan</b> at the end to text it to the other tech or keep it on your phone.</p>
+            <table class="clog">
+              <thead><tr><th>Ch / name</th><th class="colms">Freq MHz</th><th class="colms">Backup</th><th class="colnotes">Notes</th></tr></thead>
+              <tbody id="rfplanbody">
+                <tr><td><input class="rf-name" value="Lead vox"></td><td><input class="rf-freq ms" inputmode="decimal" placeholder="MHz"></td><td><input class="rf-bak ms" inputmode="decimal" placeholder="MHz"></td><td class="colnotes"><input placeholder="Axient / group"></td></tr>
+                <tr><td><input class="rf-name" value="Handheld 2"></td><td><input class="rf-freq ms" inputmode="decimal" placeholder="MHz"></td><td><input class="rf-bak ms" inputmode="decimal" placeholder="MHz"></td><td class="colnotes"><input placeholder="ULX-D"></td></tr>
+                <tr><td><input class="rf-name" value="IEM 1"></td><td><input class="rf-freq ms" inputmode="decimal" placeholder="MHz"></td><td><input class="rf-bak ms" inputmode="decimal" placeholder="MHz"></td><td class="colnotes"><input placeholder="PSM 1000"></td></tr>
+                <tr><td><input class="rf-name" value="IEM 2"></td><td><input class="rf-freq ms" inputmode="decimal" placeholder="MHz"></td><td><input class="rf-bak ms" inputmode="decimal" placeholder="MHz"></td><td class="colnotes"><input placeholder="PSM 300"></td></tr>
+              </tbody>
+            </table>
+            <div class="logbtns">
+              <button class="cbtn" data-addrow>+ Add channel</button>
+              <button class="cbtn" data-reset>Reset ticks</button>
+              <button class="cbtn primary" data-copyplan>Copy plan</button>
+            </div>
+          </div>
+        </div>
+
+        <p class="chint" style="margin-top:14px">Quick ones:</p>
+        <div class="tsrow"><div class="p">Pack drops in one spot</div><div class="f">Antenna line-of-sight / coverage &mdash; walk it, move the antenna.</div></div>
+        <div class="tsrow"><div class="p">Freq goes dirty mid-show</div><div class="f">Jump that channel to its backup.</div></div>
+        <div class="tsrow"><div class="p">New buzz at doors</div><div class="f">Something powered up &mdash; re-scan, move the affected channels.</div></div>
+        <div class="tsrow"><div class="p">No clean set fits</div><div class="f">Widen the exclusion carefully, or drop a channel. Check Intermod in the tool.</div></div>
+
+        <p class="csources">RF coordination &mdash; scan to showtime. Sources: Shure (All About Wireless: planning, coordination &amp; monitoring; Wireless Workbench). Band / intermod / no-go numbers reuse this kit's verified Phase&nbsp;3 data. Your systems: SLX-D &middot; ULX-D &middot; Axient &middot; ew&nbsp;G4 &middot; PSM&nbsp;300/1000. Plan lives in this session; Copy plan to keep it.</p>
+
+        <div class="logmodal" id="rfPlanModal">
+          <div class="lmcard">
+            <h3>Your frequency plan</h3>
+            <p>Copy this to your notes or text it to the other tech &mdash; it's your RF record for the day.</p>
+            <textarea id="rfPlanText" readonly></textarea>
+            <div class="row">
+              <button class="cbtn primary" data-rfcopy>Copy to clipboard</button>
+              <button class="cbtn" data-rfclose>Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
     <!-- ============ REFERENCE — CONNECTOR PINOUTS ============ -->
     <section class="view" id="view-ref-pins">
       <div class="toolhead">
@@ -2337,7 +2486,7 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
   });
 
   /* ---------- router ---------- */
-  var titles={home:"",delay:"Delay & Distance",db:"dB Helper",conv:"Converter",spl:"SPL & Exposure",net:"Networking",power:"Power",rf:"RF Coordinator",patch:"Patch",smaart:"Smaart v9 Alignment",nosig:"No Audio & Hum/Buzz",gain:"Gain Structure","ref-pins":"Connector Pinouts","ref-power":"Cam-lock & Power","ref-db":"d&b System Specs","ref-dante":"Dante Limits"};
+  var titles={home:"",delay:"Delay & Distance",db:"dB Helper",conv:"Converter",spl:"SPL & Exposure",net:"Networking",power:"Power",rf:"RF Coordinator",patch:"Patch",smaart:"Smaart v9 Alignment",nosig:"No Audio & Hum/Buzz",gain:"Gain Structure",rfflow:"RF Coordination","ref-pins":"Connector Pinouts","ref-power":"Cam-lock & Power","ref-db":"d&b System Specs","ref-dante":"Dante Limits"};
   var stack=[];
   var backBtn=document.getElementById("backBtn");
   var brand=document.getElementById("brand");
@@ -2623,6 +2772,59 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
       if((e.key==="Enter"||e.key===" ")&&e.target.classList&&e.target.classList.contains("cstep-top")){
         e.preventDefault();e.target.closest(".cstep").classList.toggle("done");
       }
+    });
+  })();
+
+
+  /* ================= GUIDE: RF COORDINATION WORKFLOW ================= */
+  (function(){
+    var v=document.getElementById("view-rfflow"); if(!v)return;
+    var modal=document.getElementById("rfPlanModal");
+    function val(el){return el&&el.value?el.value:"";}
+    function buildPlan(){
+      var NL=String.fromCharCode(10);
+      var rows=v.querySelectorAll("#rfplanbody tr");
+      var L=["RF FREQUENCY PLAN","(mics + IEMs · US UHF 470-608 MHz)","----------------------------------------"];
+      for(var i=0;i<rows.length;i++){
+        var r=rows[i];
+        var nm=val(r.querySelector(".rf-name"))||"—";
+        var fq=val(r.querySelector(".rf-freq")); fq=fq?(fq+" MHz"):"(none)";
+        var bk=val(r.querySelector(".rf-bak")); bk=bk?("bak "+bk):"bak —";
+        var ntEl=r.querySelector("td.colnotes input"); var nt=ntEl?ntEl.value:"";
+        L.push(nm+":  "+fq+"  |  "+bk+(nt?("  |  "+nt):""));
+      }
+      L.push("----------------------------------------");
+      return L.join(NL)+NL;
+    }
+    function openPlan(){document.getElementById("rfPlanText").value=buildPlan();modal.classList.add("open");}
+    function closePlan(){modal.classList.remove("open");}
+    function addRow(){
+      var tr=document.createElement("tr");
+      tr.innerHTML='<td><input class="rf-name" placeholder="ch / name"></td><td><input class="rf-freq ms" inputmode="decimal" placeholder="MHz"></td><td><input class="rf-bak ms" inputmode="decimal" placeholder="MHz"></td><td class="colnotes"><input placeholder="notes"></td>';
+      document.getElementById("rfplanbody").appendChild(tr);
+    }
+    v.addEventListener("click",function(e){
+      var t=e.target;
+      var stk=t.closest(".cstuck");
+      if(stk){var st=stk.closest(".cstep");stk.textContent=st.classList.toggle("open")?"Close":"Stuck?";return;}
+      if(t.closest(".csec-h")){t.closest(".csec").classList.toggle("collapsed");return;}
+      if(t.closest(".tolink")){return;}
+      if(t.closest("[data-addrow]")){addRow();return;}
+      if(t.closest("[data-copyplan]")){openPlan();return;}
+      if(t.closest("[data-reset]")){var ds=v.querySelectorAll(".cstep.done");for(var i=0;i<ds.length;i++)ds[i].classList.remove("done");return;}
+      if(t.closest(".cstep-top")){t.closest(".cstep").classList.toggle("done");return;}
+    });
+    v.addEventListener("keydown",function(e){
+      if((e.key==="Enter"||e.key===" ")&&e.target.classList&&e.target.classList.contains("cstep-top")){
+        e.preventDefault();e.target.closest(".cstep").classList.toggle("done");
+      }
+    });
+    modal.addEventListener("click",function(e){
+      if(e.target===modal||e.target.closest("[data-rfclose]")){closePlan();return;}
+      var cp=e.target.closest("[data-rfcopy]");
+      if(cp){var tx=document.getElementById("rfPlanText");tx.focus();tx.select();try{tx.setSelectionRange(0,99999);}catch(e0){}
+        try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(tx.value);}else{document.execCommand("copy");}}catch(err){try{document.execCommand("copy");}catch(e2){}}
+        var o=cp.textContent;cp.textContent="Copied ✓";setTimeout(function(){cp.textContent=o;},1400);return;}
     });
   })();
 
