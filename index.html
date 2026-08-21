@@ -535,6 +535,51 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
 @media (max-width:430px){
   table.clog th.colnotes,table.clog td.colnotes{display:none}
 }
+
+/* ===== Phase 4.2: Summary + print ===== */
+.pp-sharebanner{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:var(--accent-soft);border:1px solid var(--accent-line);border-radius:12px;padding:10px 12px;margin:2px 0 12px}
+.pp-sharebanner .pp-sb-t{flex:1;min-width:150px;font-size:13.5px;color:var(--text);line-height:1.35}
+.pp-sheet{margin-top:4px}
+.pp-sh-brand{display:none}
+.pp-sh-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:12px 0 6px}
+.pp-sh-head h3{font-family:"Barlow Semi Condensed",sans-serif;font-weight:700;font-size:19px;color:var(--text);margin:0;letter-spacing:-.01em}
+.pp-sh-head .pt-count{flex:none}
+.pp-sumsec{margin:16px 0 4px}
+.pp-sumsec h4{font-family:"Barlow Semi Condensed",sans-serif;font-weight:700;font-size:13px;color:var(--muted);margin:0 0 6px;text-transform:uppercase;letter-spacing:.05em}
+.pp-tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.pp-table{border-collapse:collapse;font-size:13px;min-width:100%}
+.pp-table th,.pp-table td{border:1px solid var(--border-strong);padding:5px 7px;text-align:left;vertical-align:top;white-space:nowrap}
+.pp-table td:nth-child(3),.pp-table td:last-child{white-space:normal}
+.pp-table th{font-family:"Barlow Semi Condensed",sans-serif;font-weight:700;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.03em}
+.pp-table td.num,.pp-table th.num{font-family:"IBM Plex Mono",monospace;text-align:center;width:30px;font-variant-numeric:tabular-nums}
+.pp-table td.mid,.pp-table th.mid{text-align:center}
+.pp-sw-cell{width:22px;text-align:center;padding:0 4px!important}
+.pp-sw-dot{display:inline-block;width:13px;height:13px;border-radius:3px;border:1px solid rgba(0,0,0,.28);vertical-align:middle;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.pp-map-list{list-style:none;margin:0;padding:0;font-size:13px;columns:2;column-gap:22px}
+.pp-map-list li{padding:2px 0;break-inside:avoid}
+.pp-map-empty{color:var(--faint)}
+.pp-sumband{margin-bottom:10px;break-inside:avoid}
+#pp-printroot{display:none}
+@media print{
+  @page{margin:12mm}
+  html,body{background:#fff!important}
+  .wrap{display:none!important}
+  #pp-printroot{display:block!important;color:#000;font-family:"Barlow",Arial,sans-serif;padding:0}
+  #pp-printroot *{color:#000!important;box-shadow:none!important;text-shadow:none!important}
+  #pp-printroot .pp-sheet+.pp-sheet{page-break-before:always}
+  #pp-printroot .pp-sh-brand{display:block;font-family:"Barlow Semi Condensed",sans-serif;font-weight:700;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#666!important;margin-bottom:2px}
+  #pp-printroot .pp-sh-head h3{font-size:17pt}
+  #pp-printroot .pp-sumsec h4{font-size:10pt;color:#444!important;margin:12px 0 4px}
+  #pp-printroot .pp-tablewrap{overflow:visible}
+  #pp-printroot .pp-table{width:100%;min-width:0;font-size:8.6pt}
+  #pp-printroot .pp-table th{background:#eee!important;color:#222!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #pp-printroot .pp-table th,#pp-printroot .pp-table td{border:1px solid #999!important}
+  #pp-printroot .pp-table td,#pp-printroot .pp-table th{white-space:normal}
+  #pp-printroot .pp-sw-dot{border:1px solid #555}
+  #pp-printroot .pp-map-list{font-size:8.6pt}
+  #pp-printroot tr,#pp-printroot .pp-sumband,#pp-printroot .pp-sumsec{page-break-inside:avoid}
+  #pp-printroot thead{display:table-header-group}
+}
 </style>
 </head>
 <body>
@@ -567,8 +612,8 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
 
       <div class="tabs" role="tablist" aria-label="Sections">
         <button class="tab" role="tab" id="tab-tools" aria-selected="true" aria-controls="panel-tools">Tools <span class="cnt">8</span></button>
-        <button class="tab" role="tab" id="tab-guides" aria-selected="false" aria-controls="panel-guides">Guides <span class="cnt">1</span></button>
-        <button class="tab" role="tab" id="tab-ref" aria-selected="false" aria-controls="panel-ref">Reference <span class="cnt">4</span></button>
+        <button class="tab" role="tab" id="tab-guides" aria-selected="false" aria-controls="panel-guides">Guides <span class="cnt">4</span></button>
+        <button class="tab" role="tab" id="tab-ref" aria-selected="false" aria-controls="panel-ref">Reference <span class="cnt">5</span></button>
       </div>
 
       <div class="grid panel active" id="panel-tools" role="tabpanel" aria-labelledby="tab-tools">
@@ -639,7 +684,7 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
           <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h12M8 12h12M8 18h11"/><circle cx="4" cy="6" r="1.1"/><circle cx="4" cy="12" r="1.1"/><circle cx="4" cy="18" r="1.1"/></svg></span>
           <span class="body">
             <span class="ttl">Patch <span class="kind">List</span></span>
-            <span class="desc">Festival input list &mdash; add, reorder and share channels on your phone, plus your Avantis&nbsp;&rarr;&nbsp;LM44&nbsp;&rarr;&nbsp;d&amp;b signal-flow card.</span>
+            <span class="desc">Festival input list &mdash; build channels, patch to stage boxes and monitors, then print or share the whole plan from your phone.</span>
           </span>
           <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
         </button>
@@ -651,6 +696,30 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
           <span class="body">
             <span class="ttl">Smaart v9 Alignment <span class="kind">Guide</span></span>
             <span class="desc">Interactive checklist — tap-to-tick steps, Stuck? help, troubleshooting, and an as-tuned log. Alignment only.</span>
+          </span>
+          <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+        </button>
+        <button class="card" data-go="nosig">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
+          <span class="body">
+            <span class="ttl">No-Audio &amp; Hum/Buzz <span class="kind">Guide</span></span>
+            <span class="desc">6pm-no-sound rescue &mdash; halve the signal path to the dead spot, then kill ground-loop hum and dimmer buzz. Safe ground-lift only.</span>
+          </span>
+          <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+        </button>
+        <button class="card" data-go="gain">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg></span>
+          <span class="body">
+            <span class="ttl">Gain Structure <span class="kind">Guide</span></span>
+            <span class="desc">Set the level once, keep unity to the amp &mdash; preamp &rarr; Avantis &rarr; LM44 &rarr; D40/D80. Your numbers, your chain.</span>
+          </span>
+          <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+        </button>
+        <button class="card" data-go="rfflow">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49M7.76 16.24a6 6 0 0 1 0-8.49M19.07 4.93a10 10 0 0 1 0 14.14M4.93 19.07a10 10 0 0 1 0-14.14"/></svg></span>
+          <span class="body">
+            <span class="ttl">RF Coordination <span class="kind">Guide</span></span>
+            <span class="desc">Scan &rarr; coordinate &rarr; deploy &rarr; walk it, mics and IEMs in one plan. The tool does the maths; this is the field order. Copy-out frequency plan.</span>
           </span>
           <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
         </button>
@@ -690,6 +759,15 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
           <span class="body">
             <span class="ttl">Dante Limits <span class="kind">Ref</span></span>
             <span class="desc">Flows per device, unicast vs multicast, the 96&nbsp;kHz channel halving, network size.</span>
+          </span>
+          <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+        </button>
+
+        <button class="card" data-go="ref-flow">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h7l3 5h6"/><path d="M16 9l3 3-3 3"/><circle cx="4.5" cy="7" r="1.5"/></svg></span>
+          <span class="body">
+            <span class="ttl">Rig Signal Flow <span class="kind">Ref</span></span>
+            <span class="desc">Your actual chain &mdash; GX4816 &rarr; Avantis &rarr; LM44 &rarr; D40/D80, plus monitors and R1. No Dante.</span>
           </span>
           <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
         </button>
@@ -1517,7 +1595,7 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
           <button class="cbtn" id="pt-copy">Copy text</button>
           <button class="cbtn" id="pt-csv">Copy CSV</button>
         </div>
-        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><span id="pt-status-t">Saved to this phone automatically, per band. Share &amp; PDF export land in a later phase.</span></div>
+        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><span id="pt-status-t">Saved to this phone automatically, per band. Open <b>Summary</b> to print, export CSV, or share the whole plan.</span></div>
       </div>
 
       <div id="pp-view-snake" style="display:none">
@@ -1756,6 +1834,405 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
             <div class="row">
               <button class="cbtn primary" data-docopy>Copy to clipboard</button>
               <button class="cbtn" data-closelog>Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ============ GUIDE — NO-AUDIO & HUM/BUZZ ============ -->
+    <section class="view" id="view-nosig">
+      <div class="console">
+        <div class="rulebar">
+          <div class="r1">THE RULE: don't poke everywhere &mdash; <b>halve the path</b>. Find where signal dies, then chase only the dead half.</div>
+          <div class="r2"><b>No sound</b> &rarr; bisect (1&ndash;2). <b>Sound but dirty</b> &rarr; hum/buzz (3). Tap <b>Stuck?</b> on any step for the full path.</div>
+        </div>
+
+        <div class="chead">
+          <h2>Field Rescue &mdash; No Audio &amp; Hum/Buzz</h2>
+          <p>Your chain: source &rarr; GX4816 &rarr; Avantis (SLink/gigaACE) &rarr; SQ5 &middot; Avantis &rarr; Lake LM44 &rarr; AES &rarr; D40/D80 &rarr; box. Halve the path to the dead spot, then clean the noise. Tap a step to tick it; tap a heading to fold a section.</p>
+        </div>
+
+        <!-- 1 FIRST 30 SECONDS -->
+        <div class="csec">
+          <button class="csec-h"><span class="n">1</span><h3>First 30 seconds <small>rule out the dumb stuff</small></h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Channel basics: <b>fader up</b>, <b>not muted</b>, gain/trim up, and <b>assigned</b> to the bus you're monitoring.</div></div></div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">A <b>solo / PFL latched</b> anywhere? It mutes everything else. Clear all solos.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dg"><span class="lab">Good</span><p>No solo/PFL lit on any channel or master; the mix returns.</p></div>
+                <div class="dl ds"><span class="lab">Stuck?</span><ol class="path"><li>Check <b>both</b> desks &mdash; a latched PFL on the SQ5 (monitors) can be just as silent-making as one on the Avantis.</li><li>Look for a lit AFL/PFL master or a soloed matrix.</li></ol></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Source actually alive? Instrument/playback making sound. Condenser or active DI &rarr; <b>+48V on</b>. Wireless / active DI &rarr; <b>battery</b>.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dg"><span class="lab">Good</span><p>Meter on that channel twitches when the source plays.</p></div>
+                <div class="dl ds"><span class="lab">Stuck?</span><ol class="path"><li>Dynamic mic on a dead channel? Phantom won't hurt it &mdash; but a <b>flat battery</b> in a wireless or active DI will kill it silently.</li><li>Passive source, condenser expected &rarr; no +48V = no signal.</li></ol></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Right patch? Source is in the input you <b>think</b> it is &mdash; check the sheet, not your memory.</div></div></div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Output side up: main master, plus the <b>matrix/output feeding that PA</b>, up and unmuted.</div></div></div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Amps live: powered, <b>out of standby/mute</b>, and the <b>speakON</b> actually seated &amp; latched at the box.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dg"><span class="lab">Good</span><p>D40/D80 shows input and isn't muted in R1 or on the front panel.</p></div>
+                <div class="dl ds"><span class="lab">Stuck?</span><ol class="path"><li>An NL4 that clicks in but isn't <b>turned to latch</b> can drop a box.</li><li>Amp in <b>standby</b> or a channel muted in R1 looks powered but passes nothing.</li></ol></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2 BISECT -->
+        <div class="csec">
+          <button class="csec-h"><span class="n">2</span><h3>Bisect the path <small>nothing yet? halve it</small></h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Go to the <b>midpoint</b> &mdash; the Avantis <b>main/matrix meter</b>, or the <b>LM44 input</b>. Signal there?</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dg"><span class="lab">Good &mdash; you get a clean split</span><p>Signal <b>present</b> at the midpoint &rarr; the dead half is <b>downstream</b> (do step 3). <b>Nothing</b> &rarr; the dead half is <b>upstream</b> (do step 2). One look just halved the problem.</p></div>
+                <div class="dl dw"><span class="lab">Why</span><p>Every check you make in the middle of the chain throws away half the suspects. Two or three halvings and you're standing on the fault &mdash; far faster than walking the whole path end to end.</p></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>Upstream half</b> (dead at the midpoint): meter at the <b>Avantis input / preamp</b>. Moving &rarr; it's console routing/mute/assign (back to &sect;1). Dead &rarr; source, cable, or the <b>GX4816 &rarr; SLink/gigaACE</b> link.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl ds"><span class="lab">Stuck? &mdash; chase it up</span><ol class="path"><li>Swap the <b>cable</b> first &mdash; cheapest failure, most common.</li><li>Try the source in a <b>known-good input</b>. Works there? The original channel/preamp is the fault.</li><li>Whole stagebox dark? Check the <b>GX4816 &rarr; Avantis SLink</b> link and clock &mdash; if the box lost sync you lose every channel on it at once.</li><li>Confirm <b>+48V</b> if it's a condenser or active DI.</li></ol></div>
+                <div class="dl dw"><span class="lab">Why</span><p>A whole-stagebox dropout is a link/clock problem, not a channel problem &mdash; don't waste time on one input when 48 died together.</p></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>Downstream half</b> (signal leaves the console, box silent): check the <b>LM44</b>. In but not out &rarr; LM44 mute/routing or wrong <b>drive line</b> selected. Out OK but box dead &rarr; <b>AES cable</b>, <b>wrong amp channel</b>, amp standby/mute, or <b>speakON</b> unseated.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl ds"><span class="lab">Stuck? &mdash; split the amp too</span><ol class="path"><li>LM44 is your <b>drive-line switch point</b> &mdash; make sure the right source (your Avantis, not a touring desk's lines) is selected and unmuted.</li><li>Swap the box to a <b>known amp channel</b>. Alive there &rarr; the amp channel or its patch is the fault.</li><li>AES carries two channels per XLR (D1/2, D3/4) &mdash; a half-seated AES cable can drop a pair.</li><li>Box still dead on a good channel &rarr; it's the <b>NL4 or the box</b>.</li></ol></div>
+              </div>
+            </div>
+
+            <button class="tolink" data-go="ref-flow">
+              <span class="lic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg></span>
+              <span class="t"><b>Your signal chain</b><small>Open the Rig Signal Flow card in Reference &mdash; stagebox &rarr; Avantis &rarr; LM44 &rarr; amps.</small></span>
+              <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+            </button>
+            <button class="tolink" data-go="ref-pins">
+              <span class="lic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v5M15 2v5"/><rect x="6" y="7" width="12" height="6" rx="1"/><path d="M8 13v3a4 4 0 0 0 8 0v-3"/><path d="M12 20v2"/></svg></span>
+              <span class="t"><b>Connector pinouts</b><small>speakON NL4 &amp; etherCON seating, XLR pin-by-pin.</small></span>
+              <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 3 HUM & BUZZ -->
+        <div class="csec">
+          <button class="csec-h"><span class="n">3</span><h3>Hum &amp; buzz <small>sound, but dirty</small></h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>Name it.</b> Low, smooth <b>hum</b> &asymp; <b>60&nbsp;Hz</b> (+120/180) &rarr; power / ground loop. Harsher, buzzy, harmonic-rich &rarr; <b>dimmers</b> (SCR lighting), digital hash, or RF.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dw"><span class="lab">Why</span><p>Buzz is just hum with <b>more and higher harmonics</b>. Light dimmers chop the AC waveform on and off mid-cycle, throwing high-frequency harmonics that both <b>radiate</b> through the air and ride the <b>mains wiring</b> into your audio &mdash; which is why buzz sounds sharper than a plain power hum.</p></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>Find the culprit.</b> Pull <b>all</b> inputs &mdash; noise gone? Reconnect <b>one at a time</b> until it comes back. That device (or its ground) is your source.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dg"><span class="lab">Good</span><p>Silence with everything unplugged, and the hum returns on exactly one reconnection &mdash; you've found it without guessing.</p></div>
+                <div class="dl ds"><span class="lab">Stuck? &mdash; still humming with nothing plugged in</span><ol class="path"><li>Then it's <b>internal / power</b>, not a source loop &mdash; suspect the amp/processor's own AC feed and grounding.</li><li>Same bisection, different layer: split the <b>power</b> &mdash; move audio to a different circuit and listen.</li></ol></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>Fix #1 &mdash; common power.</b> Get all audio gear on <b>one source / same circuit &amp; ground</b>. Don't daisy-chain strips; check the earths.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dw"><span class="lab">Why</span><p>A ground loop needs two paths to earth at different potentials. Put all the audio on one clean feed and the loop often just disappears &mdash; the cheapest fix there is, and the first to try.</p></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>Fix #2 &mdash; ground-lift the offending line, <u>one end only</u>.</b> Flip the <b>DI ground-lift</b>, or lift the cable shield at <b>one</b> end. Never both ends.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl ds"><span class="lab">Stuck?</span><ol class="path"><li>Lift at the <b>receiving</b> end by preference; leave the source shielded.</li><li>Lift <b>both</b> ends and the shield floats &mdash; you trade hum for RF pickup and lose the safety of the screen. One end, always.</li></ol></div>
+                <div class="dl dw"><span class="lab">Why</span><p>Lifting one end breaks the loop while the shield still drains interference from the other end. This is an <b>audio</b> ground &mdash; see the warning below about mains.</p></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>Fix #3 &mdash; isolation transformer.</b> Still there? Drop an <b>iso / transformer-DI</b> into that line &mdash; it breaks the audio ground path and keeps the signal.</div></div></div>
+
+            <div class="cwarn"><span class="lbl">Never do this</span>Never lift or &ldquo;cheat&rdquo; the <b>mains / AC safety ground</b> (the third pin, or a ground-lift adapter on the power) to kill hum &mdash; it makes the gear <b>dangerous and unsafe to touch</b>. Lift <b>audio</b> grounds only, one end. If a hum only dies when you defeat the safety earth, you have a real wiring fault &mdash; fix the power, don't float it.</div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>Pin-1 problem?</b> One box hums or grabs RF <b>no matter the source</b>, often <b>worse when you wiggle the connector shell</b> &rarr; shield current is leaking into that box's signal ground.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl ds"><span class="lab">Stuck? &mdash; you can't rewire it on site</span><ol class="path"><li>It's a <b>build fault inside the gear</b> (pin&nbsp;1 routed through signal ground instead of straight to chassis) &mdash; not something you fix at the gig.</li><li>Field moves: use a <b>different input or box</b>, drop an <b>iso-transformer</b> in front of it, keep it off long cable runs.</li><li><b>Flag it for the shop</b> so it gets corrected properly.</li></ol></div>
+                <div class="dl dw"><span class="lab">Why</span><p>The cable shield should land straight on the chassis. When a maker routes it through the internal audio ground, shield noise and RF ride into the signal &mdash; and no cable swap of yours will cure a fault that lives inside the box.</p></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>Buzz that tracks the lights?</b> Dimmer/SCR buzz. Get audio power <b>off the lighting phase</b>, keep audio mains clear of dimmer feeds &mdash; and expect some is <b>radiated</b>, so reposition cables and gear too, not just re-patch.</div></div></div>
+
+            <div class="cwarn"><span class="lbl">Phantom gotcha</span>48V is safe on modern dynamics and phantom-ready ribbons over <b>balanced XLR</b> &mdash; but a <b>vintage ribbon</b> (centre-tapped, grounded transformer) or an <b>unbalanced / jack</b> connection can be <b>damaged</b>. Phantom <b>OFF</b> before you patch an unknown ribbon.</div>
+
+            <button class="tolink" data-go="power">
+              <span class="lic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg></span>
+              <span class="t"><b>Power &amp; grounding</b><small>One clean circuit &mdash; distro, feeder &amp; voltage-drop maths.</small></span>
+              <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+            </button>
+          </div>
+        </div>
+
+        <p class="chint" style="margin-top:14px">Quick ones:</p>
+        <div class="tsrow"><div class="p">Dead on one channel only</div><div class="f">Mute / gain / routing on that channel; try a known-good input.</div></div>
+        <div class="tsrow"><div class="p">Dead everywhere</div><div class="f">Master, matrix, amp standby &mdash; or the LM44 drive line.</div></div>
+        <div class="tsrow"><div class="p">Cuts in and out</div><div class="f">Cable / connector; wiggle-test each joint end to end.</div></div>
+        <div class="tsrow"><div class="p">Hums only with one source in</div><div class="f">That device's ground &mdash; lift one end, or iso it.</div></div>
+        <div class="tsrow"><div class="p">Buzz tracks the light board</div><div class="f">Dimmer / SCR &mdash; separate audio power, reposition cables.</div></div>
+
+        <p class="csources">Field troubleshooting &mdash; no audio, hum &amp; buzz. Sources: Sennheiser / Neumann ground-loop guide; Rane &ldquo;Pin&nbsp;1 Revisited&rdquo; (Muncy, AES); Ethan Winer (dimmers, hum vs buzz); Sound&nbsp;on&nbsp;Sound (phantom power). Ticks live in this session only.</p>
+      </div>
+    </section>
+    <!-- ============ GUIDE — GAIN STRUCTURE ============ -->
+    <section class="view" id="view-gain">
+      <div class="console">
+        <div class="rulebar">
+          <div class="r1">THE RULE: <b>set the level once, pass it clean</b>. Gain at the top &mdash; never claw it back downstream.</div>
+          <div class="r2">One healthy level at the preamp &rarr; every stage at <b>unity</b> to the amp &rarr; let <b>R1 + the box</b> make SPL. Tap <b>Stuck?</b> for the why.</div>
+        </div>
+
+        <div class="chead">
+          <h2>Gain Structure &mdash; Preamp to Box</h2>
+          <p>Your chain: preamp &rarr; Avantis &rarr; matrix &rarr; Lake LM44 &rarr; AES &rarr; D40/D80 &rarr; box. Set it once, keep unity through, don't crank downstream to fix a weak start. The numbers below are for <b>your</b> gear. Tap a step to tick it; tap a heading to fold.</p>
+        </div>
+
+        <div class="callout mono">
+          <div class="cl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/></svg> <span>Your targets</span></div>
+          <p>On the Avantis, <b>0 on the meter = +4&nbsp;dBu = &minus;18&nbsp;dBFS</b>, peak LED at <b>&minus;3&nbsp;dBFS</b> &mdash; about <b>18&nbsp;dB of headroom</b> to clip. LM44 takes up to <b>+26&nbsp;dBu</b> in / <b>+21&nbsp;dBu</b> out. D40/D80 accept up to <b>+25&nbsp;dBu</b> (AES 0&nbsp;dBFS = +27.3&nbsp;dBu) at a fixed <b>31&nbsp;dB</b> gain. Set the level once at the top; hold it here at every stage.</p>
+        </div>
+
+        <!-- 1 PREAMP -->
+        <div class="csec">
+          <button class="csec-h"><span class="n">1</span><h3>Set the input <small>where all your level comes from</small></h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Pad hot sources at the <b>DI</b> first (bass, keys, active pickups) &mdash; don't starve the preamp to tame a hot source.</div></div></div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Avantis preamp: bring gain up so the <b>channel meter averages ~0&nbsp;dB</b> (= +4&nbsp;dBu = &minus;18&nbsp;dBFS), with <b>peaks below &minus;3&nbsp;dBFS</b> (the peak LED).</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dg"><span class="lab">Good</span><p>Meter breathing around 0, the peak LED only flickering on the loudest hits &mdash; never sitting lit.</p></div>
+                <div class="dl ds"><span class="lab">Stuck?</span><ol class="path"><li>Peak LED / clip lit &rarr; back the <b>gain</b> off, or pad at the source. A clipped input can't be fixed downstream.</li><li>Sitting way below 0 &rarr; too cold; you'll fight hiss all night. Bring the gain up now, at the source.</li></ol></div>
+                <div class="dl dw"><span class="lab">Why</span><p>0 on the A&amp;H meter = +4&nbsp;dBu out = &minus;18&nbsp;dBFS internal = <b>18&nbsp;dB of headroom</b>. Nail the level here and the whole chain inherits a clean, quiet signal &mdash; this one move prevents most noise and clip problems downstream.</p></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>+48V</b> only where it's needed &mdash; condensers and active DIs. Nothing gained by leaving it on everything.</div></div></div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Set gain on the <b>loudest</b> the source will hit (the belted chorus, the slap) &mdash; <b>not</b> the soundcheck whisper &mdash; so it doesn't clip at showtime.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl ds"><span class="lab">Stuck? &mdash; singer's way hotter at show than at check</span><ol class="path"><li>Set gain to the <b>loud</b> one and ride the fader <b>down</b> for the quiet bits.</li><li>Gain sets the ceiling; the fader rides the mix under it.</li></ol></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2 UNITY THROUGH THE DESK -->
+        <div class="csec">
+          <button class="csec-h"><span class="n">2</span><h3>Unity through the desk <small>don't re-gain mid-chain</small></h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Channel processing at <b>unity</b>. The <b>fader is for the mix, not for gain-staging</b> &mdash; don't fix a hot or cold input by riding the fader off unity.</div></div></div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Mix &rarr; matrix/output feeding the LM44: run the master &amp; matrix at <b>unity (0&nbsp;dB)</b> &mdash; a healthy +4&nbsp;dBu nominal, peaks in headroom. Don't shove it hot for &ldquo;more level.&rdquo;</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dw"><span class="lab">Why</span><p>Every stage at unity means <b>one</b> clean level travels the whole path. Gain added or cut mid-chain just trades noise for headroom, or headroom for clip &mdash; you never actually gain anything.</p></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Output meters: same target as the input &mdash; average ~0&nbsp;dB, peaks short of clip.</div></div></div>
+          </div>
+        </div>
+
+        <!-- 3 LM44 -->
+        <div class="csec">
+          <button class="csec-h"><span class="n">3</span><h3>Match the LM44 <small>your drive-line switch point</small></h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">LM44 input sensitivity: set <b>0&nbsp;dBFS = +26&nbsp;dBu</b> (or +12&nbsp;dBu) to match the feed. Max input is <b>+26&nbsp;dBu</b>, so +4&nbsp;dBu nominal with peaks sits comfortably.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dw"><span class="lab">Why</span><p>The LM44 maps 0&nbsp;dBFS to <b>+12 or +26&nbsp;dBu</b>. Pick the one that uses the converter's full range without clipping your hottest peaks &mdash; too sensitive and loud peaks square off; too insensitive and you throw away resolution.</p></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">LM44 gain block at <b>unity</b> unless you truly need trim. It's your <b>drive-line switch point</b> (your Avantis, or a touring desk's lines) &mdash; keep the reference identical across sources so a guest desk lands where yours does.</div></div></div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Out to the amps: healthy AES/analog, unity. LM44 max out = <b>+21&nbsp;dBu</b> &mdash; plenty for the d&amp;b inputs.</div></div></div>
+          </div>
+        </div>
+
+        <!-- 4 AMP LAST -->
+        <div class="csec">
+          <button class="csec-h"><span class="n">4</span><h3>Set the amp last <small>let R1 make the SPL</small></h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">The d&amp;b input has room to spare: up to <b>+25&nbsp;dBu</b> balanced, AES 0&nbsp;dBFS = <b>+27.3&nbsp;dBu</b>. Feed it your clean line level and stop worrying about &ldquo;enough drive.&rdquo;</div></div></div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">SPL lives in <b>R1 + the loudspeaker setup</b> &mdash; not a knob you crank to fix a quiet feed. The D40/D80 run a fixed <b>31&nbsp;dB</b> gain at 0&nbsp;dB input; set level &amp; limiters per your ArrayCalc/R1 design.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dw"><span class="lab">Why</span><p>The loudspeaker setup already knows the box's limits and protects it. Your job is to hand the amp a clean, healthy line and let the design do the level &mdash; the amp isn't a volume knob.</p></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Never claw back a weak console feed by maxing amp input gain &mdash; you just lift the <b>noise floor</b>. Fix it back at the preamp (&sect;1).</div></div></div>
+
+            <div class="cwarn"><span class="lbl">Amp is last</span>The amp is the <b>last</b> place to make up gain. A hot amp on a weak feed = hiss you can't undo downstream. A clean feed + R1 doing the SPL = loud, quiet, and headroom intact. If it's not loud enough with a clean feed, the answer is the <b>design</b> (more boxes / different setup), not more amp gain.</div>
+
+            <button class="tolink" data-go="spl">
+              <span class="lic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h3l2.5-6 3 13 2.5-8 1.5 4H21"/></svg></span>
+              <span class="t"><b>SPL &amp; Exposure</b><small>Don't chase headroom past the OSHA/NIOSH limit &mdash; check the dose.</small></span>
+              <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+            </button>
+            <button class="tolink" data-go="smaart">
+              <span class="lic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10M12 20V10M6 20v-6M18 20V4"/></svg></span>
+              <span class="t"><b>Levels set? Time-align next</b><small>Open the Smaart alignment console once gains are clean.</small></span>
+              <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+            </button>
+          </div>
+        </div>
+
+        <p class="chint" style="margin-top:14px">Quick ones:</p>
+        <div class="tsrow"><div class="p">Hiss in the quiet bits</div><div class="f">Gain clawed back downstream &mdash; reset from the preamp up.</div></div>
+        <div class="tsrow"><div class="p">Clips only at showtime</div><div class="f">Gain set on the check whisper, not the belter. Ride the fader instead.</div></div>
+        <div class="tsrow"><div class="p">One stage distorts, rest clean</div><div class="f">That stage's input is clipping &mdash; check its meter.</div></div>
+        <div class="tsrow"><div class="p">Loud but no headroom</div><div class="f">Something pushed hot mid-chain &mdash; return it to unity.</div></div>
+
+        <p class="csources">Gain structure &mdash; preamp to amp. Sources: Allen &amp; Heath (levels &amp; metering in A&amp;H digital consoles); Sound&nbsp;on&nbsp;Sound (digital reference levels &mdash; SMPTE RP155 / EBU R68); d&amp;b D40 datasheet (input specs); Lake LM44 datasheet. Numbers are for your Avantis / LM44 / D40&ndash;D80. Ticks live in this session only.</p>
+      </div>
+    </section>
+    <!-- ============ GUIDE — RF COORDINATION WORKFLOW ============ -->
+    <section class="view" id="view-rfflow">
+      <div class="console">
+        <div class="rulebar">
+          <div class="r1">THE RULE: <b>scan &rarr; coordinate &rarr; deploy &rarr; walk it</b>. Mics and IEMs in ONE plan, backups ready.</div>
+          <div class="r2">The <b>RF tool</b> runs the maths (intermod, no-go, ch&harr;freq). This is the on-site order of operations. Tap <b>Stuck?</b> for the gotchas.</div>
+        </div>
+
+        <div class="chead">
+          <h2>RF Coordination &mdash; Scan to Showtime</h2>
+          <p>Your kit: SLX-D &middot; ULX-D &middot; Axient (mics) + ew&nbsp;G4 &middot; PSM&nbsp;300 &middot; PSM&nbsp;1000 (IEMs), US UHF 470&ndash;608&nbsp;MHz. Coordinate mics and IEMs together, keep backups, re-scan before doors. The RF Coordinator tool runs the numbers; this is the workflow. Tap a step to tick it; tap a heading to fold.</p>
+        </div>
+
+        <!-- 1 PLAN -->
+        <div class="csec">
+          <button class="csec-h"><span class="n">1</span><h3>Plan <small>before you scan</small></h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Inventory every RF unit on site &mdash; brand, model, <b>band</b> &mdash; yours <b>and</b> anyone else's (comms, broadcast, the support act).</div></div></div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Your bands: SLX-D &middot; ULX-D &middot; Axient &middot; G4 &middot; PSM&nbsp;1000 all sit <b>470&ndash;608&nbsp;MHz</b>; PSM&nbsp;300 is <b>488&ndash;590</b>. Nothing of yours is legal above 608 &mdash; the RF tool's No-go view has the illegal edges.</div></div></div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Count channels with <b>mics + IEMs together</b> &mdash; every IEM pack is a transmitter sitting right next to your mic receivers.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dw"><span class="lab">Why</span><p>IEM transmitters are strong, always-on RF sources at close range. Coordinate them <b>in the same plan</b> as the mics or their intermod products will land on a receiver and drop it.</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2 SCAN -->
+        <div class="csec">
+          <button class="csec-h"><span class="n">2</span><h3>Scan the room <small>see what you must avoid</small></h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Your mic &amp; IEM transmitters <b>OFF</b>; everything else that runs during the show <b>ON</b> (comms, video, other acts' RF).</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dw"><span class="lab">Why</span><p>You're scanning for what you must design <b>around</b>. Your own transmitters off (you'll place them next); everyone else's on, so the scan is the real showtime RF picture &mdash; not a quiet load-in.</p></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Scan <b>the whole venue</b> &mdash; stage, FOH, and outside &mdash; through the <b>same antennas &amp; cabling</b> the rig will actually use.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl ds"><span class="lab">Stuck? &mdash; nothing clean anywhere</span><ol class="path"><li>A video wall or LED rig can flatten a whole band &mdash; move antennas away from it, or shift your channels to a clearer part of the spectrum.</li><li>Scan through the real distribution (splitter, cable runs) &mdash; a scan at the receiver isn't what the antenna at the stage actually sees.</li></ol></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Exclude active <b>TV channels</b> for this location, plus anything the scan shows above your noise floor. The RF tool's No-go view has the US illegal bands baked in.</div></div></div>
+          </div>
+        </div>
+
+        <!-- 3 COORDINATE -->
+        <div class="csec">
+          <button class="csec-h"><span class="n">3</span><h3>Coordinate <small>the tool runs the maths</small></h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Compute an <b>intermod-free</b> set: 3rd-order <b>2A&minus;B / 2B&minus;A</b>, kept <b>&ge;250&nbsp;kHz</b> off any carrier. The RF Coordinator's Intermod check does exactly this.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dw"><span class="lab">Why</span><p>Two transmitters breed a third-order product at 2A&minus;B and 2B&minus;A. Keep every assigned carrier and its products at least a guard band apart and they stop landing on each other. Open the tool &mdash; don't do this on paper.</p></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Best (strongest, cleanest) frequencies &rarr; your <b>most important</b> channels &mdash; lead vox, the can't-fail pack.</div></div></div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Grab a <b>backup</b> per channel &mdash; a spare intermod-free freq to jump to if one goes dirty mid-show.</div></div></div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Log each assignment in the <b>frequency plan</b> below as you go (&sect;5).</div></div></div>
+
+            <button class="tolink" data-go="rf">
+              <span class="lic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49M7.76 16.24a6 6 0 0 1 0-8.49M19.07 4.93a10 10 0 0 1 0 14.14M4.93 19.07a10 10 0 0 1 0-14.14"/></svg></span>
+              <span class="t"><b>RF Coordinator tool</b><small>Intermod (2A&minus;B/2B&minus;A), no-go bands, ch&harr;freq, your systems &mdash; the maths.</small></span>
+              <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 DEPLOY -->
+        <div class="csec">
+          <button class="csec-h"><span class="n">4</span><h3>Deploy &amp; walk it <small>before the act does</small></h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Set each receiver, then <b>sync</b> the transmitter (IR) to its frequency. Groups/channels match the plan &mdash; double-check before you button up.</div></div></div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Antennas: <b>line-of-sight</b> to the packs, sensible gain, not buried behind steel, drape, or bodies.</div></div></div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>Walk-test</b> the full coverage area with each pack live &mdash; find dropouts now. Squelch tight enough to mute RF hash, loose enough not to choke the edge of coverage.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl ds"><span class="lab">Stuck? &mdash; pack drops in one spot</span><ol class="path"><li>It's coverage / line-of-sight, not coordination &mdash; move or add an antenna toward that dead spot.</li><li>Diversity receiver still dropping? Antenna too far, or shadowed by staging/LED. Raise it, move it forward.</li></ol></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>Re-scan before doors</b> &mdash; video walls, LED, and other acts' gear come on during the day and change the picture.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dg"><span class="lab">Good</span><p>A quiet re-scan that matches your morning plan &mdash; nothing new landed on your frequencies.</p></div>
+                <div class="dl ds"><span class="lab">Stuck? &mdash; something new appeared</span><ol class="path"><li>Move only the <b>affected</b> channels to their <b>backups</b> &mdash; don't re-coordinate the whole show if you don't have to.</li><li>New wide interference &rarr; re-run the coordination for that band.</li></ol></div>
+              </div>
+            </div>
+
+            <div class="cwarn"><span class="lbl">Re-scan before doors</span>The RF room at load-in is not the RF room at showtime. Anything that powered up during the day &mdash; video walls, LED, a support act's kit &mdash; can land on a frequency that was clean this morning. One more scan before doors saves the show.</div>
+          </div>
+        </div>
+
+        <!-- 5 FREQUENCY PLAN -->
+        <div class="csec">
+          <button class="csec-h"><span class="n log">5</span><h3>Your frequency plan <small>log it, copy it, share it</small></h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <p class="chint">Log each channel as you assign it &mdash; mics and IEMs. Tap <b>Copy plan</b> at the end to text it to the other tech or keep it on your phone.</p>
+            <table class="clog">
+              <thead><tr><th>Ch / name</th><th class="colms">Freq MHz</th><th class="colms">Backup</th><th class="colnotes">Notes</th></tr></thead>
+              <tbody id="rfplanbody">
+                <tr><td><input class="rf-name" value="Lead vox"></td><td><input class="rf-freq ms" inputmode="decimal" placeholder="MHz"></td><td><input class="rf-bak ms" inputmode="decimal" placeholder="MHz"></td><td class="colnotes"><input placeholder="Axient / group"></td></tr>
+                <tr><td><input class="rf-name" value="Handheld 2"></td><td><input class="rf-freq ms" inputmode="decimal" placeholder="MHz"></td><td><input class="rf-bak ms" inputmode="decimal" placeholder="MHz"></td><td class="colnotes"><input placeholder="ULX-D"></td></tr>
+                <tr><td><input class="rf-name" value="IEM 1"></td><td><input class="rf-freq ms" inputmode="decimal" placeholder="MHz"></td><td><input class="rf-bak ms" inputmode="decimal" placeholder="MHz"></td><td class="colnotes"><input placeholder="PSM 1000"></td></tr>
+                <tr><td><input class="rf-name" value="IEM 2"></td><td><input class="rf-freq ms" inputmode="decimal" placeholder="MHz"></td><td><input class="rf-bak ms" inputmode="decimal" placeholder="MHz"></td><td class="colnotes"><input placeholder="PSM 300"></td></tr>
+              </tbody>
+            </table>
+            <div class="logbtns">
+              <button class="cbtn" data-addrow>+ Add channel</button>
+              <button class="cbtn" data-reset>Reset ticks</button>
+              <button class="cbtn primary" data-copyplan>Copy plan</button>
+            </div>
+          </div>
+        </div>
+
+        <p class="chint" style="margin-top:14px">Quick ones:</p>
+        <div class="tsrow"><div class="p">Pack drops in one spot</div><div class="f">Antenna line-of-sight / coverage &mdash; walk it, move the antenna.</div></div>
+        <div class="tsrow"><div class="p">Freq goes dirty mid-show</div><div class="f">Jump that channel to its backup.</div></div>
+        <div class="tsrow"><div class="p">New buzz at doors</div><div class="f">Something powered up &mdash; re-scan, move the affected channels.</div></div>
+        <div class="tsrow"><div class="p">No clean set fits</div><div class="f">Widen the exclusion carefully, or drop a channel. Check Intermod in the tool.</div></div>
+
+        <p class="csources">RF coordination &mdash; scan to showtime. Sources: Shure (All About Wireless: planning, coordination &amp; monitoring; Wireless Workbench). Band / intermod / no-go numbers reuse this kit's verified Phase&nbsp;3 data. Your systems: SLX-D &middot; ULX-D &middot; Axient &middot; ew&nbsp;G4 &middot; PSM&nbsp;300/1000. Plan lives in this session; Copy plan to keep it.</p>
+
+        <div class="logmodal" id="rfPlanModal">
+          <div class="lmcard">
+            <h3>Your frequency plan</h3>
+            <p>Copy this to your notes or text it to the other tech &mdash; it's your RF record for the day.</p>
+            <textarea id="rfPlanText" readonly></textarea>
+            <div class="row">
+              <button class="cbtn primary" data-rfcopy>Copy to clipboard</button>
+              <button class="cbtn" data-rfclose>Close</button>
             </div>
           </div>
         </div>
@@ -2062,8 +2539,51 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
       <div class="csources">Audinate / Dante: Dante Controller user guide, platform datasheets (Brooklyn II/3, Broadway, Ultimo, Dante HC) &amp; deployment docs.</div>
     </section>
 
+    <!-- ============ REFERENCE — RIG SIGNAL FLOW ============ -->
+    <section class="view" id="view-ref-flow">
+      <div class="toolhead">
+        <h2>Rig Signal Flow</h2>
+        <p>Your current show chain, end to end &mdash; stage to FOH, the monitor split, the drive line to the amps, and R1 control.</p>
+      </div>
+      <div class="refsec">
+        <h4>Stage &rarr; FOH</h4>
+        <div class="reftable">
+          <div class="tsrow"><div class="p">GX4816 stagebox</div><div class="f">48 mic in / 16 line out, 96&nbsp;kHz preamps.</div></div>
+          <div class="tsrow"><div class="p">&rarr; SLink (gigaACE)</div><div class="f">One Cat run into the Avantis SLink port; head-amp gain lives on the Avantis.</div></div>
+        </div>
+      </div>
+      <div class="refsec">
+        <h4>FOH &rarr; Monitors</h4>
+        <div class="reftable">
+          <div class="tsrow"><div class="p">Avantis gigaACE card</div><div class="f">&rarr; SQ5 SLink &mdash; digital split to the monitor desk.</div></div>
+          <div class="tsrow"><div class="p">Gain sharing</div><div class="f">Preamp control stays with the Avantis; the SQ5 rides the split.</div></div>
+        </div>
+      </div>
+      <div class="refsec">
+        <h4>Drive &rarr; Amps</h4>
+        <div class="reftable">
+          <div class="tsrow"><div class="p">Avantis &rarr; LM44</div><div class="f">4 drive lines (XLR or AES) into the Lake LM44.</div></div>
+          <div class="tsrow"><div class="p">Guest desk</div><div class="f">A touring FOH desk&rsquo;s drives (XLR/AES) also land on the LM44 &mdash; flip it to change who drives the PA.</div></div>
+          <div class="tsrow"><div class="p">LM44 &rarr; D40/D80</div><div class="f">AES out to the amp stack &rarr; V-Series / Y10P / SL-Sub.</div></div>
+        </div>
+      </div>
+      <div class="refsec">
+        <h4>Control &mdash; R1</h4>
+        <div class="reftable">
+          <div class="tsrow"><div class="p">FOH laptop &rarr; DN1</div><div class="f">d&amp;b DN1 Ethernet switch on the amp rack &rarr; D40/D80 (OCA/AES70) for R1.</div></div>
+        </div>
+      </div>
+      <div class="callout mono">
+        <div class="cl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg> <span>No Dante in this rig</span></div>
+        <p>Console links are <b>gigaACE over SLink</b>; the amps are fed <b>AES from the LM44</b> &mdash; the D40/D80 have no onboard Dante anyway. <b>Dante alt</b> when a show calls for it: Avantis Dante card &rarr; d&amp;b DS10 bridge &rarr; AES to the amps.</p>
+      </div>
+      <div class="pt-bar"><button class="linkbtn" data-go="net">Open Networking tool &rarr;</button></div>
+      <div class="csources">Verified on A&amp;H (Avantis, GX4816, SQ SLink), Lab.gruppen / Lake (LM44) and d&amp;b (D40/D80, DN1, DS10) product docs.</div>
+    </section>
+
   </main>
 </div>
+<div id="pp-printroot" aria-hidden="true"></div>
 
 <script>
 (function(){
@@ -2086,7 +2606,7 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
   });
 
   /* ---------- router ---------- */
-  var titles={home:"",delay:"Delay & Distance",db:"dB Helper",conv:"Converter",spl:"SPL & Exposure",net:"Networking",power:"Power",rf:"RF Coordinator",patch:"Patch",smaart:"Smaart v9 Alignment","ref-pins":"Connector Pinouts","ref-power":"Cam-lock & Power","ref-db":"d&b System Specs","ref-dante":"Dante Limits"};
+  var titles={home:"",delay:"Delay & Distance",db:"dB Helper",conv:"Converter",spl:"SPL & Exposure",net:"Networking",power:"Power",rf:"RF Coordinator",patch:"Patch",smaart:"Smaart v9 Alignment",nosig:"No Audio & Hum/Buzz",gain:"Gain Structure",rfflow:"RF Coordination","ref-pins":"Connector Pinouts","ref-power":"Cam-lock & Power","ref-db":"d&b System Specs","ref-dante":"Dante Limits","ref-flow":"Rig Signal Flow"};
   var stack=[];
   var backBtn=document.getElementById("backBtn");
   var brand=document.getElementById("brand");
@@ -2336,6 +2856,97 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
       try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(tx.value);}else{document.execCommand("copy");}}catch(err){try{document.execCommand("copy");}catch(e2){}}
       var o=cp.textContent;cp.textContent="Copied ✓";setTimeout(function(){cp.textContent=o;},1400);return;}
   });
+
+
+  /* ================= GUIDE: NO-AUDIO & HUM/BUZZ ================= */
+  (function(){
+    var v=document.getElementById("view-nosig"); if(!v)return;
+    v.addEventListener("click",function(e){
+      var t=e.target;
+      var stk=t.closest(".cstuck");
+      if(stk){var st=stk.closest(".cstep");stk.textContent=st.classList.toggle("open")?"Close":"Stuck?";return;}
+      if(t.closest(".csec-h")){t.closest(".csec").classList.toggle("collapsed");return;}
+      if(t.closest(".tolink")){return;}
+      if(t.closest(".cstep-top")){t.closest(".cstep").classList.toggle("done");return;}
+    });
+    v.addEventListener("keydown",function(e){
+      if((e.key==="Enter"||e.key===" ")&&e.target.classList&&e.target.classList.contains("cstep-top")){
+        e.preventDefault();e.target.closest(".cstep").classList.toggle("done");
+      }
+    });
+  })();
+
+
+  /* ================= GUIDE: GAIN STRUCTURE ================= */
+  (function(){
+    var v=document.getElementById("view-gain"); if(!v)return;
+    v.addEventListener("click",function(e){
+      var t=e.target;
+      var stk=t.closest(".cstuck");
+      if(stk){var st=stk.closest(".cstep");stk.textContent=st.classList.toggle("open")?"Close":"Stuck?";return;}
+      if(t.closest(".csec-h")){t.closest(".csec").classList.toggle("collapsed");return;}
+      if(t.closest(".tolink")){return;}
+      if(t.closest(".cstep-top")){t.closest(".cstep").classList.toggle("done");return;}
+    });
+    v.addEventListener("keydown",function(e){
+      if((e.key==="Enter"||e.key===" ")&&e.target.classList&&e.target.classList.contains("cstep-top")){
+        e.preventDefault();e.target.closest(".cstep").classList.toggle("done");
+      }
+    });
+  })();
+
+
+  /* ================= GUIDE: RF COORDINATION WORKFLOW ================= */
+  (function(){
+    var v=document.getElementById("view-rfflow"); if(!v)return;
+    var modal=document.getElementById("rfPlanModal");
+    function val(el){return el&&el.value?el.value:"";}
+    function buildPlan(){
+      var NL=String.fromCharCode(10);
+      var rows=v.querySelectorAll("#rfplanbody tr");
+      var L=["RF FREQUENCY PLAN","(mics + IEMs · US UHF 470-608 MHz)","----------------------------------------"];
+      for(var i=0;i<rows.length;i++){
+        var r=rows[i];
+        var nm=val(r.querySelector(".rf-name"))||"—";
+        var fq=val(r.querySelector(".rf-freq")); fq=fq?(fq+" MHz"):"(none)";
+        var bk=val(r.querySelector(".rf-bak")); bk=bk?("bak "+bk):"bak —";
+        var ntEl=r.querySelector("td.colnotes input"); var nt=ntEl?ntEl.value:"";
+        L.push(nm+":  "+fq+"  |  "+bk+(nt?("  |  "+nt):""));
+      }
+      L.push("----------------------------------------");
+      return L.join(NL)+NL;
+    }
+    function openPlan(){document.getElementById("rfPlanText").value=buildPlan();modal.classList.add("open");}
+    function closePlan(){modal.classList.remove("open");}
+    function addRow(){
+      var tr=document.createElement("tr");
+      tr.innerHTML='<td><input class="rf-name" placeholder="ch / name"></td><td><input class="rf-freq ms" inputmode="decimal" placeholder="MHz"></td><td><input class="rf-bak ms" inputmode="decimal" placeholder="MHz"></td><td class="colnotes"><input placeholder="notes"></td>';
+      document.getElementById("rfplanbody").appendChild(tr);
+    }
+    v.addEventListener("click",function(e){
+      var t=e.target;
+      var stk=t.closest(".cstuck");
+      if(stk){var st=stk.closest(".cstep");stk.textContent=st.classList.toggle("open")?"Close":"Stuck?";return;}
+      if(t.closest(".csec-h")){t.closest(".csec").classList.toggle("collapsed");return;}
+      if(t.closest(".tolink")){return;}
+      if(t.closest("[data-addrow]")){addRow();return;}
+      if(t.closest("[data-copyplan]")){openPlan();return;}
+      if(t.closest("[data-reset]")){var ds=v.querySelectorAll(".cstep.done");for(var i=0;i<ds.length;i++)ds[i].classList.remove("done");return;}
+      if(t.closest(".cstep-top")){t.closest(".cstep").classList.toggle("done");return;}
+    });
+    v.addEventListener("keydown",function(e){
+      if((e.key==="Enter"||e.key===" ")&&e.target.classList&&e.target.classList.contains("cstep-top")){
+        e.preventDefault();e.target.closest(".cstep").classList.toggle("done");
+      }
+    });
+    modal.addEventListener("click",function(e){
+      if(e.target===modal||e.target.closest("[data-rfclose]")){closePlan();return;}
+      var cp=e.target.closest("[data-rfcopy]");
+      if(cp){var tx=document.getElementById("rfPlanText");tx.focus();tx.select();try{tx.setSelectionRange(0,99999);}catch(e0){}
+        try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(tx.value);}else{document.execCommand("copy");}}catch(err){try{document.execCommand("copy");}catch(e2){}}
+        var o=cp.textContent;cp.textContent="Copied ✓";setTimeout(function(){cp.textContent=o;},1400);return;}
+    });
+  })();
 
   /* ================= CONVERTER ================= */
   (function(){
@@ -2925,6 +3536,7 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
       if(cur==="patch")renderList();
       else if(cur==="snake")renderSnake();
       else if(cur==="mon")renderMon();
+      else if(cur==="sum")renderSum();
     }
     Object.keys(subBtns).forEach(function(k){subBtns[k].addEventListener("click",function(){band().sub=k;renderSub();persistNow();});});
 
@@ -3358,6 +3970,136 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
       V.appendChild(infoNote("Give each box a name and a slot count, then patch a channel into each physical input. Duplicating a band carries its stage boxes and patch across."));
     }
 
+    /* ================= Phase 4.2: Summary + export ================= */
+    function mkEl(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;}
+    function catColorOf(r){if(r.col)return r.col;var c=catById(r.cat);return c?c.color:"";}
+    function catLabelOf(r){var c=catById(r.cat);return c?c.label:"";}
+    function chNameB(bd,i){var c=bd.ch[i];return c?(c.n||"(unnamed)"):"(?)";}
+
+    function buildSheet(bd,idx){
+      var ch=bd.ch||[];
+      var sheet=mkEl("div","pp-sheet");
+      sheet.appendChild(mkEl("div","pp-sh-brand","Field Audio Kit &middot; Patch"));
+      var head=mkEl("div","pp-sh-head");
+      head.appendChild(mkEl("h3",null,esc(bd.name||("Band "+(idx+1)))));
+      head.appendChild(mkEl("span","pt-count",ch.length+(ch.length===1?" channel":" channels")));
+      sheet.appendChild(head);
+
+      var sec1=mkEl("div","pp-sumsec");sec1.appendChild(mkEl("h4",null,"Input list"));
+      if(!ch.length){sec1.appendChild(mkEl("div","pp-map-empty","No channels yet."));}
+      else{
+        var wrap=mkEl("div","pp-tablewrap");
+        var t=mkEl("table","pp-table");
+        t.innerHTML='<thead><tr><th class="num">#</th><th class="pp-sw-cell"></th><th>Name</th><th>Category</th><th>Mic / DI</th><th>Flow</th><th class="mid">48V</th><th>Stand</th><th>Stage / Snake</th><th>Notes</th></tr></thead>';
+        var tb=mkEl("tbody");
+        for(var i=0;i<ch.length;i++){var r=ch[i];var col=catColorOf(r);
+          var tr=mkEl("tr");
+          tr.innerHTML='<td class="num">'+(i+1)+'</td>'+
+            '<td class="pp-sw-cell">'+(col?'<span class="pp-sw-dot" style="background:'+esc(col)+'"></span>':'')+'</td>'+
+            '<td>'+(esc(r.n)||"(unnamed)")+'</td>'+
+            '<td>'+esc(catLabelOf(r))+'</td>'+
+            '<td>'+esc(r.m)+'</td>'+
+            '<td>'+esc(r.fl)+'</td>'+
+            '<td class="mid">'+(r.p?"48V":"")+'</td>'+
+            '<td>'+esc(r.s)+'</td>'+
+            '<td>'+esc(r.x)+'</td>'+
+            '<td>'+esc(r.t)+'</td>';
+          tb.appendChild(tr);
+        }
+        t.appendChild(tb);wrap.appendChild(t);sec1.appendChild(wrap);
+      }
+      sheet.appendChild(sec1);
+
+      var sn=(bd.snakes||[]).filter(function(sk){return sk&&(sk.map||[]).some(function(x){return x>=0&&x<ch.length;});});
+      if(sn.length){
+        var sec2=mkEl("div","pp-sumsec");sec2.appendChild(mkEl("h4",null,"Stage boxes / sub-snakes"));
+        sn.forEach(function(sk){
+          var slots=(typeof sk.slots==="number"?sk.slots:(sk.map||[]).length);
+          var patched=0;(sk.map||[]).forEach(function(x){if(x>=0&&x<ch.length)patched++;});
+          var box=mkEl("div","pp-sumband");
+          box.appendChild(mkEl("div","pp-hint","<b>"+esc(sk.name||"Box")+"</b> &mdash; "+patched+" / "+slots+" patched"));
+          var ul=mkEl("ul","pp-map-list");
+          for(var q=0;q<slots;q++){var v=(sk.map||[])[q];var valid=(v>=0&&v<ch.length);
+            ul.appendChild(mkEl("li",null,'<span class="pp-cn">'+(q+1)+'</span> '+(valid?('&rarr; <span class="pp-cn">'+(v+1)+'</span> '+esc(chNameB(bd,v))):'<span class="pp-map-empty">&mdash;</span>')));
+          }
+          box.appendChild(ul);sec2.appendChild(box);
+        });
+        sheet.appendChild(sec2);
+      }
+
+      var mo=(bd.mons||[]).filter(function(m){return m&&(m.chans||[]).some(function(x){return x>=0&&x<ch.length;});});
+      if(mo.length){
+        var sec3=mkEl("div","pp-sumsec");sec3.appendChild(mkEl("h4",null,"Monitor mixes"));
+        var ul2=mkEl("ul","pp-map-list");
+        mo.forEach(function(mx){
+          var chans=(mx.chans||[]).filter(function(x){return x>=0&&x<ch.length;});
+          var names=chans.map(function(ci){return '<span class="pp-cn">'+(ci+1)+'</span> '+esc(chNameB(bd,ci));}).join(", ");
+          ul2.appendChild(mkEl("li",null,'<b>'+esc(mx.name||"Mix")+'</b> ('+chans.length+')'+(names?(' &mdash; '+names):'')));
+        });
+        sec3.appendChild(ul2);sheet.appendChild(sec3);
+      }
+
+      if(bd.notes){var sec4=mkEl("div","pp-sumsec");sec4.appendChild(mkEl("h4",null,"Notes"));sec4.appendChild(mkEl("div","pp-hint",esc(bd.notes)));sheet.appendChild(sec4);}
+      return sheet;
+    }
+
+    function renderSum(){
+      var V=subViews.sum;V.innerHTML="";
+      var bar=mkEl("div","pt-bar pp-noprint");
+      var bPrint=mkEl("button","cbtn primary");bPrint.type="button";bPrint.textContent="Print / PDF";
+      var bAll=mkEl("button","cbtn");bAll.type="button";bAll.textContent="Print all bands";
+      var bCsv=mkEl("button","cbtn");bCsv.type="button";bCsv.textContent="Download CSV";
+      var bShare=mkEl("button","cbtn");bShare.type="button";bShare.textContent="Share link";
+      bar.appendChild(bPrint);if(state.bands.length>1)bar.appendChild(bAll);bar.appendChild(bCsv);bar.appendChild(bShare);
+      V.appendChild(bar);
+      V.appendChild(buildSheet(band(),state.active));
+      V.appendChild(infoNote("Read-only. <b>Print / PDF</b> opens your phone&rsquo;s print sheet &mdash; choose Save to Files (PDF) or a printer. <b>Share link</b> hands your whole plan to another tech."));
+      bPrint.addEventListener("click",function(){printSheets([{bd:band(),i:state.active}]);});
+      bAll.addEventListener("click",function(){printSheets(state.bands.map(function(bd,i){return {bd:bd,i:i};}));});
+      bCsv.addEventListener("click",function(){downloadCSV(this);});
+      bShare.addEventListener("click",function(){doShare(this);});
+    }
+
+    function printRoot(){var r=document.getElementById("pp-printroot");if(!r){r=document.createElement("div");r.id="pp-printroot";document.body.appendChild(r);}return r;}
+    function printSheets(list){var root=printRoot();root.innerHTML="";list.forEach(function(o){root.appendChild(buildSheet(o.bd,o.i));});try{window.print();}catch(e){}}
+
+    function csvCell2(v){v=(v==null?"":String(v));if(/[",\n\r]/.test(v))v='"'+v.replace(/"/g,'""')+'"';return v;}
+    function bandCSV(bd){var ch=bd.ch||[];var out=["Ch,Name,Category,Color,Mic/DI,Flow,48V,Stand,Stage/Snake,Notes"];
+      for(var i=0;i<ch.length;i++){var r=ch[i];
+        out.push([(i+1),csvCell2(r.n),csvCell2(catLabelOf(r)),csvCell2(catColorOf(r)),csvCell2(r.m),csvCell2(r.fl),(r.p?"Y":"N"),csvCell2(r.s),csvCell2(r.x),csvCell2(r.t)].join(","));}
+      return out.join("\r\n");}
+    function downloadCSV(btn){
+      var nm=(band().name||"patch").replace(/[^\w\- ]+/g,"").replace(/\s+/g,"_")||"patch";
+      var csv=bandCSV(band());
+      try{var blob=new Blob([csv],{type:"text/csv;charset=utf-8"});var url=URL.createObjectURL(blob);
+        var a=document.createElement("a");a.href=url;a.download=nm+".csv";document.body.appendChild(a);a.click();
+        setTimeout(function(){try{document.body.removeChild(a);URL.revokeObjectURL(url);}catch(e){}},1500);
+        if(btn)flash(btn,"Saved ✓");
+      }catch(e){if(copyText(csv)){if(btn)flash(btn,"Copied ✓");}else{status("CSV export not available here.");}}
+    }
+
+    function encodePlan(){try{return encodeURIComponent(btoa(unescape(encodeURIComponent(serialize()))));}catch(e){return "";}}
+    function decodePlan(enc){try{return decodeURIComponent(escape(atob(decodeURIComponent(enc))));}catch(e){return "";}}
+    function shareURL(){return location.origin+location.pathname+"#patchshare="+encodePlan();}
+    function doShare(btn){var url=shareURL();
+      if(navigator.share){try{navigator.share({title:"Patch plan",url:url});return;}catch(e){}}
+      if(copyText(url)){flash(btn,"Link copied ✓");}else{status("Couldn’t copy — long-press the address bar to share instead.");}}
+
+    function showShareBanner(json){
+      var probe;try{probe=JSON.parse(json);}catch(e){return;}
+      if(!probe||!(probe.b instanceof Array)||!probe.b.length)return;
+      var host=document.getElementById("pp-bands");if(!host||!host.parentNode)return;
+      var nb=probe.b.length;
+      var ban=mkEl("div","pp-sharebanner");
+      ban.appendChild(mkEl("span","pp-sb-t","A shared patch is ready — <b>"+nb+" band"+(nb===1?"":"s")+"</b>. Loading it replaces your current plan."));
+      var yes=mkEl("button","cbtn primary");yes.type="button";yes.textContent="Load it";
+      var no=mkEl("button","linkbtn");no.type="button";no.textContent="Dismiss";
+      yes.addEventListener("click",function(){if(deserialize(json)){persistNow();renderBands();renderSub();status("Shared patch loaded.");}if(ban.parentNode)ban.parentNode.removeChild(ban);});
+      no.addEventListener("click",function(){if(ban.parentNode)ban.parentNode.removeChild(ban);});
+      ban.appendChild(yes);ban.appendChild(no);
+      host.parentNode.insertBefore(ban,host);
+    }
+
     /* ---------- wire patch controls ---------- */
     document.getElementById("pt-add").addEventListener("click",addRow);
     document.getElementById("pt-add2").addEventListener("click",addRow);
@@ -3377,11 +4119,14 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
         try{location.hash="#patch";}catch(e){}
         status("Heads up: old share links aren’t supported in the new planner — ask the tech to re-share.");
       }
+      var pendingShare="";
+      if(hash.indexOf("patchshare=")>=0){pendingShare=decodePlan(hash.split("patchshare=")[1]||"");try{location.hash="#patch";}catch(e){}}
       var saved=load(KEY);
       if(!(saved&&deserialize(saved))){
         state.bands=[newBand("Band 1")];state.active=0;
       }
       renderBands();renderSub();
+      if(pendingShare)showShareBanner(pendingShare);
     }
     init();
   })();
