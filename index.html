@@ -276,6 +276,16 @@ main{flex:1;padding-bottom:40px}
 .readout .sub .k{color:var(--lcd-unit);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:2px}
 .readout .sub b{color:#E7ECF2;font-weight:600}
 .readout.ok .big{color:var(--lcd-good);text-shadow:0 0 18px rgba(95,192,138,.25)}
+.readout.warn .big{color:var(--bad);text-shadow:none}
+.callout.warn{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 9%,transparent)}
+.callout.warn .cl{color:var(--bad)}
+.refsec{margin:20px 0}
+.refsec h4{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 7px}
+.reftable{border:1px solid var(--border);border-radius:12px;background:var(--surface);padding:2px 14px}
+.reftable .tsrow:last-child{border-bottom:none}
+.reftable .tsrow .p{font-family:"IBM Plex Mono",monospace}
+.inputrow input[type="text"]{flex:1;min-width:0;background:var(--surface);border:1px solid var(--border-strong);border-radius:11px;color:var(--text);font-family:"IBM Plex Mono",monospace;font-size:22px;font-weight:500;padding:12px 14px;transition:border-color .15s,box-shadow .15s}
+.inputrow input[type="text"]:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
 
 .note{display:flex;gap:9px;margin:14px 2px 0;color:var(--muted);font-size:12.5px;line-height:1.45}
 .note svg{width:15px;height:15px;flex:none;margin-top:1px;color:var(--faint)}
@@ -494,7 +504,7 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
       </div>
 
       <div class="tabs" role="tablist" aria-label="Sections">
-        <button class="tab" role="tab" id="tab-tools" aria-selected="true" aria-controls="panel-tools">Tools <span class="cnt">2</span></button>
+        <button class="tab" role="tab" id="tab-tools" aria-selected="true" aria-controls="panel-tools">Tools <span class="cnt">5</span></button>
         <button class="tab" role="tab" id="tab-guides" aria-selected="false" aria-controls="panel-guides">Guides <span class="cnt">1</span></button>
       </div>
 
@@ -513,6 +523,33 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
           <span class="body">
             <span class="ttl">dB Helper <span class="kind">Calc</span></span>
             <span class="desc">Add levels together (the +3 / +6 rules) and predict level over distance.</span>
+          </span>
+          <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+        </button>
+
+        <button class="card" data-go="conv">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4 4 7l3 3"/><path d="M4 7h11a4 4 0 0 1 4 4"/><path d="M17 20l3-3-3-3"/><path d="M20 17H9a4 4 0 0 1-4-4"/></svg></span>
+          <span class="body">
+            <span class="ttl">Converter <span class="kind">Calc</span></span>
+            <span class="desc">Length, temperature, audio level (dBu/dBV/V), weight, and frequency to wavelength &mdash; in one place.</span>
+          </span>
+          <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+        </button>
+
+        <button class="card" data-go="spl">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18a8 8 0 0 1 16 0"/><path d="M12 18l4-5"/><path d="M12 18h.01"/></svg></span>
+          <span class="body">
+            <span class="ttl">SPL &amp; Exposure <span class="kind">Calc</span></span>
+            <span class="desc">OSHA vs NIOSH safe-time and dose at a level, plus headroom to a venue or rider cap.</span>
+          </span>
+          <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+        </button>
+
+        <button class="card" data-go="net">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><path d="M12 8v3M6 16v-2h12v2M12 11v3"/></svg></span>
+          <span class="body">
+            <span class="ttl">Networking <span class="kind">Calc</span></span>
+            <span class="desc">Subnet / IP calculator for static addressing, plus a Dante quick-reference for latency, clocking and switches.</span>
           </span>
           <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
         </button>
@@ -677,6 +714,292 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
           <span><b>Point-source math.</b> A real line array falls off slower in its near field (closer to −3 dB per doubling), so treat this as the worst case for a single box, not a line array prediction.</span>
         </div>
+      </div>
+    </section>
+
+    <!-- ============ CONVERTER ============ -->
+    <section class="view" id="view-conv">
+      <div class="toolhead">
+        <h2>Converter</h2>
+        <p>The everyday unit jobs in one place &mdash; pick a category, type a number, read every equivalent.</p>
+      </div>
+
+      <div class="chiprow" role="group" aria-label="What to convert" style="margin:16px 0">
+        <button class="chip" data-cv="len" aria-pressed="true">Length</button>
+        <button class="chip" data-cv="temp">Temp</button>
+        <button class="chip" data-cv="lvl">Level</button>
+        <button class="chip" data-cv="wt">Weight</button>
+        <button class="chip" data-cv="freq">Freq &rarr; &lambda;</button>
+      </div>
+
+      <div data-cvpanel="len">
+        <div class="field">
+          <label for="cv-len">Length</label>
+          <div class="inputrow">
+            <input id="cv-len" type="number" inputmode="decimal" value="20" step="any">
+            <span class="unit" role="group" aria-label="Length unit">
+              <button data-lu="ft" aria-pressed="true">ft</button>
+              <button data-lu="in">in</button>
+              <button data-lu="m">m</button>
+              <button data-lu="cm">cm</button>
+            </span>
+          </div>
+        </div>
+        <div class="readout">
+          <div class="rlabel">Converts to</div>
+          <div class="big"><span id="cv-len-big">&mdash;</span></div>
+          <div class="subrow" id="cv-len-sub"></div>
+        </div>
+      </div>
+
+      <div data-cvpanel="temp" style="display:none">
+        <div class="field">
+          <label for="cv-temp">Temperature</label>
+          <div class="inputrow">
+            <input id="cv-temp" type="number" inputmode="decimal" value="68" step="any">
+            <span class="unit" role="group" aria-label="Temperature unit">
+              <button data-tu="F" aria-pressed="true">&deg;F</button>
+              <button data-tu="C">&deg;C</button>
+            </span>
+          </div>
+        </div>
+        <div class="readout">
+          <div class="rlabel">Converts to</div>
+          <div class="big"><span id="cv-temp-big">&mdash;</span></div>
+          <div class="subrow" id="cv-temp-sub"></div>
+        </div>
+        <div class="note">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
+          <span>Speed of sound rises with temperature (c = 331.3 + 0.606&middot;T&deg;C). Set the room temp before you trust a delay time.</span>
+        </div>
+      </div>
+
+      <div data-cvpanel="lvl" style="display:none">
+        <div class="field">
+          <label for="cv-lvl">Audio level</label>
+          <div class="inputrow">
+            <input id="cv-lvl" type="number" inputmode="decimal" value="4" step="any">
+            <span class="unit" role="group" aria-label="Level unit">
+              <button data-vu="dbu" aria-pressed="true">dBu</button>
+              <button data-vu="dbv">dBV</button>
+              <button data-vu="v">V</button>
+            </span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="cv-dbfs">Calibration &mdash; 0 dBFS equals</label>
+          <div class="inputrow">
+            <input id="cv-dbfs" type="number" inputmode="decimal" value="24" step="any">
+            <span class="unit"><button aria-pressed="true" tabindex="-1" style="cursor:default">dBu</button></span>
+          </div>
+        </div>
+        <div class="readout">
+          <div class="rlabel">Converts to</div>
+          <div class="big"><span id="cv-lvl-big">&mdash;</span></div>
+          <div class="subrow" id="cv-lvl-sub"></div>
+        </div>
+        <div class="note">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
+          <span>0 dBu = 0.775 V, 0 dBV = 1.0 V. dBFS depends on the converter &mdash; US pro gear is usually +24 dBu = 0 dBFS, EU broadcast +18. Set yours above.</span>
+        </div>
+      </div>
+
+      <div data-cvpanel="wt" style="display:none">
+        <div class="field">
+          <label for="cv-wt">Weight</label>
+          <div class="inputrow">
+            <input id="cv-wt" type="number" inputmode="decimal" value="100" step="any">
+            <span class="unit" role="group" aria-label="Weight unit">
+              <button data-wu="lb" aria-pressed="true">lb</button>
+              <button data-wu="kg">kg</button>
+              <button data-wu="oz">oz</button>
+              <button data-wu="g">g</button>
+            </span>
+          </div>
+        </div>
+        <div class="readout">
+          <div class="rlabel">Converts to</div>
+          <div class="big"><span id="cv-wt-big">&mdash;</span></div>
+          <div class="subrow" id="cv-wt-sub"></div>
+        </div>
+      </div>
+
+      <div data-cvpanel="freq" style="display:none">
+        <div class="field">
+          <label for="cv-freq">Frequency</label>
+          <div class="inputrow">
+            <input id="cv-freq" type="number" inputmode="decimal" value="1000" step="any">
+            <span class="unit" role="group" aria-label="Frequency unit">
+              <button data-fu="hz" aria-pressed="true">Hz</button>
+              <button data-fu="khz">kHz</button>
+            </span>
+          </div>
+        </div>
+        <div class="readout">
+          <div class="rlabel">Wavelength &amp; period</div>
+          <div class="big"><span id="cv-freq-big">&mdash;</span></div>
+          <div class="subrow" id="cv-freq-sub"></div>
+        </div>
+        <div class="note">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
+          <span>At 68&deg;F (343 m/s). Quarter-wavelength is the spacing that puts two arrivals a comb-filter notch apart &mdash; handy for source placement.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SPL & EXPOSURE ============ -->
+    <section class="view" id="view-spl">
+      <div class="toolhead">
+        <h2>SPL &amp; Exposure</h2>
+        <p>How long a level is safe, how much dose it burns, and how much headroom you have to a venue or rider cap.</p>
+      </div>
+
+      <div class="field">
+        <label for="sp-l">Sustained level (A-weighted, slow)</label>
+        <div class="inputrow">
+          <input id="sp-l" type="number" inputmode="decimal" value="100" step="any">
+          <span class="unit"><button aria-pressed="true" tabindex="-1" style="cursor:default">dBA</button></span>
+        </div>
+      </div>
+      <div class="field">
+        <label for="sp-dur">Time you'll spend at it</label>
+        <div class="inputrow">
+          <input id="sp-dur" type="number" inputmode="decimal" value="4" step="any">
+          <span class="unit"><button aria-pressed="true" tabindex="-1" style="cursor:default">hrs</button></span>
+        </div>
+      </div>
+      <div class="field">
+        <label for="sp-lim">Venue / rider limit (optional)</label>
+        <div class="inputrow">
+          <input id="sp-lim" type="number" inputmode="decimal" value="" placeholder="e.g. 100" step="any">
+          <span class="unit"><button aria-pressed="true" tabindex="-1" style="cursor:default">dBA</button></span>
+        </div>
+      </div>
+
+      <div class="readout" id="sp-osha">
+        <div class="rlabel">OSHA &middot; legal PEL &middot; 90 dBA / 8 h &middot; 5 dB</div>
+        <div class="big"><span id="sp-osha-t">&mdash;</span></div>
+        <div class="subrow">
+          <div class="sub"><span class="k">Your dose</span><b id="sp-osha-dose">&mdash;</b></div>
+          <div class="sub"><span class="k">Action level</span><b>85 dBA</b></div>
+          <div class="sub"><span class="k">Ceiling</span><b>115 dBA</b></div>
+        </div>
+      </div>
+
+      <div class="readout" id="sp-niosh">
+        <div class="rlabel">NIOSH &middot; recommended &middot; 85 dBA / 8 h &middot; 3 dB</div>
+        <div class="big"><span id="sp-niosh-t">&mdash;</span></div>
+        <div class="subrow">
+          <div class="sub"><span class="k">Your dose</span><b id="sp-niosh-dose">&mdash;</b></div>
+          <div class="sub"><span class="k">Peak cap</span><b>140 dB</b></div>
+        </div>
+      </div>
+
+      <div class="callout" id="sp-lim-box" style="display:none">
+        <div class="cl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 20h20L12 2z"/><path d="M12 9v5M12 17h.01"/></svg> <span id="sp-lim-label">HEADROOM TO LIMIT</span></div>
+        <p id="sp-lim-text">&mdash;</p>
+      </div>
+
+      <div class="note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
+        <span><b>OSHA is the law, NIOSH is the safer target.</b> Numbers assume one steady A-weighted level for the whole time &mdash; a real Leq over a show will differ. Use it to sanity-check, not to certify.</span>
+      </div>
+      <div class="csources">Limits: OSHA 29 CFR 1910.95 (90 dBA PEL, 5 dB exchange, 115 dBA ceiling) &middot; NIOSH REL (85 dBA, 3 dB exchange).</div>
+    </section>
+
+    <!-- ============ NETWORKING ============ -->
+    <section class="view" id="view-net">
+      <div class="toolhead">
+        <h2>Networking</h2>
+        <p>Set static IPs without guesswork, and the Dante facts you always end up looking up.</p>
+      </div>
+
+      <div class="seg" role="group" aria-label="Mode">
+        <button id="nt-mode-sub" aria-pressed="true">Subnet calc</button>
+        <button id="nt-mode-ref" aria-pressed="false">Dante reference</button>
+      </div>
+
+      <div id="nt-panel-sub">
+        <div class="field">
+          <label for="nt-ip">IP address</label>
+          <div class="inputrow">
+            <input id="nt-ip" type="text" inputmode="decimal" value="192.168.1.10" autocomplete="off" autocapitalize="off" spellcheck="false">
+          </div>
+        </div>
+        <div class="field">
+          <label for="nt-cidr">Prefix length (/CIDR)</label>
+          <div class="inputrow">
+            <input id="nt-cidr" type="number" inputmode="numeric" value="24" min="0" max="32" step="1">
+            <span class="unit"><button aria-pressed="true" tabindex="-1" style="cursor:default">/</button></span>
+          </div>
+          <div class="chiprow" style="margin-top:9px">
+            <button class="chip" data-cidr="24" aria-pressed="true">/24</button>
+            <button class="chip" data-cidr="23">/23</button>
+            <button class="chip" data-cidr="16">/16</button>
+            <button class="chip" data-cidr="8">/8</button>
+          </div>
+        </div>
+        <div class="readout">
+          <div class="rlabel">Usable hosts</div>
+          <div class="big"><span id="nt-hosts">&mdash;</span></div>
+          <div class="subrow" id="nt-sub"></div>
+        </div>
+        <div class="note">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
+          <span>Give the console and each Dante interface a static IP in the <b>same subnet</b>. A /24 (255.255.255.0) covers 254 devices &mdash; plenty for a rig.</span>
+        </div>
+      </div>
+
+      <div id="nt-panel-ref" style="display:none">
+        <div class="refsec">
+          <h4>Latency by network size</h4>
+          <div class="reftable">
+            <div class="tsrow"><div class="p">0.25 ms</div><div class="f">Up to 1 switch hop &mdash; a single rack.</div></div>
+            <div class="tsrow"><div class="p">0.5 ms</div><div class="f">Up to 3 hops &mdash; small system.</div></div>
+            <div class="tsrow"><div class="p">1 ms</div><div class="f">Up to 5 hops &mdash; medium.</div></div>
+            <div class="tsrow"><div class="p">2 ms</div><div class="f">Up to 10 hops &mdash; large.</div></div>
+            <div class="tsrow"><div class="p">5 ms</div><div class="f">Very large / worst case.</div></div>
+          </div>
+          <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><span>Latency is set per receiver and is deterministic. Bad switch config can push real latency past these &mdash; size it to your hop count.</span></div>
+        </div>
+
+        <div class="refsec">
+          <h4>Clock &amp; sample rate</h4>
+          <div class="reftable">
+            <div class="tsrow"><div class="p">One clock leader</div><div class="f">Auto-elected per network; you can pin a Preferred Leader.</div></div>
+            <div class="tsrow"><div class="p">One sample rate</div><div class="f">44.1 / 48 / 88.2 / 96 / 176.4 / 192 kHz &mdash; the whole network shares it.</div></div>
+            <div class="tsrow"><div class="p">Mismatch = silence</div><div class="f">Devices on different rates won't pass audio to each other.</div></div>
+          </div>
+        </div>
+
+        <div class="refsec">
+          <h4>Redundancy &mdash; Primary + Secondary</h4>
+          <div class="reftable">
+            <div class="tsrow"><div class="p">Two separate networks</div><div class="f">Physically separate switches; every device patched to both.</div></div>
+            <div class="tsrow"><div class="p">Live, not standby</div><div class="f">Secondary mirrors primary and carries live traffic; failover ~1 s.</div></div>
+            <div class="tsrow"><div class="p">Never bridge them</div><div class="f">Don't connect Primary and Secondary to the same switch.</div></div>
+          </div>
+        </div>
+
+        <div class="refsec">
+          <h4>QoS / DSCP on managed switches</h4>
+          <div class="reftable">
+            <div class="tsrow"><div class="p">Audio &rarr; 46 (EF)</div><div class="f">Top priority &mdash; strict-priority queuing.</div></div>
+            <div class="tsrow"><div class="p">PTP event &rarr; 56 (CS7)</div><div class="f">Time-critical clock packets.</div></div>
+            <div class="tsrow"><div class="p">PTP general &rarr; 46 (EF)</div><div class="f">Other clock traffic.</div></div>
+            <div class="tsrow"><div class="p">Control &rarr; 8 (CS1)</div><div class="f">Discovery / management.</div></div>
+            <div class="tsrow"><div class="p">Switch setup</div><div class="f">Enable DiffServ QoS + IGMP snooping (one querier per VLAN); keep Dante on its own VLAN.</div></div>
+          </div>
+        </div>
+
+        <div class="refsec">
+          <h4>Addressing</h4>
+          <div class="reftable">
+            <div class="tsrow"><div class="p">Default</div><div class="f">Dante devices use DHCP, falling back to link-local 169.254.x.x.</div></div>
+            <div class="tsrow"><div class="p">Going static</div><div class="f">Put every Dante interface + console in one subnet (e.g. 10.0.0.x /24); keep it off the internet.</div></div>
+          </div>
+        </div>
+        <div class="csources">Latency &amp; redundancy: Audinate / Dante support. QoS DSCP, IGMP &amp; switch setup: Dante deployment guides.</div>
       </div>
     </section>
 
@@ -932,7 +1255,7 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
   });
 
   /* ---------- router ---------- */
-  var titles={home:"",delay:"Delay & Distance",db:"dB Helper",smaart:"Smaart v9 Alignment"};
+  var titles={home:"",delay:"Delay & Distance",db:"dB Helper",conv:"Converter",spl:"SPL & Exposure",net:"Networking",smaart:"Smaart v9 Alignment"};
   var stack=[];
   var backBtn=document.getElementById("backBtn");
   var brand=document.getElementById("brand");
@@ -1175,6 +1498,129 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
       try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(tx.value);}else{document.execCommand("copy");}}catch(err){try{document.execCommand("copy");}catch(e2){}}
       var o=cp.textContent;cp.textContent="Copied ✓";setTimeout(function(){cp.textContent=o;},1400);return;}
   });
+
+  /* ================= CONVERTER ================= */
+  (function(){
+    var CV=document.getElementById("view-conv"); if(!CV)return;
+    var chips=CV.querySelectorAll(".chip[data-cv]");
+    function sub(el,arr){var h="";for(var i=0;i<arr.length;i++)h+='<div class="sub"><span class="k">'+arr[i][0]+'</span><b>'+arr[i][1]+'</b></div>';el.innerHTML=h;}
+    function pAttr(name){var bs=CV.querySelectorAll("[data-"+name+"]");for(var i=0;i<bs.length;i++)if(bs[i].getAttribute("aria-pressed")==="true")return bs[i].getAttribute("data-"+name);return bs.length?bs[0].getAttribute("data-"+name):null;}
+    function bindUnit(name,cb){var bs=CV.querySelectorAll("[data-"+name+"]");for(var i=0;i<bs.length;i++){(function(b){b.addEventListener("click",function(){for(var j=0;j<bs.length;j++)press(bs[j],bs[j]===b);cb();});})(bs[i]);}}
+
+    var lenF={ft:0.3048,"in":0.0254,m:1,cm:0.01};
+    function calcLen(){var v=parseFloat(document.getElementById("cv-len").value);var u=pAttr("lu");var big=document.getElementById("cv-len-big");
+      if(!isFinite(v)){big.textContent="—";sub(document.getElementById("cv-len-sub"),[]);return;}
+      var m=v*lenF[u];var metric=(u==="m"||u==="cm");
+      big.textContent=metric?(fmt(m/0.3048,2)+" ft"):(fmt(m,3)+" m");
+      sub(document.getElementById("cv-len-sub"),[["ft",fmt(m/0.3048,2)],["in",fmt(m/0.0254,1)],["m",fmt(m,3)],["cm",fmt(m/0.01,1)]]);}
+
+    function calcTemp(){var v=parseFloat(document.getElementById("cv-temp").value);var u=pAttr("tu");var big=document.getElementById("cv-temp-big");
+      if(!isFinite(v)){big.textContent="—";sub(document.getElementById("cv-temp-sub"),[]);return;}
+      var c=(u==="F")?(v-32)*5/9:v;var f=c*9/5+32;var k=c+273.15;var cms=331.3+0.606*c;var cft=cms*3.280839895;
+      big.textContent=(u==="F")?(fmt(c,1)+" °C"):(fmt(f,1)+" °F");
+      sub(document.getElementById("cv-temp-sub"),[["°F",fmt(f,1)],["°C",fmt(c,1)],["K",fmt(k,1)],["c m/s",fmt(cms,1)],["c ft/s",fmt(cft,0)]]);}
+
+    function calcLvl(){var v=parseFloat(document.getElementById("cv-lvl").value);var u=pAttr("vu");var cal=parseFloat(document.getElementById("cv-dbfs").value);if(!isFinite(cal))cal=24;var big=document.getElementById("cv-lvl-big");
+      var Vr;if(u==="v")Vr=v;else if(u==="dbu")Vr=0.774597*Math.pow(10,v/20);else Vr=Math.pow(10,v/20);
+      if(!isFinite(v)||!(Vr>0)){big.textContent="—";sub(document.getElementById("cv-lvl-sub"),[]);return;}
+      var dbu=20*Math.log(Vr/0.774597)/Math.LN10;var dbv=20*Math.log(Vr)/Math.LN10;var dbfs=dbu-cal;
+      big.textContent=fmt(Vr,3)+" V";
+      function sgn(x){return (x>=0?"+":"")+fmt(x,1);}
+      sub(document.getElementById("cv-lvl-sub"),[["dBu",sgn(dbu)],["dBV",sgn(dbv)],["Vrms",fmt(Vr,3)],["dBFS",sgn(dbfs)]]);}
+
+    var wtF={lb:0.45359237,kg:1,oz:0.028349523,g:0.001};
+    function calcWt(){var v=parseFloat(document.getElementById("cv-wt").value);var u=pAttr("wu");var big=document.getElementById("cv-wt-big");
+      if(!isFinite(v)){big.textContent="—";sub(document.getElementById("cv-wt-sub"),[]);return;}
+      var kg=v*wtF[u];var metric=(u==="kg"||u==="g");
+      big.textContent=metric?(fmt(kg/0.45359237,2)+" lb"):(fmt(kg,2)+" kg");
+      sub(document.getElementById("cv-wt-sub"),[["lb",fmt(kg/0.45359237,2)],["kg",fmt(kg,2)],["oz",fmt(kg/0.028349523,1)],["g",fmt(kg/0.001,0)]]);}
+
+    function calcFreq(){var v=parseFloat(document.getElementById("cv-freq").value);var u=pAttr("fu");var big=document.getElementById("cv-freq-big");
+      var hz=(u==="khz")?v*1000:v;
+      if(!isFinite(hz)||!(hz>0)){big.textContent="—";sub(document.getElementById("cv-freq-sub"),[]);return;}
+      var c=343.0;var lm=c/hz;var lft=lm*3.280839895;var qin=lft*12/4;var perMs=1000/hz;
+      big.textContent=fmt(lft,2)+" ft";
+      sub(document.getElementById("cv-freq-sub"),[["λ ft",fmt(lft,2)],["λ m",fmt(lm,3)],["¼λ in",fmt(qin,1)],["period ms",fmt(perMs,3)]]);}
+
+    var calc={len:calcLen,temp:calcTemp,lvl:calcLvl,wt:calcWt,freq:calcFreq};
+    bindUnit("lu",calcLen);bindUnit("tu",calcTemp);bindUnit("vu",calcLvl);bindUnit("wu",calcWt);bindUnit("fu",calcFreq);
+    document.getElementById("cv-len").addEventListener("input",calcLen);
+    document.getElementById("cv-temp").addEventListener("input",calcTemp);
+    document.getElementById("cv-lvl").addEventListener("input",calcLvl);
+    document.getElementById("cv-dbfs").addEventListener("input",calcLvl);
+    document.getElementById("cv-wt").addEventListener("input",calcWt);
+    document.getElementById("cv-freq").addEventListener("input",calcFreq);
+    function showCv(q){var ps=CV.querySelectorAll("[data-cvpanel]");for(var i=0;i<ps.length;i++)ps[i].style.display=(ps[i].getAttribute("data-cvpanel")===q)?"block":"none";for(var j=0;j<chips.length;j++)press(chips[j],chips[j].getAttribute("data-cv")===q);if(calc[q])calc[q]();}
+    for(var i=0;i<chips.length;i++){(function(ch){ch.addEventListener("click",function(){showCv(ch.getAttribute("data-cv"));});})(chips[i]);}
+    calcLen();calcTemp();calcLvl();calcWt();calcFreq();
+  })();
+
+  /* ================= SPL & EXPOSURE ================= */
+  (function(){
+    var V=document.getElementById("view-spl"); if(!V)return;
+    var L=document.getElementById("sp-l"),D=document.getElementById("sp-dur"),LIM=document.getElementById("sp-lim");
+    function fmtDur(h){if(!isFinite(h)||h<=0)return "—";if(h>=24)return ">24 h";
+      if(h>=1){var hh=Math.floor(h);var mm=Math.round((h-hh)*60);if(mm===60){hh++;mm=0;}return mm?(hh+"h "+mm+"m"):(hh+" h");}
+      var mins=h*60;if(mins>=1){var m=Math.floor(mins);var s=Math.round((mins-m)*60);if(s===60){m++;s=0;}return (m<10&&s)?(m+"m "+s+"s"):(Math.round(mins)+" min");}
+      return Math.max(1,Math.round(mins*60))+" s";}
+    function oshaT(l){return 8/Math.pow(2,(l-90)/5);}
+    function nioshT(l){return 8/Math.pow(2,(l-85)/3);}
+    function calc(){
+      var l=parseFloat(L.value),d=parseFloat(D.value),lim=parseFloat(LIM.value);
+      var ot=document.getElementById("sp-osha-t"),nt=document.getElementById("sp-niosh-t"),
+          od=document.getElementById("sp-osha-dose"),nd=document.getElementById("sp-niosh-dose"),
+          oR=document.getElementById("sp-osha"),nR=document.getElementById("sp-niosh"),
+          box=document.getElementById("sp-lim-box"),txt=document.getElementById("sp-lim-text"),lab=document.getElementById("sp-lim-label");
+      if(!isFinite(l)){ot.textContent="—";nt.textContent="—";od.textContent="—";nd.textContent="—";oR.className="readout";nR.className="readout";box.style.display="none";return;}
+      var oT=oshaT(l),nT=nioshT(l);
+      ot.textContent=(l<80)?">24 h":fmtDur(oT);
+      nt.textContent=(l<85)?"No limit":fmtDur(nT);
+      var oCls="readout",nCls="readout";
+      if(isFinite(d)&&d>0){
+        var odose=d/oT*100,ndose=d/nT*100;
+        od.textContent=Math.round(odose)+"%";
+        nd.textContent=(l<85)?"0%":Math.round(ndose)+"%";
+        oCls="readout "+((l<80||odose<=100)?"ok":"warn");
+        nCls="readout "+(((l<85)||ndose<=100)?"ok":"warn");
+      } else {od.textContent="—";nd.textContent=(l<85)?"0%":"—";}
+      if(l>115)oCls="readout warn";
+      if(l>=140)nCls="readout warn";
+      oR.className=oCls;nR.className=nCls;
+      if(isFinite(lim)){box.style.display="block";var hr=lim-l;
+        if(hr>=0){box.className="callout gold";lab.textContent="UNDER THE LIMIT";box.querySelector("p").innerHTML=fmt(hr,1)+" dB of headroom &mdash; "+fmt(l,0)+" dBA against a "+fmt(lim,0)+" dBA cap.";}
+        else{box.className="callout warn";lab.textContent="OVER THE LIMIT";box.querySelector("p").innerHTML="<b>"+fmt(-hr,1)+" dB over</b> the "+fmt(lim,0)+" dBA cap — pull it down.";}
+      } else box.style.display="none";
+    }
+    L.addEventListener("input",calc);D.addEventListener("input",calc);LIM.addEventListener("input",calc);
+    calc();
+  })();
+
+  /* ================= NETWORKING ================= */
+  (function(){
+    var V=document.getElementById("view-net"); if(!V)return;
+    var mSub=document.getElementById("nt-mode-sub"),mRef=document.getElementById("nt-mode-ref"),
+        pSub=document.getElementById("nt-panel-sub"),pRef=document.getElementById("nt-panel-ref");
+    mSub.addEventListener("click",function(){press(mSub,true);press(mRef,false);pSub.style.display="block";pRef.style.display="none";});
+    mRef.addEventListener("click",function(){press(mRef,true);press(mSub,false);pRef.style.display="block";pSub.style.display="none";});
+    var ipI=document.getElementById("nt-ip"),cidrI=document.getElementById("nt-cidr");
+    function parseIP(s){var m=/^\s*(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})\s*$/.exec(s||"");if(!m)return null;var o=[+m[1],+m[2],+m[3],+m[4]];for(var i=0;i<4;i++)if(o[i]>255)return null;return ((o[0]<<24)>>>0)+(o[1]<<16)+(o[2]<<8)+o[3];}
+    function dot(x){return [(x>>>24)&255,(x>>>16)&255,(x>>>8)&255,x&255].join(".");}
+    function calc(){var ip=parseIP(ipI.value),c=parseInt(cidrI.value,10);
+      var big=document.getElementById("nt-hosts"),s=document.getElementById("nt-sub");
+      if(ip===null||!(c>=0&&c<=32)){big.textContent="—";s.innerHTML='<div class="sub"><span class="k">Check</span><b>Enter a valid IPv4 + /0–32</b></div>';return;}
+      var mask=(c===0)?0:((0xFFFFFFFF<<(32-c))>>>0);
+      var net=(ip&mask)>>>0,bc=(net|((~mask)>>>0))>>>0,usable,first,last;
+      if(c>=31){usable=(c===32?1:2);first=net;last=bc;} else {usable=Math.pow(2,32-c)-2;first=(net+1)>>>0;last=(bc-1)>>>0;}
+      big.textContent=usable.toLocaleString();
+      s.innerHTML='<div class="sub"><span class="k">Mask</span><b>'+dot(mask)+'</b></div>'
+        +'<div class="sub"><span class="k">Network</span><b>'+dot(net)+'</b></div>'
+        +'<div class="sub"><span class="k">Broadcast</span><b>'+dot(bc)+'</b></div>'
+        +'<div class="sub"><span class="k">Usable range</span><b>'+dot(first)+' – '+dot(last)+'</b></div>';}
+    ipI.addEventListener("input",calc);cidrI.addEventListener("input",calc);
+    var cc=V.querySelectorAll("[data-cidr]");
+    for(var i=0;i<cc.length;i++){(function(b){b.addEventListener("click",function(){cidrI.value=b.getAttribute("data-cidr");for(var j=0;j<cc.length;j++)press(cc[j],cc[j]===b);calc();});})(cc[i]);}
+    calc();
+  })();
 
   /* ---------- deep link on load ---------- */
   var h=(location.hash||"").replace("#","");
