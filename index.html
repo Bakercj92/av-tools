@@ -580,6 +580,29 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
   #pp-printroot tr,#pp-printroot .pp-sumband,#pp-printroot .pp-sumsec{page-break-inside:avoid}
   #pp-printroot thead{display:table-header-group}
 }
+
+/* ===== Phase 4.3: patch grid ===== */
+.pp-cntbar{display:flex;align-items:center;gap:10px;margin:4px 0 12px}
+.pp-cntlbl{font-family:"Barlow Semi Condensed",sans-serif;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.pp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:8px}
+.pp-tile{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-height:66px;padding:8px 9px;background:var(--surface);border:1px solid var(--border-strong);border-top:3px solid var(--border-strong);border-radius:11px;cursor:pointer;text-align:left;overflow:hidden}
+.pp-tile.filled{border-top-color:var(--tcol,var(--accent))}
+.pp-tile.sel{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+.pp-tile:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.pp-tnum{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:15px;color:var(--muted);font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.pp-tile.filled .pp-tnum{color:var(--text)}
+.pp-tname{font-family:"Barlow",sans-serif;font-weight:600;font-size:12.5px;line-height:1.15;color:var(--text);word-break:break-word;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.pp-tile:not(.filled) .pp-tname{color:var(--faint)}
+.pp-t48{position:absolute;top:7px;right:8px;font-family:"IBM Plex Mono",monospace;font-size:9px;font-weight:700;color:var(--accent);letter-spacing:.02em}
+.pp-tile.lk-l::after,.pp-tile.lk-r::after{content:"";position:absolute;bottom:6px;width:10px;height:2px;background:var(--accent-line);border-radius:1px}
+.pp-tile.lk-l::after{right:-1px}
+.pp-tile.lk-r::after{left:-1px}
+.pp-editor{margin:14px 0 4px;padding:14px 13px;background:var(--surface);border:1px solid var(--border-strong);border-radius:14px}
+.pp-edhead{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.pp-edch{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:16px;color:var(--accent);letter-spacing:.03em}
+.pp-edclr{color:var(--bad)}
+.pp-edlbl{font-family:"Barlow Semi Condensed",sans-serif;font-weight:700;font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:12px 0 5px}
+.pp-presetwrap{display:flex;flex-wrap:wrap;gap:8px;margin:2px 0 4px}
 </style>
 </head>
 <body>
@@ -1576,26 +1599,36 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
       </div>
 
       <div id="pp-view-patch">
-        <div class="pt-bar">
-          <button class="cbtn primary" id="pt-add">+ Add channel</button>
-          <button class="linkbtn" id="pt-tmpl">Load template</button>
+        <div class="pp-cntbar">
+          <span class="pp-cntlbl">Channels</span>
+          <div class="unit pp-step">
+            <button type="button" id="pt-minus" aria-label="Fewer channels">−</button>
+            <span class="pp-stepv" id="pt-cnt">16</span>
+            <button type="button" id="pt-plus" aria-label="More channels">+</button>
+          </div>
           <span class="grow"></span>
           <span class="pt-count" id="pt-count"></span>
         </div>
 
-        <div id="pt-list"></div>
+        <div id="pp-grid" class="pp-grid"></div>
+        <div id="pp-editor" class="pp-editor" style="display:none"></div>
 
-        <div class="pt-bar">
-          <button class="linkbtn" id="pt-add2">+ Add channel</button>
+        <div class="pt-bar" style="margin-top:14px">
+          <button class="linkbtn" id="pt-preset">Load a preset</button>
           <span class="grow"></span>
-          <button class="linkbtn" id="pt-clear">Clear all</button>
+          <button class="linkbtn" id="pt-clear">Reset grid</button>
+        </div>
+        <div id="pt-presetwrap" class="pp-presetwrap" style="display:none">
+          <button class="cbtn" type="button" data-preset="band">Band (18)</button>
+          <button class="cbtn" type="button" data-preset="corp">Corporate / Speech (14)</button>
+          <button class="cbtn" type="button" data-preset="dj">DJ / Playback (8)</button>
         </div>
 
         <div class="pt-bar" style="margin-top:20px">
           <button class="cbtn" id="pt-copy">Copy text</button>
           <button class="cbtn" id="pt-csv">Copy CSV</button>
         </div>
-        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><span id="pt-status-t">Saved to this phone automatically, per band. Open <b>Summary</b> to print, export CSV, or share the whole plan.</span></div>
+        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><span id="pt-status-t">Tap a slot to fill it — pick a category, then the instrument. Saved per band automatically; open <b>Summary</b> to print or share.</span></div>
       </div>
 
       <div id="pp-view-snake" style="display:none">
@@ -3429,8 +3462,10 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
     var saveT=null, guard=false;
 
     /* ---------- model ---------- */
-    function newChannel(){return {n:"",cat:"",col:"",m:"",fl:"",p:false,s:"",x:"",t:"",open:false};}
-    function newBand(name){return {name:name||"Band 1",sub:"patch",ch:[],snakes:[],mons:seedMons(MON_DEFAULT),notes:""};}
+    function newChannel(){return {n:"",cat:"",col:"",m:"",fl:"",p:false,s:"",x:"",t:"",lk:false,open:false};}
+    function seedChannels(n){var a=[];for(var i=0;i<n;i++)a.push(newChannel());return a;}
+    function hasCh(r){return !!(r&&(r.n||r.cat||r.m||r.t||r.x));}
+    function newBand(name){return {name:name||"Band 1",sub:"patch",ch:seedChannels(16),snakes:[],mons:seedMons(MON_DEFAULT),notes:""};}
     var state={ver:2,active:0,bands:[]};
     function band(){return state.bands[state.active];}
 
@@ -3451,17 +3486,17 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
     function serialize(){
       return JSON.stringify({v:2,a:state.active,b:state.bands.map(function(bd){
         return {n:bd.name,s:bd.sub,
-          c:bd.ch.map(function(r){return [r.n,r.cat,r.col,r.m,r.fl,r.p?1:0,r.s,r.x,r.t];}),
+          c:bd.ch.map(function(r){return [r.n,r.cat,r.col,r.m,r.fl,r.p?1:0,r.s,r.x,r.t,r.lk?1:0];}),
           sn:(bd.snakes||[]).map(function(sk){return {name:sk.name||"",slots:(typeof sk.slots==="number"?sk.slots:((sk.map&&sk.map.length)||0)),map:(sk.map||[]).slice()};}),
           mo:(bd.mons||[]).map(function(mx){return {name:mx.name||"",chans:(mx.chans||[]).slice()};}),
           no:bd.notes||""};
       })});
     }
-    function chFromArr(a){return {n:a[0]||"",cat:a[1]||"",col:a[2]||"",m:a[3]||"",fl:a[4]||"",p:!!a[5],s:a[6]||"",x:a[7]||"",t:a[8]||"",open:false};}
+    function chFromArr(a){return {n:a[0]||"",cat:a[1]||"",col:a[2]||"",m:a[3]||"",fl:a[4]||"",p:!!a[5],s:a[6]||"",x:a[7]||"",t:a[8]||"",lk:!!a[9],open:false};}
     function deserialize(str){
       try{var o=JSON.parse(str);if(!o||!(o.b instanceof Array))return false;
         var bands=o.b.map(function(bd){return {name:bd.n||"Band",sub:bd.s||"patch",
-          ch:((bd.c)||[]).map(chFromArr),snakes:bd.sn||[],mons:bd.mo||[],notes:bd.no||""};});
+          ch:((bd.c&&bd.c.length)?bd.c.map(chFromArr):seedChannels(16)),snakes:bd.sn||[],mons:bd.mo||[],notes:bd.no||""};});
         if(!bands.length)return false;
         state.bands=bands;
         state.active=Math.max(0,Math.min(o.a||0,bands.length-1));
@@ -3506,7 +3541,7 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
       closeRename();
       var src=band();
       var nb={name:(src.name||"Band")+" copy",sub:src.sub||"patch",
-        ch:src.ch.map(function(r){return {n:r.n,cat:r.cat,col:r.col,m:r.m,fl:r.fl,p:r.p,s:r.s,x:r.x,t:r.t,open:false};}),
+        ch:src.ch.map(function(r){return {n:r.n,cat:r.cat,col:r.col,m:r.m,fl:r.fl,p:r.p,s:r.s,x:r.x,t:r.t,lk:r.lk,open:false};}),
         snakes:JSON.parse(JSON.stringify(src.snakes||[])),mons:JSON.parse(JSON.stringify(src.mons||[])),notes:src.notes||""};
       state.bands.splice(state.active+1,0,nb);state.active++;renderBands();renderSub();persistNow();
     }
@@ -3601,17 +3636,141 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
     }
     function rowsArr(){return band().ch;}
     function idxOf(card){return rowsArr().indexOf(card._row);}
-    function renderList(){
-      listEl.innerHTML="";
+    function renderList(){renderGrid();}
+
+    /* ================= Phase 4.3: plug-n-play grid ================= */
+    var GRID_START=16, MAXCH=96, selCh=-1, _selBand=-1;
+    function pad2(n){return (n<10?"0":"")+n;}
+    var gEl,edEl,cvEl,flEl;
+    function gridRefs(){gEl=document.getElementById("pp-grid");edEl=document.getElementById("pp-editor");cvEl=document.getElementById("pt-cnt");flEl=document.getElementById("pt-count");}
+    function isLinkR(i){var R=rowsArr();return i>0&&R[i-1]&&R[i-1].lk;}
+    function filledCount(){var R=rowsArr(),c=0;for(var i=0;i<R.length;i++)if(hasCh(R[i]))c++;return c;}
+    function paintCnt(){var R=rowsArr();if(cvEl)cvEl.textContent=R.length;if(flEl)flEl.textContent=R.length?(filledCount()+" / "+R.length+" filled"):"";}
+    function renderGrid(){
+      gridRefs();
+      if(_selBand!==state.active){selCh=-1;_selBand=state.active;}
       var R=rowsArr();
-      if(!R.length){
-        var e=document.createElement("div");e.className="pt-empty";
-        e.textContent="No channels yet. Add one, or load the standard template.";
-        listEl.appendChild(e);
-      }else{
-        for(var i=0;i<R.length;i++)listEl.appendChild(rowEl(i));
+      paintCnt();
+      gEl.innerHTML="";
+      if(!R.length){gEl.appendChild(mkEl("div","pt-empty","No channel slots — tap + to add one, or load a preset below."));}
+      else{for(var i=0;i<R.length;i++)gEl.appendChild(tileEl(i));}
+      renderEditor();
+    }
+    function tileEl(i){
+      var R=rowsArr(),r=R[i];
+      var t=mkEl("button","pp-tile"+(hasCh(r)?" filled":"")+(i===selCh?" sel":"")+(r.lk?" lk-l":"")+(isLinkR(i)?" lk-r":""));
+      t.type="button";
+      if(r.col)t.style.setProperty("--tcol",r.col);
+      t.innerHTML='<span class="pp-tnum">'+pad2(i+1)+'</span>'+(r.p?'<span class="pp-t48">48V</span>':'')+'<span class="pp-tname">'+(esc(r.n)||"&mdash;")+'</span>';
+      t.setAttribute("aria-label","Channel "+(i+1)+(r.n?": "+r.n:" (empty)"));
+      t.addEventListener("click",function(){selCh=(selCh===i?-1:i);renderGrid();if(selCh>=0){try{edEl.scrollIntoView({block:"nearest"});}catch(e){}}});
+      return t;
+    }
+    function paintTile(){var R=rowsArr();if(selCh<0||!gEl)return;var old=gEl.children[selCh];if(old&&old.parentNode){old.parentNode.replaceChild(tileEl(selCh),old);}paintCnt();}
+    function renderEditor(){
+      gridRefs();var R=rowsArr();
+      if(selCh<0||selCh>=R.length){edEl.style.display="none";edEl.innerHTML="";return;}
+      edEl.style.display="";edEl.innerHTML="";
+      var r=R[selCh];
+      var nameInp,micInp,noteInp,curSrc=null,swatches=[];
+      function paintSwatches(){for(var k=0;k<swatches.length;k++){var on=(r.col||"").toLowerCase()===swatches[k].hex.toLowerCase();swatches[k].el.classList.toggle("on",on);swatches[k].el.setAttribute("aria-pressed",on?"true":"false");}}
+      var hd=mkEl("div","pp-edhead");
+      hd.appendChild(mkEl("span","pp-edch","CH "+pad2(selCh+1)));
+      hd.appendChild(mkEl("span","grow"));
+      var linkBtn=mkEl("button","linkbtn");linkBtn.type="button";linkBtn.textContent=r.lk?"Unlink":"Link L/R";
+      linkBtn.addEventListener("click",function(){if(r.lk){r.lk=false;touch();renderGrid();persistNow();}else{linkPair(selCh);}});
+      var clrBtn=mkEl("button","linkbtn pp-edclr");clrBtn.type="button";clrBtn.textContent="Clear";
+      clrBtn.addEventListener("click",function(){clearSlot(selCh);});
+      hd.appendChild(linkBtn);hd.appendChild(clrBtn);edEl.appendChild(hd);
+
+      edEl.appendChild(mkEl("div","pp-edlbl","Instrument"));
+      var catF=chipRowField("",CATEGORIES,function(c){return c.label;},function(c){return r.cat===c.id;},function(c){
+        r.cat=c.id;r.col=c.color;touch();catF.repaint(function(cc){return r.cat===cc.id;});rebuildSrc();paintSwatches();paintTile();persistSoon();
+      });
+      edEl.appendChild(catF.f);
+      var srcWrap=mkEl("div");
+      function rebuildSrc(){srcWrap.innerHTML="";curSrc=null;var c=catById(r.cat);
+        if(c&&c.sources&&c.sources.length){
+          curSrc=chipRowField("",c.sources,function(sx){return sx;},function(sx){return r.n===sx;},function(sx){
+            r.n=sx;if(nameInp)nameInp.value=sx;touch();if(curSrc)curSrc.repaint(function(s2){return r.n===s2;});paintTile();persistSoon();
+          });
+          srcWrap.appendChild(curSrc.f);
+        }
       }
-      countEl.textContent=R.length?(R.length+" ch"):"";
+      edEl.appendChild(srcWrap);rebuildSrc();
+      var nameF=field("Name / label",r.n,"e.g. Lead Vox",function(v){r.n=v;touch();if(curSrc)curSrc.repaint(function(s2){return r.n===s2;});paintTile();persistSoon();});
+      nameInp=nameF.querySelector("input");edEl.appendChild(nameF);
+
+      var swF=mkEl("div","pt-f");swF.appendChild(mkEl("label",null,"Colour"));
+      var swRow=mkEl("div","pp-swrow");
+      PALETTE.forEach(function(p){var sw=mkEl("button","pp-sw");sw.type="button";sw.style.background=p.hex;sw.title=p.name;sw.setAttribute("aria-label","Colour "+p.name);
+        sw.addEventListener("click",function(){r.col=p.hex;touch();paintSwatches();paintTile();persistSoon();});
+        swatches.push({el:sw,hex:p.hex});swRow.appendChild(sw);});
+      paintSwatches();swF.appendChild(swRow);edEl.appendChild(swF);
+
+      edEl.appendChild(mkEl("div","pp-edlbl","Microphone / source"));
+      var micChips=chipRowField("",MIC_LIB,function(m){return m;},function(m){return r.m===m;},function(m){
+        r.m=(r.m===m?"":m);if(micInp)micInp.value=r.m;touch();micChips.repaint(function(m2){return r.m===m2;});persistSoon();
+      });
+      edEl.appendChild(micChips.f);
+      var micF=field("",r.m,"or type a mic / source…",function(v){r.m=v;touch();micChips.repaint(function(m2){return r.m===m2;});persistSoon();});
+      micInp=micF.querySelector("input");edEl.appendChild(micF);
+
+      edEl.appendChild(mkEl("div","pp-edlbl","Signal flow"));
+      var flowChips=chipRowField("",FLOW,function(x){return x;},function(x){return r.fl===x;},function(x){
+        r.fl=(r.fl===x?"":x);touch();flowChips.repaint(function(x2){return r.fl===x2;});persistSoon();
+      });
+      edEl.appendChild(flowChips.f);
+
+      var g2=mkEl("div","pt-grid");
+      g2.appendChild(field("Stand",r.s,"e.g. Tall boom",function(v){r.s=v;touch();persistSoon();}));
+      var pf=mkEl("div","pt-f");pf.appendChild(mkEl("label",null,"48V phantom"));
+      var pu=mkEl("div","unit");
+      var onB=mkEl("button");onB.type="button";onB.textContent="48V";
+      var offB=mkEl("button");offB.type="button";offB.textContent="Off";
+      function pPaint(){onB.setAttribute("aria-pressed",r.p?"true":"false");offB.setAttribute("aria-pressed",r.p?"false":"true");}
+      onB.addEventListener("click",function(){r.p=true;pPaint();touch();paintTile();persistNow();});
+      offB.addEventListener("click",function(){r.p=false;pPaint();touch();paintTile();persistNow();});
+      pPaint();pu.appendChild(onB);pu.appendChild(offB);pf.appendChild(pu);g2.appendChild(pf);
+      edEl.appendChild(g2);
+
+      edEl.appendChild(field("Stage spot / sub-snake",r.x,"e.g. DSR / Snake B 3",function(v){r.x=v;touch();persistSoon();}));
+
+      edEl.appendChild(mkEl("div","pp-edlbl","Notes"));
+      var noteChips=chipRowField("",NOTE_CHIPS,function(x){return x;},function(x){return (r.t||"").indexOf(x)>=0;},function(x){
+        if((r.t||"").indexOf(x)<0){r.t=(r.t?r.t+", ":"")+x;if(noteInp)noteInp.value=r.t;}
+        touch();noteChips.repaint(function(x2){return (r.t||"").indexOf(x2)>=0;});persistSoon();
+      });
+      edEl.appendChild(noteChips.f);
+      var noteF=field("",r.t,"Add your own note…",function(v){r.t=v;touch();noteChips.repaint(function(x2){return (r.t||"").indexOf(x2)>=0;});persistSoon();});
+      noteInp=noteF.querySelector("input");edEl.appendChild(noteF);
+    }
+    function linkPair(i){var R=rowsArr();
+      if(i<0||i+1>=R.length){status("Add another slot after this one to link a pair.");return;}
+      var a=R[i],b=R[i+1];
+      var base=(a.n||"").replace(/\s*[LR]\s*$/,"").replace(/\s+$/,"");
+      if(base){a.n=base+" L";b.n=base+" R";}
+      if(a.cat){b.cat=a.cat;b.col=a.col;}
+      if(a.m&&!b.m)b.m=a.m;if(a.fl&&!b.fl)b.fl=a.fl;
+      a.lk=true;touch();renderGrid();persistNow();
+    }
+    function clearSlot(i){var R=rowsArr();if(i<0||i>=R.length)return;var nc=newChannel();for(var k in nc){if(nc.hasOwnProperty(k))R[i][k]=nc[k];}if(i>0&&R[i-1])R[i-1].lk=(R[i-1].lk&&false)||R[i-1].lk&&hasCh(R[i]);touch();renderGrid();persistNow();}
+    function setCount(n){var R=rowsArr();n=Math.max(0,Math.min(MAXCH,n|0));
+      if(n<R.length){remapChannelRefs(function(x){return x>=n?-1:x;});R.length=n;if(selCh>=n)selCh=-1;if(n>0&&R[n-1])R[n-1].lk=false;}
+      else{while(R.length<n)R.push(newChannel());}
+      touch();renderGrid();persistNow();
+    }
+    function pcat(id){var c=catById(id);return c?c.color:"";}
+    function presetRow(a){return {n:a[0]||"",cat:a[1]||"",col:pcat(a[1]),m:a[2]||"",fl:a[3]||"",p:!!a[4],s:a[5]||"",x:"",t:a[6]||"",lk:false,open:false};}
+    var PRESETS={
+      band:[["Kick In","drums","Beta 91A","Mic",1,"",""],["Kick Out","drums","Beta 52A","Mic",0,"Short boom",""],["Snare Top","drums","SM57","Mic",0,"Short boom",""],["Snare Btm","drums","e604","Mic",0,"Clip",""],["Hi-Hat","drums","SM81","Mic",1,"Short boom",""],["Rack Tom","drums","e604","Mic",0,"Clip",""],["Floor Tom","drums","e604","Mic",0,"Clip",""],["OH L","drums","KM184","Mic",1,"Tall boom",""],["OH R","drums","KM184","Mic",1,"Tall boom",""],["Bass DI","bass","DI","DI",1,"",""],["Bass Mic","bass","MD421","Mic",0,"Short boom",""],["Gtr SL","guitar","SM57","Mic",0,"Short boom",""],["Gtr SR","guitar","MD421","Mic",0,"Short boom",""],["Keys L","keys","DI","DI",1,"",""],["Keys R","keys","DI","DI",1,"",""],["Lead Vox","vocals","Beta 58A","Mic",0,"Tall boom",""],["BV 1","vocals","SM58","Mic",0,"Tall boom",""],["BV 2","vocals","SM58","Mic",0,"Tall boom",""]],
+      corp:[["Podium","speech","Gooseneck","Mic",1,"",""],["Lectern","speech","Gooseneck","Mic",1,"",""],["Handheld 1","wireless","SM58","Mic",0,"",""],["Handheld 2","wireless","SM58","Mic",0,"",""],["Lav 1","wireless","Lav","Mic",0,"",""],["Lav 2","wireless","Lav","Mic",0,"",""],["Panel 1","speech","Gooseneck","Mic",1,"",""],["Panel 2","speech","Gooseneck","Mic",1,"",""],["Panel 3","speech","Gooseneck","Mic",1,"",""],["Panel 4","speech","Gooseneck","Mic",1,"",""],["Laptop L","di","DI","DI",0,"",""],["Laptop R","di","DI","DI",0,"",""],["Playback L","playback","DI","Line",0,"",""],["Playback R","playback","DI","Line",0,"",""]],
+      dj:[["DJ L","playback","DI","DI",0,"",""],["DJ R","playback","DI","DI",0,"",""],["DJ Mic","vocals","SM58","Mic",0,"",""],["Playback L","playback","DI","Line",0,"",""],["Playback R","playback","DI","Line",0,"",""],["Talkback","speech","SM58","Mic",0,"",""],["Amb L","amb","KM184","Mic",1,"",""],["Amb R","amb","KM184","Mic",1,"",""]]
+    };
+    function applyPreset(key){var spec=PRESETS[key];if(!spec)return;
+      band().ch=spec.map(presetRow);clearChannelRefs();selCh=-1;touch();
+      var R=band().ch;for(var i=0;i<R.length-1;i++){var a=R[i];if(/ L$/.test(a.n||"")&&R[i+1].n===(a.n||"").replace(/ L$/," R")){a.lk=true;}}
+      renderGrid();persistNow();
     }
     function rowEl(i){
       var R=rowsArr(), r=R[i];
@@ -3727,7 +3886,7 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
       paint();u.appendChild(on);u.appendChild(off);f.appendChild(u);return f;
     }
     function move(i,dir){var R=rowsArr();var j=i+dir;if(i<0||j<0||j>=R.length)return;var t=R[i];R[i]=R[j];R[j]=t;remapChannelRefs(function(x){return x===i?j:(x===j?i:x);});touch();renderList();persistNow();}
-    function dupRow(i){var R=rowsArr();if(i<0)return;var r=R[i];remapChannelRefs(function(x){return x>i?x+1:x;});R.splice(i+1,0,{n:r.n,cat:r.cat,col:r.col,m:r.m,fl:r.fl,p:r.p,s:r.s,x:r.x,t:r.t,open:false});touch();renderList();persistNow();}
+    function dupRow(i){var R=rowsArr();if(i<0)return;var r=R[i];remapChannelRefs(function(x){return x>i?x+1:x;});R.splice(i+1,0,{n:r.n,cat:r.cat,col:r.col,m:r.m,fl:r.fl,p:r.p,s:r.s,x:r.x,t:r.t,lk:r.lk,open:false});touch();renderList();persistNow();}
     function removeRow(i){var R=rowsArr();if(i<0)return;remapChannelRefs(function(x){return x===i?-1:(x>i?x-1:x);});R.splice(i,1);touch();renderList();persistNow();}
     function addRow(){var R=rowsArr();var nc=newChannel();nc.open=true;R.push(nc);touch();renderList();persistNow();
       var cards=listEl.querySelectorAll(".pt-row");if(cards.length){var last=cards[cards.length-1];try{last.scrollIntoView({block:"center"});}catch(e){}var inp=last.querySelector('input[type="text"]');if(inp)inp.focus();}}
@@ -3735,7 +3894,7 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
     /* ---------- export (active band) ---------- */
     function toText(){
       var R=rowsArr(); var L=["FIELD AUDIO KIT — PATCH LIST","Band: "+(band().name||""),""];
-      for(var i=0;i<R.length;i++){var r=R[i];
+      for(var i=0;i<R.length;i++){var r=R[i];if(!hasCh(r))continue;
         var parts=[(i+1)+". "+(r.n||"(unnamed)")];
         if(r.m)parts.push(r.m);
         if(r.s)parts.push(r.s);
@@ -3745,13 +3904,13 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
         if(r.t)line+="  ("+r.t+")";
         L.push(line);
       }
-      L.push("");L.push(R.length+" channel"+(R.length===1?"":"s"));
+      var _fc=R.filter(hasCh).length;L.push("");L.push(_fc+" channel"+(_fc===1?"":"s"));
       return L.join("\n");
     }
     function csvCell(v){v=(v==null?"":String(v));if(/[",\n\r]/.test(v))v='"'+v.replace(/"/g,'""')+'"';return v;}
     function toCSV(){
       var R=rowsArr(); var out=["Ch,Name,Mic/DI,Stand,48V,Stage/Snake,Notes"];
-      for(var i=0;i<R.length;i++){var r=R[i];
+      for(var i=0;i<R.length;i++){var r=R[i];if(!hasCh(r))continue;
         out.push([(i+1),csvCell(r.n),csvCell(r.m),csvCell(r.s),(r.p?"Y":"N"),csvCell(r.x),csvCell(r.t)].join(","));
       }
       return out.join("\r\n");
@@ -3977,22 +4136,22 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
     function chNameB(bd,i){var c=bd.ch[i];return c?(c.n||"(unnamed)"):"(?)";}
 
     function buildSheet(bd,idx){
-      var ch=bd.ch||[];
+      var ch=bd.ch||[];var fch=ch.filter(hasCh);
       var sheet=mkEl("div","pp-sheet");
       sheet.appendChild(mkEl("div","pp-sh-brand","Field Audio Kit &middot; Patch"));
       var head=mkEl("div","pp-sh-head");
       head.appendChild(mkEl("h3",null,esc(bd.name||("Band "+(idx+1)))));
-      head.appendChild(mkEl("span","pt-count",ch.length+(ch.length===1?" channel":" channels")));
+      head.appendChild(mkEl("span","pt-count",fch.length+(fch.length===1?" channel":" channels")));
       sheet.appendChild(head);
 
       var sec1=mkEl("div","pp-sumsec");sec1.appendChild(mkEl("h4",null,"Input list"));
-      if(!ch.length){sec1.appendChild(mkEl("div","pp-map-empty","No channels yet."));}
+      if(!fch.length){sec1.appendChild(mkEl("div","pp-map-empty","No channels yet."));}
       else{
         var wrap=mkEl("div","pp-tablewrap");
         var t=mkEl("table","pp-table");
         t.innerHTML='<thead><tr><th class="num">#</th><th class="pp-sw-cell"></th><th>Name</th><th>Category</th><th>Mic / DI</th><th>Flow</th><th class="mid">48V</th><th>Stand</th><th>Stage / Snake</th><th>Notes</th></tr></thead>';
         var tb=mkEl("tbody");
-        for(var i=0;i<ch.length;i++){var r=ch[i];var col=catColorOf(r);
+        for(var i=0;i<ch.length;i++){var r=ch[i];if(!hasCh(r))continue;var col=catColorOf(r);
           var tr=mkEl("tr");
           tr.innerHTML='<td class="num">'+(i+1)+'</td>'+
             '<td class="pp-sw-cell">'+(col?'<span class="pp-sw-dot" style="background:'+esc(col)+'"></span>':'')+'</td>'+
@@ -4065,7 +4224,7 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
 
     function csvCell2(v){v=(v==null?"":String(v));if(/[",\n\r]/.test(v))v='"'+v.replace(/"/g,'""')+'"';return v;}
     function bandCSV(bd){var ch=bd.ch||[];var out=["Ch,Name,Category,Color,Mic/DI,Flow,48V,Stand,Stage/Snake,Notes"];
-      for(var i=0;i<ch.length;i++){var r=ch[i];
+      for(var i=0;i<ch.length;i++){var r=ch[i];if(!hasCh(r))continue;
         out.push([(i+1),csvCell2(r.n),csvCell2(catLabelOf(r)),csvCell2(catColorOf(r)),csvCell2(r.m),csvCell2(r.fl),(r.p?"Y":"N"),csvCell2(r.s),csvCell2(r.x),csvCell2(r.t)].join(","));}
       return out.join("\r\n");}
     function downloadCSV(btn){
@@ -4101,16 +4260,16 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
     }
 
     /* ---------- wire patch controls ---------- */
-    document.getElementById("pt-add").addEventListener("click",addRow);
-    document.getElementById("pt-add2").addEventListener("click",addRow);
-    document.getElementById("pt-tmpl").addEventListener("click",function(){
-      var btn=this;
-      if(rowsArr().length){arm(btn,"Replace list?",function(){band().ch=TEMPLATE.map(tmplRow);clearChannelRefs();touch();renderList();persistNow();});}
-      else{band().ch=TEMPLATE.map(tmplRow);clearChannelRefs();touch();renderList();persistNow();}
-    });
-    document.getElementById("pt-clear").addEventListener("click",function(){arm(this,"Clear all?",function(){band().ch=[];clearChannelRefs();touch();renderList();persistNow();});});
-    document.getElementById("pt-copy").addEventListener("click",function(){if(!rowsArr().length){status("Nothing to copy yet — add a channel first.");return;}copyText(toText());flash(this,"Copied ✓");});
-    document.getElementById("pt-csv").addEventListener("click",function(){if(!rowsArr().length){status("Nothing to copy yet — add a channel first.");return;}copyText(toCSV());flash(this,"Copied ✓");});
+    document.getElementById("pt-minus").addEventListener("click",function(){var R=rowsArr();if(!R.length)return;var last=R[R.length-1];
+      if(hasCh(last)){arm(this,"Remove ch "+R.length+"?",function(){setCount(rowsArr().length-1);});}else{setCount(R.length-1);}});
+    document.getElementById("pt-plus").addEventListener("click",function(){setCount(rowsArr().length+1);});
+    document.getElementById("pt-preset").addEventListener("click",function(){var w=document.getElementById("pt-presetwrap");w.style.display=(!w.style.display||w.style.display==="none")?"":"none";});
+    Array.prototype.forEach.call(document.querySelectorAll("#pt-presetwrap [data-preset]"),function(b){b.addEventListener("click",function(){var key=b.getAttribute("data-preset");
+      if(rowsArr().some(hasCh)){arm(b,"Replace grid?",function(){applyPreset(key);document.getElementById("pt-presetwrap").style.display="none";});}
+      else{applyPreset(key);document.getElementById("pt-presetwrap").style.display="none";}});});
+    document.getElementById("pt-clear").addEventListener("click",function(){arm(this,"Reset to empty grid?",function(){band().ch=seedChannels(GRID_START);clearChannelRefs();selCh=-1;touch();renderGrid();persistNow();});});
+    document.getElementById("pt-copy").addEventListener("click",function(){if(!rowsArr().some(hasCh)){status("Nothing to copy yet — fill a channel first.");return;}copyText(toText());flash(this,"Copied ✓");});
+    document.getElementById("pt-csv").addEventListener("click",function(){if(!rowsArr().some(hasCh)){status("Nothing to copy yet — fill a channel first.");return;}copyText(toCSV());flash(this,"Copied ✓");});
 
     /* ---------- init ---------- */
     function init(){
