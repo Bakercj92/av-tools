@@ -504,7 +504,7 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
       </div>
 
       <div class="tabs" role="tablist" aria-label="Sections">
-        <button class="tab" role="tab" id="tab-tools" aria-selected="true" aria-controls="panel-tools">Tools <span class="cnt">5</span></button>
+        <button class="tab" role="tab" id="tab-tools" aria-selected="true" aria-controls="panel-tools">Tools <span class="cnt">6</span></button>
         <button class="tab" role="tab" id="tab-guides" aria-selected="false" aria-controls="panel-guides">Guides <span class="cnt">1</span></button>
       </div>
 
@@ -550,6 +550,15 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
           <span class="body">
             <span class="ttl">Networking <span class="kind">Calc</span></span>
             <span class="desc">Subnet / IP calculator for static addressing, plus a Dante quick-reference for latency, clocking and switches.</span>
+          </span>
+          <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+        </button>
+
+        <button class="card" data-go="power">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg></span>
+          <span class="body">
+            <span class="ttl">Power <span class="kind">Calc</span></span>
+            <span class="desc">Three-phase load balance, feeder voltage drop, amp-rack draw and generator sizing &mdash; US 120/208&nbsp;V Wye.</span>
           </span>
           <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
         </button>
@@ -1003,6 +1012,198 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
       </div>
     </section>
 
+    <!-- ============ POWER TOOL ============ -->
+    <section class="view" id="view-power">
+      <div class="toolhead">
+        <h2>Power</h2>
+        <p>Feeder, distro and amp-rack math for US 120/208&nbsp;V three-phase Wye. Balance the legs, check a run, size a rack or a genset.</p>
+      </div>
+
+      <div class="seg" role="group" aria-label="Mode">
+        <button id="pw-m-bal" aria-pressed="true">Balance</button>
+        <button id="pw-m-vd" aria-pressed="false">V-drop</button>
+        <button id="pw-m-rack" aria-pressed="false">Amp rack</button>
+        <button id="pw-m-gen" aria-pressed="false">Genset</button>
+      </div>
+
+      <!-- ---- BALANCE ---- -->
+      <div id="pw-panel-bal">
+        <div class="field">
+          <label>Load on each leg <span style="text-transform:none;letter-spacing:0;color:var(--faint)">(line-to-neutral, 120&nbsp;V)</span></label>
+          <div class="inputrow" style="margin-bottom:8px">
+            <span class="unit"><button tabindex="-1" style="cursor:default;min-width:46px">L1</button></span>
+            <input id="pw-l1" type="number" inputmode="decimal" value="40" step="any">
+          </div>
+          <div class="inputrow" style="margin-bottom:8px">
+            <span class="unit"><button tabindex="-1" style="cursor:default;min-width:46px">L2</button></span>
+            <input id="pw-l2" type="number" inputmode="decimal" value="34" step="any">
+          </div>
+          <div class="inputrow">
+            <span class="unit"><button tabindex="-1" style="cursor:default;min-width:46px">L3</button></span>
+            <input id="pw-l3" type="number" inputmode="decimal" value="22" step="any">
+          </div>
+          <div class="chiprow" style="margin-top:9px">
+            <button class="chip" data-bunit="A" aria-pressed="true">Amps / leg</button>
+            <button class="chip" data-bunit="kVA">kVA / leg</button>
+          </div>
+        </div>
+        <div class="readout" id="pw-bal-ro">
+          <div class="rlabel">Most-loaded leg</div>
+          <div class="big"><span id="pw-bal-big">&mdash;</span> <span class="u" id="pw-bal-leg"></span></div>
+          <div class="subrow">
+            <div class="sub"><span class="k">L1</span><b id="pw-bal-1">&mdash;</b></div>
+            <div class="sub"><span class="k">L2</span><b id="pw-bal-2">&mdash;</b></div>
+            <div class="sub"><span class="k">L3</span><b id="pw-bal-3">&mdash;</b></div>
+            <div class="sub"><span class="k">Total</span><b id="pw-bal-kva">&mdash;</b></div>
+            <div class="sub"><span class="k">Off balance</span><b id="pw-bal-imb">&mdash;</b></div>
+            <div class="sub"><span class="k">Neutral &asymp;</span><b id="pw-bal-n">&mdash;</b></div>
+          </div>
+        </div>
+        <div class="callout gold" id="pw-bal-tip" style="display:none">
+          <div class="cl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7 9 18l-5-5"/></svg> <span>Rebalance</span></div>
+          <p id="pw-bal-tip-t">&mdash;</p>
+        </div>
+        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><span>Balanced legs run cooler and leave the most headroom. Neutral is the estimate for the unbalanced part; with switch-mode / PFC amps, harmonics add to it &mdash; size the neutral full.</span></div>
+      </div>
+
+      <!-- ---- VOLTAGE DROP ---- -->
+      <div id="pw-panel-vd" style="display:none">
+        <div class="field">
+          <label>Circuit</label>
+          <div class="chiprow" id="pw-vph-chips">
+            <button class="chip" data-vph="3" aria-pressed="true">3-phase 208&nbsp;V</button>
+            <button class="chip" data-vph="1">1-phase 120&nbsp;V</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>Copper wire gauge (AWG)</label>
+          <div class="chiprow" id="pw-awg-chips">
+            <button class="chip" data-awg="12">12</button>
+            <button class="chip" data-awg="10">10</button>
+            <button class="chip" data-awg="8">8</button>
+            <button class="chip" data-awg="6">6</button>
+            <button class="chip" data-awg="4">4</button>
+            <button class="chip" data-awg="2" aria-pressed="true">2</button>
+            <button class="chip" data-awg="1">1</button>
+            <button class="chip" data-awg="1/0">1/0</button>
+            <button class="chip" data-awg="2/0">2/0</button>
+            <button class="chip" data-awg="4/0">4/0</button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="pw-vd-len">One-way run</label>
+          <div class="inputrow">
+            <input id="pw-vd-len" type="number" inputmode="decimal" value="150" step="any">
+            <span class="unit"><button id="pw-vd-ft" aria-pressed="true">ft</button><button id="pw-vd-m">m</button></span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="pw-vd-load">Load</label>
+          <div class="inputrow">
+            <input id="pw-vd-load" type="number" inputmode="decimal" value="60" step="any">
+            <span class="unit"><button id="pw-vd-a" aria-pressed="true">A</button><button id="pw-vd-kva">kVA</button></span>
+          </div>
+        </div>
+        <div class="readout" id="pw-vd-ro">
+          <div class="rlabel">Voltage drop</div>
+          <div class="big"><span id="pw-vd-big">&mdash;</span><span class="u">%</span></div>
+          <div class="subrow">
+            <div class="sub"><span class="k">Volts at far end</span><b id="pw-vd-far">&mdash;</b></div>
+            <div class="sub"><span class="k">Volts dropped</span><b id="pw-vd-drop">&mdash;</b></div>
+            <div class="sub"><span class="k">Line current</span><b id="pw-vd-amps">&mdash;</b></div>
+            <div class="sub"><span class="k">Wire rated</span><b id="pw-vd-amp">&mdash;</b></div>
+          </div>
+        </div>
+        <div class="callout warn" id="pw-vd-amp-warn" style="display:none">
+          <div class="cl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 20h20L12 2z"/><path d="M12 9v5M12 17h.01"/></svg> <span>Over ampacity</span></div>
+          <p id="pw-vd-amp-warn-t">&mdash;</p>
+        </div>
+        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><span>Aim for &le;3% on a feeder (&le;5% feeder + branch total). The rated-amps figure is NEC&nbsp;310.16 (75&deg;C, in-raceway); single-conductor cam feeder in free air is rated higher, so treat that flag as &ldquo;check&rdquo;, not a hard stop.</span></div>
+        <div class="csources">Resistance: NEC Ch.9 Table&nbsp;8 (stranded copper, 75&deg;C). Ampacity: NEC Table&nbsp;310.16 (75&deg;C Cu). 3-phase drop = &radic;3&middot;I&middot;R&middot;L (one-way).</div>
+      </div>
+
+      <!-- ---- AMP RACK ---- -->
+      <div id="pw-panel-rack" style="display:none">
+        <div class="field">
+          <label>Amplifier</label>
+          <div class="chiprow" id="pw-amp-chips">
+            <button class="chip" data-amp="D80" aria-pressed="true">d&amp;b D80</button>
+            <button class="chip" data-amp="D40">d&amp;b D40</button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="pw-rk-per">Amps per rack</label>
+          <div class="inputrow">
+            <input id="pw-rk-per" type="number" inputmode="numeric" value="3" min="1" step="1">
+            <span class="unit"><button tabindex="-1" style="cursor:default">amps</button></span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="pw-rk-n">Number of racks</label>
+          <div class="inputrow">
+            <input id="pw-rk-n" type="number" inputmode="numeric" value="1" min="1" step="1">
+            <span class="unit"><button tabindex="-1" style="cursor:default">racks</button></span>
+          </div>
+        </div>
+        <div class="readout" id="pw-rk-ro">
+          <div class="rlabel">Heaviest leg draw &middot; rated</div>
+          <div class="big"><span id="pw-rk-big">&mdash;</span><span class="u">A</span></div>
+          <div class="subrow">
+            <div class="sub"><span class="k">Per amp (rated)</span><b id="pw-rk-per-a">&mdash;</b></div>
+            <div class="sub"><span class="k">Amps total</span><b id="pw-rk-tot-n">&mdash;</b></div>
+            <div class="sub"><span class="k">Total draw</span><b id="pw-rk-kva">&mdash;</b></div>
+            <div class="sub"><span class="k">Per amp idle</span><b id="pw-rk-idle">&mdash;</b></div>
+          </div>
+        </div>
+        <div class="refsec">
+          <h4 id="pw-rk-title">d&amp;b D80 &mdash; verified @ 120&nbsp;V</h4>
+          <div class="reftable" id="pw-rk-spec"></div>
+        </div>
+        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><span>Sized on <b>rated mains current</b> &mdash; the worst-case draw the amp is built for, and what you size the feed / breaker to. Real program draw sits between idle and rated (bass-heavy sustained material pushes toward rated). Amps spread one-per-leg across L1/L2/L3.</span></div>
+        <div class="csources">D40 / D80 figures from d&amp;b audiotechnik spec sheets &amp; user manuals (100&ndash;127&nbsp;V range). Idle current derived from published idle watts at 120&nbsp;V (active PFC, PF&asymp;1).</div>
+      </div>
+
+      <!-- ---- GENSET ---- -->
+      <div id="pw-panel-gen" style="display:none">
+        <div class="field">
+          <label for="pw-gn-load">Total load</label>
+          <div class="inputrow">
+            <input id="pw-gn-load" type="number" inputmode="decimal" value="40" step="any">
+            <span class="unit"><button id="pw-gn-kva" aria-pressed="true">kVA</button><button id="pw-gn-kw">kW</button></span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="pw-gn-pf">Power factor</label>
+          <div class="inputrow">
+            <input id="pw-gn-pf" type="number" inputmode="decimal" value="1" min="0.1" max="1" step="0.05">
+            <span class="unit"><button tabindex="-1" style="cursor:default">PF</button></span>
+          </div>
+          <div class="chiprow" id="pw-pf-chips" style="margin-top:9px">
+            <button class="chip" data-pf="1" aria-pressed="true">1.0 &middot; PFC amps</button>
+            <button class="chip" data-pf="0.8">0.8 &middot; mixed</button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="pw-gn-hr">Headroom</label>
+          <div class="inputrow">
+            <input id="pw-gn-hr" type="number" inputmode="decimal" value="25" step="any">
+            <span class="unit"><button tabindex="-1" style="cursor:default">%</button></span>
+          </div>
+        </div>
+        <div class="readout" id="pw-gn-ro">
+          <div class="rlabel">Generator needed</div>
+          <div class="big"><span id="pw-gn-big">&mdash;</span><span class="u">kVA</span></div>
+          <div class="subrow">
+            <div class="sub"><span class="k">Also needs</span><b id="pw-gn-kwneed">&mdash;</b></div>
+            <div class="sub"><span class="k">Your load</span><b id="pw-gn-load-o">&mdash;</b></div>
+            <div class="sub"><span class="k">At 208&nbsp;V 3-ph</span><b id="pw-gn-amps">&mdash;</b></div>
+            <div class="sub"><span class="k">Loaded to</span><b id="pw-gn-pct">&mdash;</b></div>
+          </div>
+        </div>
+        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><span>Gensets are rated at <b>0.8&nbsp;PF</b> (kW = 0.8 &times; kVA), so watch both numbers &mdash; a job that's kVA-fine can still be kW-short. Planning estimate only: add derate for altitude &amp; heat (~3% / 1000&nbsp;ft, ~1% / 10&deg;F over spec) and check inrush / motor starting on top.</span></div>
+      </div>
+    </section>
+
     <!-- ============ SMAART GUIDE ============ -->
     <section class="view" id="view-smaart">
       <div class="console">
@@ -1255,7 +1456,7 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
   });
 
   /* ---------- router ---------- */
-  var titles={home:"",delay:"Delay & Distance",db:"dB Helper",conv:"Converter",spl:"SPL & Exposure",net:"Networking",smaart:"Smaart v9 Alignment"};
+  var titles={home:"",delay:"Delay & Distance",db:"dB Helper",conv:"Converter",spl:"SPL & Exposure",net:"Networking",power:"Power",smaart:"Smaart v9 Alignment"};
   var stack=[];
   var backBtn=document.getElementById("backBtn");
   var brand=document.getElementById("brand");
@@ -1620,6 +1821,163 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
     var cc=V.querySelectorAll("[data-cidr]");
     for(var i=0;i<cc.length;i++){(function(b){b.addEventListener("click",function(){cidrI.value=b.getAttribute("data-cidr");for(var j=0;j<cc.length;j++)press(cc[j],cc[j]===b);calc();});})(cc[i]);}
     calc();
+  })();
+
+  /* ================= POWER ================= */
+  (function(){
+    var V=document.getElementById("view-power"); if(!V)return;
+
+    /* mode toggle */
+    var modes=[["pw-m-bal","pw-panel-bal"],["pw-m-vd","pw-panel-vd"],["pw-m-rack","pw-panel-rack"],["pw-m-gen","pw-panel-gen"]];
+    var mBtns=[];
+    for(var mi=0;mi<modes.length;mi++)mBtns.push(document.getElementById(modes[mi][0]));
+    function setMode(idx){
+      for(var i=0;i<modes.length;i++){
+        press(mBtns[i],i===idx);
+        document.getElementById(modes[i][1]).style.display=(i===idx)?"block":"none";
+      }
+    }
+    for(var mj=0;mj<mBtns.length;mj++)(function(b,i){b.addEventListener("click",function(){setMode(i);});})(mBtns[mj],mj);
+
+    function num(el){var v=parseFloat(el.value);return isFinite(v)?v:0;}
+    var RT3=1.7320508075688772;
+    /* generic single-select chip group inside V */
+    function chipGroup(sel,attr,onPick){
+      var chips=V.querySelectorAll(sel);
+      for(var i=0;i<chips.length;i++){(function(c){
+        c.addEventListener("click",function(){
+          for(var j=0;j<chips.length;j++)press(chips[j],chips[j]===c);
+          onPick(c.getAttribute(attr));
+        });
+      })(chips[i]);}
+    }
+
+    /* ---- 1. LOAD BALANCE ---- */
+    (function(){
+      var l1=document.getElementById("pw-l1"),l2=document.getElementById("pw-l2"),l3=document.getElementById("pw-l3");
+      var ro=document.getElementById("pw-bal-ro"),tip=document.getElementById("pw-bal-tip"),tipT=document.getElementById("pw-bal-tip-t");
+      var bunit="A";
+      function toA(x){return bunit==="A"?x:(x*1000/120);}
+      function calc(){
+        var a=[toA(num(l1)),toA(num(l2)),toA(num(l3))],legs=["L1","L2","L3"];
+        var max=Math.max(a[0],a[1],a[2]),sum=a[0]+a[1]+a[2],avg=sum/3,mIdx=a.indexOf(max);
+        var kva=sum*120/1000, imb=avg>0?((max-avg)/avg*100):0;
+        var neu=Math.sqrt(Math.max(0,a[0]*a[0]+a[1]*a[1]+a[2]*a[2]-a[0]*a[1]-a[1]*a[2]-a[2]*a[0]));
+        document.getElementById("pw-bal-big").textContent=fmt(max,0);
+        document.getElementById("pw-bal-leg").textContent="A · "+legs[mIdx];
+        document.getElementById("pw-bal-1").textContent=fmt(a[0],0)+" A";
+        document.getElementById("pw-bal-2").textContent=fmt(a[1],0)+" A";
+        document.getElementById("pw-bal-3").textContent=fmt(a[2],0)+" A";
+        document.getElementById("pw-bal-kva").textContent=fmt(kva,1)+" kVA";
+        document.getElementById("pw-bal-imb").textContent=fmt(imb,0)+"%";
+        document.getElementById("pw-bal-n").textContent=fmt(neu,0)+" A";
+        ro.classList.toggle("ok",sum>0&&imb<5);
+        ro.classList.toggle("warn",imb>=20);
+        if(sum>0&&imb>=5){
+          tip.style.display="block";
+          tipT.textContent="Leg "+legs[mIdx]+" is "+fmt(imb,0)+"% over the average. Shift about "+fmt(max-avg,0)+" A off "+legs[mIdx]+" onto the lightest leg to even it up.";
+        } else { tip.style.display="none"; }
+      }
+      l1.addEventListener("input",calc);l2.addEventListener("input",calc);l3.addEventListener("input",calc);
+      chipGroup("#pw-panel-bal .chip","data-bunit",function(u){bunit=u;calc();});
+      calc();
+    })();
+
+    /* ---- 2. VOLTAGE DROP ---- */
+    (function(){
+      var AWG={"12":{r:1.98,a:25},"10":{r:1.24,a:35},"8":{r:0.778,a:50},"6":{r:0.491,a:65},"4":{r:0.308,a:85},"2":{r:0.194,a:115},"1":{r:0.154,a:130},"1/0":{r:0.122,a:150},"2/0":{r:0.0967,a:175},"4/0":{r:0.0608,a:230}};
+      var awg="2",vph="3",lenUnit="ft",loadUnit="A";
+      var lenI=document.getElementById("pw-vd-len"),loadI=document.getElementById("pw-vd-load");
+      var ro=document.getElementById("pw-vd-ro"),warn=document.getElementById("pw-vd-amp-warn"),warnT=document.getElementById("pw-vd-amp-warn-t");
+      function calc(){
+        var d=AWG[awg]; if(!d)return;
+        var Lft=num(lenI)*(lenUnit==="ft"?1:3.280839895);
+        var Vll=(vph==="3")?208:120, I;
+        if(loadUnit==="A"){I=num(loadI);}
+        else {I=(vph==="3")?(num(loadI)*1000/(RT3*Vll)):(num(loadI)*1000/Vll);}
+        var Rone=d.r*Lft/1000;
+        var vd=(vph==="3")?(RT3*I*Rone):(2*I*Rone);
+        var pct=Vll>0?(vd/Vll*100):0, far=Vll-vd;
+        document.getElementById("pw-vd-big").textContent=fmt(pct,2);
+        document.getElementById("pw-vd-far").textContent=fmt(far,1)+" V";
+        document.getElementById("pw-vd-drop").textContent=fmt(vd,1)+" V";
+        document.getElementById("pw-vd-amps").textContent=fmt(I,0)+" A";
+        document.getElementById("pw-vd-amp").textContent=d.a+" A";
+        ro.classList.toggle("ok",I>0&&pct<=3);
+        ro.classList.toggle("warn",pct>5);
+        if(I>d.a){
+          warn.style.display="block";
+          warnT.textContent="Load "+fmt(I,0)+" A is over the "+d.a+" A rating for "+awg+" AWG (NEC 310.16, 75°C in-raceway). Free-air cam feeder is rated higher — confirm against your cable's spec before relying on it.";
+        } else { warn.style.display="none"; }
+      }
+      lenI.addEventListener("input",calc);loadI.addEventListener("input",calc);
+      chipGroup("#pw-awg-chips .chip","data-awg",function(v){awg=v;calc();});
+      chipGroup("#pw-vph-chips .chip","data-vph",function(v){vph=v;calc();});
+      var ft=document.getElementById("pw-vd-ft"),m=document.getElementById("pw-vd-m");
+      ft.addEventListener("click",function(){lenUnit="ft";press(ft,true);press(m,false);calc();});
+      m.addEventListener("click",function(){lenUnit="m";press(m,true);press(ft,false);calc();});
+      var la=document.getElementById("pw-vd-a"),lk=document.getElementById("pw-vd-kva");
+      la.addEventListener("click",function(){loadUnit="A";press(la,true);press(lk,false);calc();});
+      lk.addEventListener("click",function(){loadUnit="kVA";press(lk,true);press(la,false);calc();});
+      calc();
+    })();
+
+    /* ---- 3. AMP RACK ---- */
+    (function(){
+      var SPEC={
+        D80:{rated:30,ratedTxt:"30 A (100–127 V)",idleW:180,sbW:9,maxW:7000,name:"d&b D80"},
+        D40:{rated:20,ratedTxt:"20 A (120 V) · 13 A (208–240 V)",idleW:127,sbW:13.5,maxW:2800,name:"d&b D40"}
+      };
+      var model="D80";
+      var perI=document.getElementById("pw-rk-per"),nI=document.getElementById("pw-rk-n");
+      function row(p,f){return '<div class="tsrow"><div class="p">'+p+'</div><div class="f">'+f+'</div></div>';}
+      function calc(){
+        var s=SPEC[model];
+        var per=Math.max(0,Math.round(num(perI))),n=Math.max(0,Math.round(num(nI))),units=per*n;
+        var heaviest=Math.floor(units/3)+((units%3)>0?1:0);
+        var legA=heaviest*s.rated, sumA=units*s.rated, kva=sumA*120/1000;
+        document.getElementById("pw-rk-big").textContent=fmt(legA,0);
+        document.getElementById("pw-rk-per-a").textContent=s.rated+" A";
+        document.getElementById("pw-rk-tot-n").textContent=units+" amp"+(units===1?"":"s");
+        document.getElementById("pw-rk-kva").textContent=fmt(kva,1)+" kVA";
+        document.getElementById("pw-rk-idle").textContent=fmt(s.idleW/120,1)+" A";
+        document.getElementById("pw-rk-title").textContent=s.name+" — verified @ 120 V";
+        document.getElementById("pw-rk-spec").innerHTML=
+          row("Rated mains current",s.ratedTxt)+
+          row("Idle",fmt(s.idleW,0)+" W ≈ "+fmt(s.idleW/120,1)+" A")+
+          row("Standby",fmt(s.sbW,0)+" W")+
+          row("Max power, short-term",fmt(s.maxW,0)+" W")+
+          row("Supply",'100–127 / 208–240 V · autosensing PFC');
+      }
+      perI.addEventListener("input",calc);nI.addEventListener("input",calc);
+      chipGroup("#pw-amp-chips .chip","data-amp",function(v){model=v;calc();});
+      calc();
+    })();
+
+    /* ---- 4. GENERATOR SIZING ---- */
+    (function(){
+      var loadI=document.getElementById("pw-gn-load"),pfI=document.getElementById("pw-gn-pf"),hrI=document.getElementById("pw-gn-hr");
+      var unit="kVA";
+      function calc(){
+        var pf=num(pfI); if(pf<=0)pf=1; if(pf>1)pf=1;
+        var hr=num(hrI)/100, kva, kw;
+        if(unit==="kVA"){kva=num(loadI);kw=kva*pf;}
+        else {kw=num(loadI);kva=kw/pf;}
+        var needKVA=kva*(1+hr), needKW=kw*(1+hr);
+        var amps=needKVA*1000/(RT3*208);
+        document.getElementById("pw-gn-big").textContent=fmt(needKVA,1);
+        document.getElementById("pw-gn-kwneed").textContent=fmt(needKW,1)+" kW";
+        document.getElementById("pw-gn-load-o").textContent=fmt(kva,1)+" kVA · "+fmt(kw,1)+" kW";
+        document.getElementById("pw-gn-amps").textContent=fmt(amps,0)+" A/leg";
+        document.getElementById("pw-gn-pct").textContent=fmt(100/(1+hr),0)+"% of set";
+      }
+      loadI.addEventListener("input",calc);pfI.addEventListener("input",calc);hrI.addEventListener("input",calc);
+      var uk=document.getElementById("pw-gn-kva"),uw=document.getElementById("pw-gn-kw");
+      uk.addEventListener("click",function(){unit="kVA";press(uk,true);press(uw,false);calc();});
+      uw.addEventListener("click",function(){unit="kW";press(uw,true);press(uk,false);calc();});
+      chipGroup("#pw-pf-chips .chip","data-pf",function(v){pfI.value=v;calc();});
+      calc();
+    })();
   })();
 
   /* ---------- deep link on load ---------- */
