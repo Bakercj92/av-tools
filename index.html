@@ -526,7 +526,7 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
 
       <div class="tabs" role="tablist" aria-label="Sections">
         <button class="tab" role="tab" id="tab-tools" aria-selected="true" aria-controls="panel-tools">Tools <span class="cnt">8</span></button>
-        <button class="tab" role="tab" id="tab-guides" aria-selected="false" aria-controls="panel-guides">Guides <span class="cnt">2</span></button>
+        <button class="tab" role="tab" id="tab-guides" aria-selected="false" aria-controls="panel-guides">Guides <span class="cnt">3</span></button>
         <button class="tab" role="tab" id="tab-ref" aria-selected="false" aria-controls="panel-ref">Reference <span class="cnt">4</span></button>
       </div>
 
@@ -618,6 +618,14 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
           <span class="body">
             <span class="ttl">No-Audio &amp; Hum/Buzz <span class="kind">Guide</span></span>
             <span class="desc">6pm-no-sound rescue &mdash; halve the signal path to the dead spot, then kill ground-loop hum and dimmer buzz. Safe ground-lift only.</span>
+          </span>
+          <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+        </button>
+        <button class="card" data-go="gain">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg></span>
+          <span class="body">
+            <span class="ttl">Gain Structure <span class="kind">Guide</span></span>
+            <span class="desc">Set the level once, keep unity to the amp &mdash; preamp &rarr; Avantis &rarr; LM44 &rarr; D40/D80. Your numbers, your chain.</span>
           </span>
           <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
         </button>
@@ -1892,6 +1900,118 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
         <p class="csources">Field troubleshooting &mdash; no audio, hum &amp; buzz. Sources: Sennheiser / Neumann ground-loop guide; Rane &ldquo;Pin&nbsp;1 Revisited&rdquo; (Muncy, AES); Ethan Winer (dimmers, hum vs buzz); Sound&nbsp;on&nbsp;Sound (phantom power). Ticks live in this session only.</p>
       </div>
     </section>
+    <!-- ============ GUIDE — GAIN STRUCTURE ============ -->
+    <section class="view" id="view-gain">
+      <div class="console">
+        <div class="rulebar">
+          <div class="r1">THE RULE: <b>set the level once, pass it clean</b>. Gain at the top &mdash; never claw it back downstream.</div>
+          <div class="r2">One healthy level at the preamp &rarr; every stage at <b>unity</b> to the amp &rarr; let <b>R1 + the box</b> make SPL. Tap <b>Stuck?</b> for the why.</div>
+        </div>
+
+        <div class="chead">
+          <h2>Gain Structure &mdash; Preamp to Box</h2>
+          <p>Your chain: preamp &rarr; Avantis &rarr; matrix &rarr; Lake LM44 &rarr; AES &rarr; D40/D80 &rarr; box. Set it once, keep unity through, don't crank downstream to fix a weak start. The numbers below are for <b>your</b> gear. Tap a step to tick it; tap a heading to fold.</p>
+        </div>
+
+        <div class="callout mono">
+          <div class="cl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/></svg> <span>Your targets</span></div>
+          <p>On the Avantis, <b>0 on the meter = +4&nbsp;dBu = &minus;18&nbsp;dBFS</b>, peak LED at <b>&minus;3&nbsp;dBFS</b> &mdash; about <b>18&nbsp;dB of headroom</b> to clip. LM44 takes up to <b>+26&nbsp;dBu</b> in / <b>+21&nbsp;dBu</b> out. D40/D80 accept up to <b>+25&nbsp;dBu</b> (AES 0&nbsp;dBFS = +27.3&nbsp;dBu) at a fixed <b>31&nbsp;dB</b> gain. Set the level once at the top; hold it here at every stage.</p>
+        </div>
+
+        <!-- 1 PREAMP -->
+        <div class="csec">
+          <button class="csec-h"><span class="n">1</span><h3>Set the input <small>where all your level comes from</small></h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Pad hot sources at the <b>DI</b> first (bass, keys, active pickups) &mdash; don't starve the preamp to tame a hot source.</div></div></div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Avantis preamp: bring gain up so the <b>channel meter averages ~0&nbsp;dB</b> (= +4&nbsp;dBu = &minus;18&nbsp;dBFS), with <b>peaks below &minus;3&nbsp;dBFS</b> (the peak LED).</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dg"><span class="lab">Good</span><p>Meter breathing around 0, the peak LED only flickering on the loudest hits &mdash; never sitting lit.</p></div>
+                <div class="dl ds"><span class="lab">Stuck?</span><ol class="path"><li>Peak LED / clip lit &rarr; back the <b>gain</b> off, or pad at the source. A clipped input can't be fixed downstream.</li><li>Sitting way below 0 &rarr; too cold; you'll fight hiss all night. Bring the gain up now, at the source.</li></ol></div>
+                <div class="dl dw"><span class="lab">Why</span><p>0 on the A&amp;H meter = +4&nbsp;dBu out = &minus;18&nbsp;dBFS internal = <b>18&nbsp;dB of headroom</b>. Nail the level here and the whole chain inherits a clean, quiet signal &mdash; this one move prevents most noise and clip problems downstream.</p></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>+48V</b> only where it's needed &mdash; condensers and active DIs. Nothing gained by leaving it on everything.</div></div></div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Set gain on the <b>loudest</b> the source will hit (the belted chorus, the slap) &mdash; <b>not</b> the soundcheck whisper &mdash; so it doesn't clip at showtime.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl ds"><span class="lab">Stuck? &mdash; singer's way hotter at show than at check</span><ol class="path"><li>Set gain to the <b>loud</b> one and ride the fader <b>down</b> for the quiet bits.</li><li>Gain sets the ceiling; the fader rides the mix under it.</li></ol></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2 UNITY THROUGH THE DESK -->
+        <div class="csec">
+          <button class="csec-h"><span class="n">2</span><h3>Unity through the desk <small>don't re-gain mid-chain</small></h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Channel processing at <b>unity</b>. The <b>fader is for the mix, not for gain-staging</b> &mdash; don't fix a hot or cold input by riding the fader off unity.</div></div></div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Mix &rarr; matrix/output feeding the LM44: run the master &amp; matrix at <b>unity (0&nbsp;dB)</b> &mdash; a healthy +4&nbsp;dBu nominal, peaks in headroom. Don't shove it hot for &ldquo;more level.&rdquo;</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dw"><span class="lab">Why</span><p>Every stage at unity means <b>one</b> clean level travels the whole path. Gain added or cut mid-chain just trades noise for headroom, or headroom for clip &mdash; you never actually gain anything.</p></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Output meters: same target as the input &mdash; average ~0&nbsp;dB, peaks short of clip.</div></div></div>
+          </div>
+        </div>
+
+        <!-- 3 LM44 -->
+        <div class="csec">
+          <button class="csec-h"><span class="n">3</span><h3>Match the LM44 <small>your drive-line switch point</small></h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">LM44 input sensitivity: set <b>0&nbsp;dBFS = +26&nbsp;dBu</b> (or +12&nbsp;dBu) to match the feed. Max input is <b>+26&nbsp;dBu</b>, so +4&nbsp;dBu nominal with peaks sits comfortably.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dw"><span class="lab">Why</span><p>The LM44 maps 0&nbsp;dBFS to <b>+12 or +26&nbsp;dBu</b>. Pick the one that uses the converter's full range without clipping your hottest peaks &mdash; too sensitive and loud peaks square off; too insensitive and you throw away resolution.</p></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">LM44 gain block at <b>unity</b> unless you truly need trim. It's your <b>drive-line switch point</b> (your Avantis, or a touring desk's lines) &mdash; keep the reference identical across sources so a guest desk lands where yours does.</div></div></div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Out to the amps: healthy AES/analog, unity. LM44 max out = <b>+21&nbsp;dBu</b> &mdash; plenty for the d&amp;b inputs.</div></div></div>
+          </div>
+        </div>
+
+        <!-- 4 AMP LAST -->
+        <div class="csec">
+          <button class="csec-h"><span class="n">4</span><h3>Set the amp last <small>let R1 make the SPL</small></h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">The d&amp;b input has room to spare: up to <b>+25&nbsp;dBu</b> balanced, AES 0&nbsp;dBFS = <b>+27.3&nbsp;dBu</b>. Feed it your clean line level and stop worrying about &ldquo;enough drive.&rdquo;</div></div></div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">SPL lives in <b>R1 + the loudspeaker setup</b> &mdash; not a knob you crank to fix a quiet feed. The D40/D80 run a fixed <b>31&nbsp;dB</b> gain at 0&nbsp;dB input; set level &amp; limiters per your ArrayCalc/R1 design.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dw"><span class="lab">Why</span><p>The loudspeaker setup already knows the box's limits and protects it. Your job is to hand the amp a clean, healthy line and let the design do the level &mdash; the amp isn't a volume knob.</p></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Never claw back a weak console feed by maxing amp input gain &mdash; you just lift the <b>noise floor</b>. Fix it back at the preamp (&sect;1).</div></div></div>
+
+            <div class="cwarn"><span class="lbl">Amp is last</span>The amp is the <b>last</b> place to make up gain. A hot amp on a weak feed = hiss you can't undo downstream. A clean feed + R1 doing the SPL = loud, quiet, and headroom intact. If it's not loud enough with a clean feed, the answer is the <b>design</b> (more boxes / different setup), not more amp gain.</div>
+
+            <button class="tolink" data-go="spl">
+              <span class="lic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h3l2.5-6 3 13 2.5-8 1.5 4H21"/></svg></span>
+              <span class="t"><b>SPL &amp; Exposure</b><small>Don't chase headroom past the OSHA/NIOSH limit &mdash; check the dose.</small></span>
+              <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+            </button>
+            <button class="tolink" data-go="smaart">
+              <span class="lic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10M12 20V10M6 20v-6M18 20V4"/></svg></span>
+              <span class="t"><b>Levels set? Time-align next</b><small>Open the Smaart alignment console once gains are clean.</small></span>
+              <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+            </button>
+          </div>
+        </div>
+
+        <p class="chint" style="margin-top:14px">Quick ones:</p>
+        <div class="tsrow"><div class="p">Hiss in the quiet bits</div><div class="f">Gain clawed back downstream &mdash; reset from the preamp up.</div></div>
+        <div class="tsrow"><div class="p">Clips only at showtime</div><div class="f">Gain set on the check whisper, not the belter. Ride the fader instead.</div></div>
+        <div class="tsrow"><div class="p">One stage distorts, rest clean</div><div class="f">That stage's input is clipping &mdash; check its meter.</div></div>
+        <div class="tsrow"><div class="p">Loud but no headroom</div><div class="f">Something pushed hot mid-chain &mdash; return it to unity.</div></div>
+
+        <p class="csources">Gain structure &mdash; preamp to amp. Sources: Allen &amp; Heath (levels &amp; metering in A&amp;H digital consoles); Sound&nbsp;on&nbsp;Sound (digital reference levels &mdash; SMPTE RP155 / EBU R68); d&amp;b D40 datasheet (input specs); Lake LM44 datasheet. Numbers are for your Avantis / LM44 / D40&ndash;D80. Ticks live in this session only.</p>
+      </div>
+    </section>
     <!-- ============ REFERENCE — CONNECTOR PINOUTS ============ -->
     <section class="view" id="view-ref-pins">
       <div class="toolhead">
@@ -2217,7 +2337,7 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
   });
 
   /* ---------- router ---------- */
-  var titles={home:"",delay:"Delay & Distance",db:"dB Helper",conv:"Converter",spl:"SPL & Exposure",net:"Networking",power:"Power",rf:"RF Coordinator",patch:"Patch",smaart:"Smaart v9 Alignment",nosig:"No Audio & Hum/Buzz","ref-pins":"Connector Pinouts","ref-power":"Cam-lock & Power","ref-db":"d&b System Specs","ref-dante":"Dante Limits"};
+  var titles={home:"",delay:"Delay & Distance",db:"dB Helper",conv:"Converter",spl:"SPL & Exposure",net:"Networking",power:"Power",rf:"RF Coordinator",patch:"Patch",smaart:"Smaart v9 Alignment",nosig:"No Audio & Hum/Buzz",gain:"Gain Structure","ref-pins":"Connector Pinouts","ref-power":"Cam-lock & Power","ref-db":"d&b System Specs","ref-dante":"Dante Limits"};
   var stack=[];
   var backBtn=document.getElementById("backBtn");
   var brand=document.getElementById("brand");
@@ -2472,6 +2592,25 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
   /* ================= GUIDE: NO-AUDIO & HUM/BUZZ ================= */
   (function(){
     var v=document.getElementById("view-nosig"); if(!v)return;
+    v.addEventListener("click",function(e){
+      var t=e.target;
+      var stk=t.closest(".cstuck");
+      if(stk){var st=stk.closest(".cstep");stk.textContent=st.classList.toggle("open")?"Close":"Stuck?";return;}
+      if(t.closest(".csec-h")){t.closest(".csec").classList.toggle("collapsed");return;}
+      if(t.closest(".tolink")){return;}
+      if(t.closest(".cstep-top")){t.closest(".cstep").classList.toggle("done");return;}
+    });
+    v.addEventListener("keydown",function(e){
+      if((e.key==="Enter"||e.key===" ")&&e.target.classList&&e.target.classList.contains("cstep-top")){
+        e.preventDefault();e.target.closest(".cstep").classList.toggle("done");
+      }
+    });
+  })();
+
+
+  /* ================= GUIDE: GAIN STRUCTURE ================= */
+  (function(){
+    var v=document.getElementById("view-gain"); if(!v)return;
     v.addEventListener("click",function(e){
       var t=e.target;
       var stk=t.closest(".cstuck");
