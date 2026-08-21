@@ -526,7 +526,7 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
 
       <div class="tabs" role="tablist" aria-label="Sections">
         <button class="tab" role="tab" id="tab-tools" aria-selected="true" aria-controls="panel-tools">Tools <span class="cnt">8</span></button>
-        <button class="tab" role="tab" id="tab-guides" aria-selected="false" aria-controls="panel-guides">Guides <span class="cnt">1</span></button>
+        <button class="tab" role="tab" id="tab-guides" aria-selected="false" aria-controls="panel-guides">Guides <span class="cnt">2</span></button>
         <button class="tab" role="tab" id="tab-ref" aria-selected="false" aria-controls="panel-ref">Reference <span class="cnt">4</span></button>
       </div>
 
@@ -610,6 +610,14 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
           <span class="body">
             <span class="ttl">Smaart v9 Alignment <span class="kind">Guide</span></span>
             <span class="desc">Interactive checklist — tap-to-tick steps, Stuck? help, troubleshooting, and an as-tuned log. Alignment only.</span>
+          </span>
+          <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+        </button>
+        <button class="card" data-go="nosig">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
+          <span class="body">
+            <span class="ttl">No-Audio &amp; Hum/Buzz <span class="kind">Guide</span></span>
+            <span class="desc">6pm-no-sound rescue &mdash; halve the signal path to the dead spot, then kill ground-loop hum and dimmer buzz. Safe ground-lift only.</span>
           </span>
           <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
         </button>
@@ -1738,6 +1746,152 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
         </div>
       </div>
     </section>
+    <!-- ============ GUIDE — NO-AUDIO & HUM/BUZZ ============ -->
+    <section class="view" id="view-nosig">
+      <div class="console">
+        <div class="rulebar">
+          <div class="r1">THE RULE: don't poke everywhere &mdash; <b>halve the path</b>. Find where signal dies, then chase only the dead half.</div>
+          <div class="r2"><b>No sound</b> &rarr; bisect (1&ndash;2). <b>Sound but dirty</b> &rarr; hum/buzz (3). Tap <b>Stuck?</b> on any step for the full path.</div>
+        </div>
+
+        <div class="chead">
+          <h2>Field Rescue &mdash; No Audio &amp; Hum/Buzz</h2>
+          <p>Your chain: source &rarr; GX4816 &rarr; Avantis (SLink/gigaACE) &rarr; SQ5 &middot; Avantis &rarr; Lake LM44 &rarr; AES &rarr; D40/D80 &rarr; box. Halve the path to the dead spot, then clean the noise. Tap a step to tick it; tap a heading to fold a section.</p>
+        </div>
+
+        <!-- 1 FIRST 30 SECONDS -->
+        <div class="csec">
+          <button class="csec-h"><span class="n">1</span><h3>First 30 seconds <small>rule out the dumb stuff</small></h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Channel basics: <b>fader up</b>, <b>not muted</b>, gain/trim up, and <b>assigned</b> to the bus you're monitoring.</div></div></div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">A <b>solo / PFL latched</b> anywhere? It mutes everything else. Clear all solos.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dg"><span class="lab">Good</span><p>No solo/PFL lit on any channel or master; the mix returns.</p></div>
+                <div class="dl ds"><span class="lab">Stuck?</span><ol class="path"><li>Check <b>both</b> desks &mdash; a latched PFL on the SQ5 (monitors) can be just as silent-making as one on the Avantis.</li><li>Look for a lit AFL/PFL master or a soloed matrix.</li></ol></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Source actually alive? Instrument/playback making sound. Condenser or active DI &rarr; <b>+48V on</b>. Wireless / active DI &rarr; <b>battery</b>.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dg"><span class="lab">Good</span><p>Meter on that channel twitches when the source plays.</p></div>
+                <div class="dl ds"><span class="lab">Stuck?</span><ol class="path"><li>Dynamic mic on a dead channel? Phantom won't hurt it &mdash; but a <b>flat battery</b> in a wireless or active DI will kill it silently.</li><li>Passive source, condenser expected &rarr; no +48V = no signal.</li></ol></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Right patch? Source is in the input you <b>think</b> it is &mdash; check the sheet, not your memory.</div></div></div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Output side up: main master, plus the <b>matrix/output feeding that PA</b>, up and unmuted.</div></div></div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Amps live: powered, <b>out of standby/mute</b>, and the <b>speakON</b> actually seated &amp; latched at the box.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dg"><span class="lab">Good</span><p>D40/D80 shows input and isn't muted in R1 or on the front panel.</p></div>
+                <div class="dl ds"><span class="lab">Stuck?</span><ol class="path"><li>An NL4 that clicks in but isn't <b>turned to latch</b> can drop a box.</li><li>Amp in <b>standby</b> or a channel muted in R1 looks powered but passes nothing.</li></ol></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2 BISECT -->
+        <div class="csec">
+          <button class="csec-h"><span class="n">2</span><h3>Bisect the path <small>nothing yet? halve it</small></h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Go to the <b>midpoint</b> &mdash; the Avantis <b>main/matrix meter</b>, or the <b>LM44 input</b>. Signal there?</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dg"><span class="lab">Good &mdash; you get a clean split</span><p>Signal <b>present</b> at the midpoint &rarr; the dead half is <b>downstream</b> (do step 3). <b>Nothing</b> &rarr; the dead half is <b>upstream</b> (do step 2). One look just halved the problem.</p></div>
+                <div class="dl dw"><span class="lab">Why</span><p>Every check you make in the middle of the chain throws away half the suspects. Two or three halvings and you're standing on the fault &mdash; far faster than walking the whole path end to end.</p></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>Upstream half</b> (dead at the midpoint): meter at the <b>Avantis input / preamp</b>. Moving &rarr; it's console routing/mute/assign (back to &sect;1). Dead &rarr; source, cable, or the <b>GX4816 &rarr; SLink/gigaACE</b> link.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl ds"><span class="lab">Stuck? &mdash; chase it up</span><ol class="path"><li>Swap the <b>cable</b> first &mdash; cheapest failure, most common.</li><li>Try the source in a <b>known-good input</b>. Works there? The original channel/preamp is the fault.</li><li>Whole stagebox dark? Check the <b>GX4816 &rarr; Avantis SLink</b> link and clock &mdash; if the box lost sync you lose every channel on it at once.</li><li>Confirm <b>+48V</b> if it's a condenser or active DI.</li></ol></div>
+                <div class="dl dw"><span class="lab">Why</span><p>A whole-stagebox dropout is a link/clock problem, not a channel problem &mdash; don't waste time on one input when 48 died together.</p></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>Downstream half</b> (signal leaves the console, box silent): check the <b>LM44</b>. In but not out &rarr; LM44 mute/routing or wrong <b>drive line</b> selected. Out OK but box dead &rarr; <b>AES cable</b>, <b>wrong amp channel</b>, amp standby/mute, or <b>speakON</b> unseated.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl ds"><span class="lab">Stuck? &mdash; split the amp too</span><ol class="path"><li>LM44 is your <b>drive-line switch point</b> &mdash; make sure the right source (your Avantis, not a touring desk's lines) is selected and unmuted.</li><li>Swap the box to a <b>known amp channel</b>. Alive there &rarr; the amp channel or its patch is the fault.</li><li>AES carries two channels per XLR (D1/2, D3/4) &mdash; a half-seated AES cable can drop a pair.</li><li>Box still dead on a good channel &rarr; it's the <b>NL4 or the box</b>.</li></ol></div>
+              </div>
+            </div>
+
+            <button class="tolink" data-go="patch">
+              <span class="lic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg></span>
+              <span class="t"><b>Your signal chain</b><small>Open the Patch signal-flow card &mdash; stagebox &rarr; Avantis &rarr; LM44 &rarr; amps.</small></span>
+              <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+            </button>
+            <button class="tolink" data-go="ref-pins">
+              <span class="lic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v5M15 2v5"/><rect x="6" y="7" width="12" height="6" rx="1"/><path d="M8 13v3a4 4 0 0 0 8 0v-3"/><path d="M12 20v2"/></svg></span>
+              <span class="t"><b>Connector pinouts</b><small>speakON NL4 &amp; etherCON seating, XLR pin-by-pin.</small></span>
+              <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 3 HUM & BUZZ -->
+        <div class="csec">
+          <button class="csec-h"><span class="n">3</span><h3>Hum &amp; buzz <small>sound, but dirty</small></h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>Name it.</b> Low, smooth <b>hum</b> &asymp; <b>60&nbsp;Hz</b> (+120/180) &rarr; power / ground loop. Harsher, buzzy, harmonic-rich &rarr; <b>dimmers</b> (SCR lighting), digital hash, or RF.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dw"><span class="lab">Why</span><p>Buzz is just hum with <b>more and higher harmonics</b>. Light dimmers chop the AC waveform on and off mid-cycle, throwing high-frequency harmonics that both <b>radiate</b> through the air and ride the <b>mains wiring</b> into your audio &mdash; which is why buzz sounds sharper than a plain power hum.</p></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>Find the culprit.</b> Pull <b>all</b> inputs &mdash; noise gone? Reconnect <b>one at a time</b> until it comes back. That device (or its ground) is your source.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dg"><span class="lab">Good</span><p>Silence with everything unplugged, and the hum returns on exactly one reconnection &mdash; you've found it without guessing.</p></div>
+                <div class="dl ds"><span class="lab">Stuck? &mdash; still humming with nothing plugged in</span><ol class="path"><li>Then it's <b>internal / power</b>, not a source loop &mdash; suspect the amp/processor's own AC feed and grounding.</li><li>Same bisection, different layer: split the <b>power</b> &mdash; move audio to a different circuit and listen.</li></ol></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>Fix #1 &mdash; common power.</b> Get all audio gear on <b>one source / same circuit &amp; ground</b>. Don't daisy-chain strips; check the earths.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dw"><span class="lab">Why</span><p>A ground loop needs two paths to earth at different potentials. Put all the audio on one clean feed and the loop often just disappears &mdash; the cheapest fix there is, and the first to try.</p></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>Fix #2 &mdash; ground-lift the offending line, <u>one end only</u>.</b> Flip the <b>DI ground-lift</b>, or lift the cable shield at <b>one</b> end. Never both ends.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl ds"><span class="lab">Stuck?</span><ol class="path"><li>Lift at the <b>receiving</b> end by preference; leave the source shielded.</li><li>Lift <b>both</b> ends and the shield floats &mdash; you trade hum for RF pickup and lose the safety of the screen. One end, always.</li></ol></div>
+                <div class="dl dw"><span class="lab">Why</span><p>Lifting one end breaks the loop while the shield still drains interference from the other end. This is an <b>audio</b> ground &mdash; see the warning below about mains.</p></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>Fix #3 &mdash; isolation transformer.</b> Still there? Drop an <b>iso / transformer-DI</b> into that line &mdash; it breaks the audio ground path and keeps the signal.</div></div></div>
+
+            <div class="cwarn"><span class="lbl">Never do this</span>Never lift or &ldquo;cheat&rdquo; the <b>mains / AC safety ground</b> (the third pin, or a ground-lift adapter on the power) to kill hum &mdash; it makes the gear <b>dangerous and unsafe to touch</b>. Lift <b>audio</b> grounds only, one end. If a hum only dies when you defeat the safety earth, you have a real wiring fault &mdash; fix the power, don't float it.</div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>Pin-1 problem?</b> One box hums or grabs RF <b>no matter the source</b>, often <b>worse when you wiggle the connector shell</b> &rarr; shield current is leaking into that box's signal ground.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl ds"><span class="lab">Stuck? &mdash; you can't rewire it on site</span><ol class="path"><li>It's a <b>build fault inside the gear</b> (pin&nbsp;1 routed through signal ground instead of straight to chassis) &mdash; not something you fix at the gig.</li><li>Field moves: use a <b>different input or box</b>, drop an <b>iso-transformer</b> in front of it, keep it off long cable runs.</li><li><b>Flag it for the shop</b> so it gets corrected properly.</li></ol></div>
+                <div class="dl dw"><span class="lab">Why</span><p>The cable shield should land straight on the chassis. When a maker routes it through the internal audio ground, shield noise and RF ride into the signal &mdash; and no cable swap of yours will cure a fault that lives inside the box.</p></div>
+              </div>
+            </div>
+
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>Buzz that tracks the lights?</b> Dimmer/SCR buzz. Get audio power <b>off the lighting phase</b>, keep audio mains clear of dimmer feeds &mdash; and expect some is <b>radiated</b>, so reposition cables and gear too, not just re-patch.</div></div></div>
+
+            <div class="cwarn"><span class="lbl">Phantom gotcha</span>48V is safe on modern dynamics and phantom-ready ribbons over <b>balanced XLR</b> &mdash; but a <b>vintage ribbon</b> (centre-tapped, grounded transformer) or an <b>unbalanced / jack</b> connection can be <b>damaged</b>. Phantom <b>OFF</b> before you patch an unknown ribbon.</div>
+
+            <button class="tolink" data-go="power">
+              <span class="lic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg></span>
+              <span class="t"><b>Power &amp; grounding</b><small>One clean circuit &mdash; distro, feeder &amp; voltage-drop maths.</small></span>
+              <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+            </button>
+          </div>
+        </div>
+
+        <p class="chint" style="margin-top:14px">Quick ones:</p>
+        <div class="tsrow"><div class="p">Dead on one channel only</div><div class="f">Mute / gain / routing on that channel; try a known-good input.</div></div>
+        <div class="tsrow"><div class="p">Dead everywhere</div><div class="f">Master, matrix, amp standby &mdash; or the LM44 drive line.</div></div>
+        <div class="tsrow"><div class="p">Cuts in and out</div><div class="f">Cable / connector; wiggle-test each joint end to end.</div></div>
+        <div class="tsrow"><div class="p">Hums only with one source in</div><div class="f">That device's ground &mdash; lift one end, or iso it.</div></div>
+        <div class="tsrow"><div class="p">Buzz tracks the light board</div><div class="f">Dimmer / SCR &mdash; separate audio power, reposition cables.</div></div>
+
+        <p class="csources">Field troubleshooting &mdash; no audio, hum &amp; buzz. Sources: Sennheiser / Neumann ground-loop guide; Rane &ldquo;Pin&nbsp;1 Revisited&rdquo; (Muncy, AES); Ethan Winer (dimmers, hum vs buzz); Sound&nbsp;on&nbsp;Sound (phantom power). Ticks live in this session only.</p>
+      </div>
+    </section>
     <!-- ============ REFERENCE — CONNECTOR PINOUTS ============ -->
     <section class="view" id="view-ref-pins">
       <div class="toolhead">
@@ -2063,7 +2217,7 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
   });
 
   /* ---------- router ---------- */
-  var titles={home:"",delay:"Delay & Distance",db:"dB Helper",conv:"Converter",spl:"SPL & Exposure",net:"Networking",power:"Power",rf:"RF Coordinator",patch:"Patch",smaart:"Smaart v9 Alignment","ref-pins":"Connector Pinouts","ref-power":"Cam-lock & Power","ref-db":"d&b System Specs","ref-dante":"Dante Limits"};
+  var titles={home:"",delay:"Delay & Distance",db:"dB Helper",conv:"Converter",spl:"SPL & Exposure",net:"Networking",power:"Power",rf:"RF Coordinator",patch:"Patch",smaart:"Smaart v9 Alignment",nosig:"No Audio & Hum/Buzz","ref-pins":"Connector Pinouts","ref-power":"Cam-lock & Power","ref-db":"d&b System Specs","ref-dante":"Dante Limits"};
   var stack=[];
   var backBtn=document.getElementById("backBtn");
   var brand=document.getElementById("brand");
@@ -2313,6 +2467,25 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
       try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(tx.value);}else{document.execCommand("copy");}}catch(err){try{document.execCommand("copy");}catch(e2){}}
       var o=cp.textContent;cp.textContent="Copied ✓";setTimeout(function(){cp.textContent=o;},1400);return;}
   });
+
+
+  /* ================= GUIDE: NO-AUDIO & HUM/BUZZ ================= */
+  (function(){
+    var v=document.getElementById("view-nosig"); if(!v)return;
+    v.addEventListener("click",function(e){
+      var t=e.target;
+      var stk=t.closest(".cstuck");
+      if(stk){var st=stk.closest(".cstep");stk.textContent=st.classList.toggle("open")?"Close":"Stuck?";return;}
+      if(t.closest(".csec-h")){t.closest(".csec").classList.toggle("collapsed");return;}
+      if(t.closest(".tolink")){return;}
+      if(t.closest(".cstep-top")){t.closest(".cstep").classList.toggle("done");return;}
+    });
+    v.addEventListener("keydown",function(e){
+      if((e.key==="Enter"||e.key===" ")&&e.target.classList&&e.target.classList.contains("cstep-top")){
+        e.preventDefault();e.target.closest(".cstep").classList.toggle("done");
+      }
+    });
+  })();
 
   /* ================= CONVERTER ================= */
   (function(){
