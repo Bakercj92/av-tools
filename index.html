@@ -283,6 +283,10 @@ main{flex:1;padding-bottom:40px}
 .pp-bandbar .grow{flex:1}
 .linkbtn.pp-band-del{color:var(--bad)}
 #pp-subtabs{margin-bottom:14px}
+.pp-swrow{display:flex;flex-wrap:wrap;gap:9px}
+.pp-sw{width:30px;height:30px;border-radius:50%;border:2px solid var(--border-strong);cursor:pointer;padding:0;box-sizing:border-box}
+.pp-sw.on{border-color:var(--text);box-shadow:0 0 0 2px var(--accent-soft)}
+.pp-sw:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 /* ============ LCD READOUT ============ */
 .readout{
@@ -2909,11 +2913,48 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
     function headHTML(r,i){return '<span class="pt-ch">'+(i+1)+'</span> <span class="pt-nm">'+(esc(r.n)||"(unnamed)")+'</span>'+(r.m?' <span class="pt-src">'+esc(r.m)+'</span>':'');}
     function field(label,val,ph,cb){
       var f=document.createElement("div");f.className="pt-f";
-      var l=document.createElement("label");l.textContent=label;f.appendChild(l);
-      var inp=document.createElement("input");inp.type="text";inp.value=val||"";inp.setAttribute("aria-label",label);
+      if(label){var l=document.createElement("label");l.textContent=label;f.appendChild(l);}
+      var inp=document.createElement("input");inp.type="text";inp.value=val||"";inp.setAttribute("aria-label",label||ph||"value");
       if(ph)inp.placeholder=ph;
       inp.addEventListener("input",function(){cb(inp.value);});
       f.appendChild(inp);return f;
+    }
+    /* ---------- Phase 2: A&H palette, categories, libraries (palette PROVISIONAL — confirm vs Avantis/SQ) ---------- */
+    var PALETTE=[
+      {hex:"#E5432E",name:"Red"},{hex:"#E58A2E",name:"Amber"},{hex:"#E5C93A",name:"Yellow"},
+      {hex:"#4CAF50",name:"Green"},{hex:"#24B7B0",name:"Turquoise"},{hex:"#3B82E5",name:"Blue"},
+      {hex:"#8A5CD1",name:"Purple"},{hex:"#D9539E",name:"Pink"},{hex:"#E8E8EC",name:"White"},{hex:"#6B7280",name:"Grey"}
+    ];
+    var CATEGORIES=[
+      {id:"drums",label:"Drums",color:"#E5432E",sources:["Kick","Snare","Hi-Hat","Rack Tom","Floor Tom","OH L","OH R","Ride"]},
+      {id:"bass",label:"Bass",color:"#E58A2E",sources:["Bass DI","Bass Mic","Bass Amp"]},
+      {id:"guitar",label:"Guitar",color:"#4CAF50",sources:["Gtr Amp","Gtr DI","Acoustic Gtr"]},
+      {id:"keys",label:"Keys",color:"#8A5CD1",sources:["Keys L","Keys R","Organ","Synth","Piano","Pad"]},
+      {id:"vocals",label:"Vocals",color:"#3B82E5",sources:["Lead Vox","BG Vox 1","BG Vox 2","BG Vox 3","BG Vox 4"]},
+      {id:"other",label:"Other",color:"#24B7B0",sources:["Horns","Sax","Violin","Cello","Perc","Click","Track"]},
+      {id:"playback",label:"Playback",color:"#D9539E",sources:["Playback L","Playback R","Click","Track","Timecode"]},
+      {id:"speech",label:"Speech",color:"#E5C93A",sources:["Podium","Lectern","Handheld","Panel 1","Panel 2","Q&A"]},
+      {id:"wireless",label:"Wireless",color:"#6B7280",sources:["Lav 1","Lav 2","HH 1","HH 2","Headset"]},
+      {id:"di",label:"DI/Util",color:"#6B7280",sources:["DI","Laptop L","Laptop R","Video L","Video R"]},
+      {id:"amb",label:"Ambient",color:"#E8E8EC",sources:["Amb L","Amb R","Crowd L","Crowd R"]}
+    ];
+    function catById(id){for(var i=0;i<CATEGORIES.length;i++){if(CATEGORIES[i].id===id)return CATEGORIES[i];}return null;}
+    var MIC_LIB=["SM57","SM58","Beta 58A","SM7B","Beta 52A","Beta 91A","Beta 98A","SM81","MD421","e604","e906","D6","D112","KM184","KSM32","AKG C414","C451","RE20","DI","Active DI","Passive DI"];
+    var FLOW=["Mic","Line","DI","Insert"];
+    var NOTE_CHIPS=["Pad","HPF","Comp","Gate","Stereo L","Stereo R","Sub","FX 1","FX 2"];
+    function chipRowField(label,items,getLabel,isActive,onPick){
+      var f=document.createElement("div");f.className="pt-f";
+      if(label){var l=document.createElement("label");l.textContent=label;f.appendChild(l);}
+      var row=document.createElement("div");row.className="chiprow";
+      var chips=[];
+      items.forEach(function(it){
+        var c=document.createElement("button");c.type="button";c.className="chip";
+        c.textContent=getLabel(it);press(c,isActive(it));
+        c.addEventListener("click",function(){onPick(it);});
+        chips.push({el:c,it:it});row.appendChild(c);
+      });
+      f.appendChild(row);
+      return {f:f,row:row,repaint:function(active){chips.forEach(function(o){press(o.el,active(o.it));});}};
     }
     function rowsArr(){return band().ch;}
     function idxOf(card){return rowsArr().indexOf(card._row);}
@@ -2933,27 +2974,93 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
       var R=rowsArr(), r=R[i];
       var card=document.createElement("div");card.className="tcard pt-row"+(r.open?" open":"");
       card._row=r;
+      function paintAccent(){card.style.boxShadow=r.col?("inset 3px 0 0 "+r.col):"";}
+      paintAccent();
       var h=document.createElement("button");h.type="button";h.className="tcard-h";
       h.setAttribute("aria-expanded",r.open?"true":"false");
       var dot=document.createElement("span");dot.className="dot";
       dot.style.background=r.p?"var(--accent)":"transparent";
       dot.style.boxShadow=r.p?"none":"inset 0 0 0 1px var(--border-strong)";
       dot.title=r.p?"48V on":"48V off";
-      var b=document.createElement("b");b.innerHTML=headHTML(r,i);
+      var b=document.createElement("b");
       var cv=document.createElement("span");cv.className="cv";
       cv.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>';
+      function updHead(){b.innerHTML=headHTML(r,idxOf(card));}
+      updHead();
       h.appendChild(dot);h.appendChild(b);h.appendChild(cv);
       h.addEventListener("click",function(){r.open=!r.open;card.classList.toggle("open",r.open);h.setAttribute("aria-expanded",r.open?"true":"false");persistSoon();});
       card.appendChild(h);
       var body=document.createElement("div");body.className="tcard-b";
-      body.appendChild(field("Name / source",r.n,"e.g. Lead Vox",function(v){r.n=v;touch();b.innerHTML=headHTML(r,idxOf(card));persistSoon();}));
-      body.appendChild(field("Mic / DI",r.m,"e.g. SM58 / DI",function(v){r.m=v;touch();b.innerHTML=headHTML(r,idxOf(card));persistSoon();}));
+      var nameInp,micInp,noteInp,curSrc=null,swatches=[];
+      function paintSwatches(){for(var k=0;k<swatches.length;k++){var on=(r.col||"").toLowerCase()===swatches[k].hex.toLowerCase();swatches[k].el.classList.toggle("on",on);swatches[k].el.setAttribute("aria-pressed",on?"true":"false");}}
+
+      /* Instrument category → sets colour + reveals source quick-picks */
+      var catF=chipRowField("Instrument",CATEGORIES,function(c){return c.label;},function(c){return r.cat===c.id;},function(c){
+        r.cat=c.id;r.col=c.color;touch();
+        catF.repaint(function(cc){return r.cat===cc.id;});
+        rebuildSrc();paintAccent();paintSwatches();updHead();persistSoon();
+      });
+      body.appendChild(catF.f);
+
+      var srcWrap=document.createElement("div");
+      function rebuildSrc(){
+        srcWrap.innerHTML="";curSrc=null;
+        var c=catById(r.cat);
+        if(c&&c.sources&&c.sources.length){
+          curSrc=chipRowField("Quick pick",c.sources,function(s){return s;},function(s){return r.n===s;},function(s){
+            r.n=s;if(nameInp)nameInp.value=s;touch();updHead();
+            if(curSrc)curSrc.repaint(function(s2){return r.n===s2;});persistSoon();
+          });
+          srcWrap.appendChild(curSrc.f);
+        }
+      }
+      body.appendChild(srcWrap);rebuildSrc();
+
+      var nameF=field("Name / source",r.n,"e.g. Lead Vox",function(v){r.n=v;touch();updHead();if(curSrc)curSrc.repaint(function(s2){return r.n===s2;});persistSoon();});
+      nameInp=nameF.querySelector("input");body.appendChild(nameF);
+
+      /* Colour — fixed A&H swatches (override the category default) */
+      var swF=document.createElement("div");swF.className="pt-f";
+      var swL=document.createElement("label");swL.textContent="Colour";swF.appendChild(swL);
+      var swRow=document.createElement("div");swRow.className="pp-swrow";
+      PALETTE.forEach(function(p){
+        var s=document.createElement("button");s.type="button";s.className="pp-sw";s.style.background=p.hex;s.title=p.name;s.setAttribute("aria-label","Colour "+p.name);
+        s.addEventListener("click",function(){r.col=p.hex;touch();paintAccent();paintSwatches();persistSoon();});
+        swatches.push({el:s,hex:p.hex});swRow.appendChild(s);
+      });
+      paintSwatches();swF.appendChild(swRow);body.appendChild(swF);
+
+      /* Mic / DI — quick-pick library + custom */
+      var micChips=chipRowField("Mic / DI",MIC_LIB,function(m){return m;},function(m){return r.m===m;},function(m){
+        r.m=(r.m===m?"":m);if(micInp)micInp.value=r.m;touch();updHead();
+        micChips.repaint(function(m2){return r.m===m2;});persistSoon();
+      });
+      body.appendChild(micChips.f);
+      var micF=field("",r.m,"or type a mic / source…",function(v){r.m=v;touch();updHead();micChips.repaint(function(m2){return r.m===m2;});persistSoon();});
+      micInp=micF.querySelector("input");body.appendChild(micF);
+
+      /* Signal flow */
+      var flowChips=chipRowField("Signal flow",FLOW,function(x){return x;},function(x){return r.fl===x;},function(x){
+        r.fl=(r.fl===x?"":x);touch();flowChips.repaint(function(x2){return r.fl===x2;});persistSoon();
+      });
+      body.appendChild(flowChips.f);
+
       var grid=document.createElement("div");grid.className="pt-grid";
       grid.appendChild(field("Stand",r.s,"e.g. Tall boom",function(v){r.s=v;touch();persistSoon();}));
       grid.appendChild(phantomField(r,dot));
       body.appendChild(grid);
+
       body.appendChild(field("Stage spot / sub-snake",r.x,"e.g. DSR / Snake B 3",function(v){r.x=v;touch();persistSoon();}));
-      body.appendChild(field("Notes",r.t,"e.g. shared with BV mic",function(v){r.t=v;touch();persistSoon();}));
+
+      /* Notes — quick tags + custom */
+      var noteChips=chipRowField("Notes",NOTE_CHIPS,function(x){return x;},function(x){return (r.t||"").indexOf(x)>=0;},function(x){
+        if((r.t||"").indexOf(x)<0){r.t=(r.t?r.t+", ":"")+x;if(noteInp)noteInp.value=r.t;}
+        touch();noteChips.repaint(function(x2){return (r.t||"").indexOf(x2)>=0;});persistSoon();
+      });
+      body.appendChild(noteChips.f);
+      var noteF=field("",r.t,"Add a note…",function(v){r.t=v;touch();noteChips.repaint(function(x2){return (r.t||"").indexOf(x2)>=0;});persistSoon();});
+      noteInp=noteF.querySelector("input");body.appendChild(noteF);
+
       var ctr=document.createElement("div");ctr.className="pt-ctrls";
       ctr.appendChild(iconBtn("up","Move up",function(){move(idxOf(card),-1);}));
       ctr.appendChild(iconBtn("down","Move down",function(){move(idxOf(card),1);}));
