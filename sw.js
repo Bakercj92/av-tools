@@ -3,7 +3,7 @@
    cache-first for static assets. Versioned cache; bump VERSION to force an update. */
 'use strict';
 
-var VERSION = 'v1';
+var VERSION = 'v2';
 var CACHE = 'fak-' + VERSION;
 var NET_TIMEOUT = 2000;
 
@@ -11,6 +11,7 @@ var NET_TIMEOUT = 2000;
 var PRECACHE = [
   '.',
   'index.html',
+  'smaart-align.html',
   'manifest.webmanifest',
   'icon-192.png',
   'icon-512.png',
@@ -66,7 +67,10 @@ self.addEventListener('fetch', function (e) {
     e.respondWith(
       fromNetwork(req, NET_TIMEOUT).then(function (res) {
         var copy = res.clone();
-        caches.open(CACHE).then(function (c) { c.put('index.html', copy); });
+        // Cache each page under its own URL (v1 filed every page under
+        // 'index.html', so visiting a tool page online clobbered the
+        // offline copy of the app shell).
+        caches.open(CACHE).then(function (c) { c.put(req, copy); });
         return res;
       }).catch(function () {
         return caches.match(req).then(function (r) {
@@ -92,4 +96,4 @@ self.addEventListener('fetch', function (e) {
   );
 });
 
-// deploy loop verified 2026-08-24
+// deploy loop verified 2026-08-24 — offline fix (precache smaart-align, per-URL nav cache)
