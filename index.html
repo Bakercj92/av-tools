@@ -655,8 +655,8 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
 
       <div class="tabs" role="tablist" aria-label="Sections">
         <button class="tab" role="tab" id="tab-tools" aria-selected="true" aria-controls="panel-tools">Tools <span class="cnt">8</span></button>
-        <button class="tab" role="tab" id="tab-guides" aria-selected="false" aria-controls="panel-guides">Guides <span class="cnt">4</span></button>
-        <button class="tab" role="tab" id="tab-ref" aria-selected="false" aria-controls="panel-ref">Reference <span class="cnt">5</span></button>
+        <button class="tab" role="tab" id="tab-guides" aria-selected="false" aria-controls="panel-guides">Guides <span class="cnt">5</span></button>
+        <button class="tab" role="tab" id="tab-ref" aria-selected="false" aria-controls="panel-ref">Reference <span class="cnt">6</span></button>
       </div>
 
       <div class="grid panel active" id="panel-tools" role="tabpanel" aria-labelledby="tab-tools">
@@ -766,6 +766,14 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
           </span>
           <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
         </button>
+        <button class="card" data-go="lm44">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="10" rx="1.5"/><circle cx="7" cy="12" r="1.1"/><circle cx="10.4" cy="12" r="1.1"/><path d="M14.4 10.5l3 1.5-3 1.5"/></svg></span>
+          <span class="body">
+            <span class="ttl">LM44 Setup <span class="kind">Guide</span></span>
+            <span class="desc">Two linked LM44s as a drive-line switcher &mdash; patch, clock, route, per-band presets. Beats the two faults that bite: clock slipping and AES masking analog.</span>
+          </span>
+          <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+        </button>
         <div class="emptyhint">More guides land here as you write them. <b>Just say the word</b> and I'll add one.</div>
       </div>
 
@@ -811,6 +819,14 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
           <span class="body">
             <span class="ttl">Rig Signal Flow <span class="kind">Ref</span></span>
             <span class="desc">Your actual chain &mdash; GX4816 &rarr; Avantis &rarr; LM44 &rarr; D40/D80, plus monitors and R1. No Dante.</span>
+          </span>
+          <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+        </button>
+        <button class="card" data-go="ref-lm44">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="1.5"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/></svg></span>
+          <span class="body">
+            <span class="ttl">LM44 Processor <span class="kind">Ref</span></span>
+            <span class="desc">I/O, clocking &amp; SRC, input routing, presets, two-frame linking &mdash; the operating facts behind the setup guide.</span>
           </span>
           <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
         </button>
@@ -2291,6 +2307,171 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
         </div>
       </div>
     </section>
+    <!-- ============ GUIDE — LM44 SETUP ============ -->
+    <section class="view" id="view-lm44">
+      <div class="console">
+        <div class="rulebar">
+          <div class="r1">THE RULE: <b>one clock master</b> &mdash; and <b>SRC every console AES</b> input.</div>
+          <div class="r2">Two consoles never share a router; each gets its own channels on <b>Force Priority</b>. The Lakes only route &mdash; all EQ / crossover / limiting / delay stays in <b>R1</b>. Tap <b>Stuck?</b> on any step for the full path.</div>
+        </div>
+
+        <div class="chead">
+          <h2>Two-LM44 Drive-Line Switcher</h2>
+          <p>Up to 4 bands in &middot; one fixed PA out (L / R / Sub / Fill) &middot; Mesa mode &middot; Lake Controller v8. Tap a step to tick it; tap a heading to fold a section.</p>
+        </div>
+
+        <!-- 1 PATCH -->
+        <div class="csec">
+          <button class="csec-h"><span class="n">1</span><h3>Patch the rig</h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>Outputs (Unit 1 / master):</b> 4 module outs &mdash; L, R, Sub, Fill &mdash; <b>AES</b> to the D40/D80 stack. Set once, never changes.</div></div></div>
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>Sync feed:</b> one spare <b>master AES out</b> &rarr; <b>expander AES in</b>. This clocks the expander to the master.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dw"><span class="lab">Why</span><p>The LM44 has <b>no word clock</b> and you're not on Dante &mdash; AES is the only way to lock two frames to one clock.</p></div>
+              </div>
+            </div>
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>Cascade:</b> expander's live-band out (4&nbsp;ch) &rarr; <b>master AES in</b>. The expander forwards whichever band is patched to it.</div></div></div>
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>Band inputs, AES-first:</b> each band = 4 lines (L/R/Sub/Fill). Put AES bands on the 16 AES ins; keep the <b>8 analog ins</b> for XLR-only acts.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dg"><span class="lab">Good</span><p>All four bands land on their own inputs, pre-patched, nothing sharing.</p></div>
+                <div class="dl ds"><span class="lab">Stuck? &mdash; more than 8 analog lines</span><ol class="path"><li>Only 8 analog ins exist across both frames. Run the overflow through analog&rarr;AES converters, or repatch that band at changeover.</li></ol></div>
+                <div class="dl dw"><span class="lab">Why</span><p>16 AES ins fit all four bands; analog is the tight resource. AES-first keeps every act pre-patched.</p></div>
+              </div>
+            </div>
+            <div class="cwarn"><span class="lbl">AES loom</span>LM44 AES is a <b>single DB25</b> (8 in + 8 out). <b>Confirm the DB25 pinout in the hardware manual &sect;7.2</b> before trusting a fan-out loom &mdash; the pin standard isn't published online.</div>
+          </div>
+        </div>
+
+        <!-- 2 FRAMES ONLINE -->
+        <div class="csec">
+          <button class="csec-h"><span class="n">2</span><h3>Both frames online</h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">All on one switch, <b>straight-through</b> Ethernet. Power the switch + frames, <b>wait ~1&nbsp;min</b>, then launch Lake Controller.</div></div></div>
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Pick the Lake network in <span class="k">Select Network Adapter</span> if the laptop has more than one.</div></div></div>
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Open <b>Modules</b>. Both LM44s show as <b>gray circles</b>. Drag both frames' modules into the work area.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dg"><span class="lab">Good</span><p>Both frames appear and you can grab their modules.</p></div>
+                <div class="dl ds"><span class="lab">Stuck?</span><ol class="path"><li>A <b>text-only</b> entry = another operator is holding that frame.</li><li>A frame missing = wrong network adapter, or it hasn't settled &mdash; power-cycle and wait ~1&nbsp;min.</li></ol></div>
+              </div>
+            </div>
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Both frames in <b>Mesa mode</b> (4 modules, 4&times;4 matrix, no crossover). <small>Set the mode first &mdash; changing it wipes the frame.</small></div></div></div>
+          </div>
+        </div>
+
+        <!-- 3 CLOCK -->
+        <div class="csec">
+          <button class="csec-h"><span class="n">3</span><h3>Clock <small>(before any audio)</small></h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>Master = Internal, 96&nbsp;kHz, fixed.</b> Not automatic. The master is the house clock.</div></div></div>
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>Expander = locked to the master's AES sync feed</b> (the cable from step&nbsp;1).</div></div></div>
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>SRC every console AES input.</b> Put each guest desk's AES pairs on the <b>SRC clock</b>, not the Primary clock.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dg"><span class="lab">Good</span><p>Consoles pass with <b>no CLOCK SLIPPING</b> when you connect, disconnect and reconnect the AES.</p></div>
+                <div class="dl ds"><span class="lab">Stuck? &mdash; CLOCK SLIPPING / modules mute</span><ol class="path"><li>That AES input isn't on the SRC clock &mdash; move it there.</li><li>Or a frame's Primary clock is auto-following a console &mdash; set the master back to Internal, the expander to the master's sync feed.</li></ol></div>
+                <div class="dl dw"><span class="lab">Why</span><p>SRC converts a guest desk's free-running clock into your 96&nbsp;kHz domain, so it can never pull a frame off lock.</p></div>
+              </div>
+            </div>
+            <div class="cwarn"><span class="lbl">Confirm on the unit</span>The exact per-input <b>SRC</b> toggle lives under <span class="k">I/O Config &rarr; Input Configuration &rarr; Display Details</span> / Digital Clock Configuration. Bench-test it (below) before the show &mdash; your v8 UI is the source of truth.</div>
+          </div>
+        </div>
+
+        <!-- 4 ROUTE + SELECT -->
+        <div class="csec">
+          <button class="csec-h"><span class="n">4</span><h3>Route &amp; select the band</h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Each console on <b>its own router channels</b>, set to <b>Force Priority</b> &mdash; not Auto Select. <span class="k">Menu &rarr; I/O Config &rarr; Input Rtr</span></div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dg"><span class="lab">Good</span><p>Your AES band and the touring analog band both pass at once, each on its own channels.</p></div>
+                <div class="dl ds"><span class="lab">Stuck? &mdash; analog silent while AES is plugged in</span><ol class="path"><li>The consoles are sharing routers on <b>Auto Select</b>, and AES outranks analog &mdash; so AES wins and analog is masked.</li><li>Give each console its own channels and switch them to <b>Force Priority</b>.</li></ol></div>
+                <div class="dl dw"><span class="lab">Why</span><p>Force Priority pins a source on regardless of what else is present; Auto Select is failover for a backup of the <i>same</i> feed, not a two-desk switch.</p></div>
+              </div>
+            </div>
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">One analog input per router, at the <b>lowest</b> priority (an LM44 rule) &mdash; another reason to keep consoles on separate channels.</div></div></div>
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>Band select = input-mixer mutes.</b> Each output module sums all bands' matching line; <b>mute all but the live band</b>. <span class="k">Menu &rarr; Module &rarr; Mixer Gain</span></div></div></div>
+          </div>
+        </div>
+
+        <!-- 5 OUTPUTS -->
+        <div class="csec">
+          <button class="csec-h"><span class="n">5</span><h3>Outputs to the amps</h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Master's 4 modules &rarr; 4 <b>AES outs</b> &rarr; amps. <span class="k">Output Configuration</span> &mdash; any source to any output. Set once.</div></div></div>
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">No EQ, crossover, limiter or delay in the Lake &mdash; all of it lives in <b>R1</b>. Leave the modules flat.</div></div></div>
+          </div>
+        </div>
+
+        <!-- 6 PRESETS -->
+        <div class="csec">
+          <button class="csec-h"><span class="n">6</span><h3>Per-band presets</h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Build &ldquo;Band&nbsp;1 live&rdquo; (Band&nbsp;1 unmuted, others muted, both frames), then <b>Store System</b> as a <b>System preset</b> named for the band.</div><button class="cstuck">Stuck?</button></div>
+              <div class="cdetail">
+                <div class="dl dw"><span class="lab">Why</span><p>A System preset (.csc) recalls <b>both frames at once</b> &mdash; that's your one-action changeover.</p></div>
+              </div>
+            </div>
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Repeat for Bands 2&ndash;4. <b>Changeover = recall the next band's System preset</b> &mdash; between sets, never mid-program.</div></div></div>
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Mirror each as a numbered <b>Frame Preset</b> on each unit (100 slots) &mdash; a front-panel backup if the laptop drops.</div></div></div>
+          </div>
+        </div>
+
+        <!-- 7 VERIFY -->
+        <div class="csec">
+          <button class="csec-h"><span class="n">7</span><h3>Verify &amp; back up</h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>Cycle all four System presets</b> once &mdash; routing + levels land right on each.</div></div></div>
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Signal-flow check per band: input meters &rarr; module &rarr; output meters &rarr; amp inputs.</div></div></div>
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx"><b>Mute-check:</b> muting the live band drops the PA &mdash; proves the sound is really that source.</div></div></div>
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Save the <b>.csc show file</b> (PC + USB + cloud). Confirm <b>both frames match firmware</b> &mdash; a red X means mismatch.</div></div></div>
+          </div>
+        </div>
+
+        <!-- BENCH TEST -->
+        <div class="csec">
+          <button class="csec-h"><span class="n log">&#10003;</span><h3>Bench-test before the show <small>(~30 min, once)</small></h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <p class="chint">Prove the clock + routing fix off-stage, so the first time it works isn't on a gig.</p>
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Rig it live-style: both frames linked, your desk on <b>AES 1&ndash;4</b>, a second source on <b>analog 1&ndash;4</b>.</div></div></div>
+            <div class="cstep"><div class="cstep-top" role="button" tabindex="0"><div class="bx">&#10003;</div><div class="cx">Prove all three: both pass <b>at once</b>; <b>no CLOCK SLIPPING</b> on connect / disconnect / reconnect of the AES; a preset recall flips bands cleanly.</div></div></div>
+          </div>
+        </div>
+
+        <!-- TROUBLESHOOTING -->
+        <div class="csec collapsed">
+          <button class="csec-h"><span class="n warn">!</span><h3>Troubleshooting</h3><span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></button>
+          <div class="cbody">
+            <p class="chint">The two that bit you &mdash; tap for the full path.</p>
+
+            <div class="tcard"><button class="tcard-h"><span class="dot"></span><b>&ldquo;Modules out of sync&rdquo; / audio mutes when AES is connected</b><span class="cv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span></button>
+              <div class="tcard-b">
+                <ol class="path"><li>That's <b>CLOCK SLIPPING</b> &mdash; a console AES is on the Primary clock, or a frame is auto-following a console.</li><li><b>SRC</b> that AES input (put it on the SRC clock).</li><li>Set the <b>master to Internal 96&nbsp;kHz</b>; lock the <b>expander to the master's AES sync feed</b>.</li><li>Never let a console's AES become the frame clock.</li></ol>
+                <div class="why"><b>Why:</b> a free-running guest clock the frame tries to lock to will slip and mute the modules. SRC decouples it.</div>
+              </div>
+            </div>
+
+            <div class="tcard"><button class="tcard-h"><span class="dot"></span><b>One console's analog won't pass while another's AES is plugged in</b><span class="cv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span></button>
+              <div class="tcard-b">
+                <ol class="path"><li>The consoles are sharing routers on <b>Auto Select</b>, and AES outranks analog.</li><li>Put each console on <b>its own router channels</b>.</li><li>Set each to <b>Force Priority</b> (not Auto Select).</li></ol>
+                <div class="why"><b>Why:</b> Auto Select is signal-presence failover meant for a backup of the <i>same</i> feed &mdash; not for switching two different desks.</div>
+              </div>
+            </div>
+
+            <p class="chint" style="margin-top:14px">Quick ones:</p>
+            <div class="tsrow"><div class="p">No signal through the expander</div><div class="f">Cascade not patched (expander live-band out &rarr; master AES in), or the expander isn't locked to the master's sync feed.</div></div>
+            <div class="tsrow"><div class="p">Only one frame in Modules</div><div class="f">Wrong network adapter, not settled (wait ~1&nbsp;min), or a text-only entry = held by another operator.</div></div>
+            <div class="tsrow"><div class="p">Recall changes nothing / partial</div><div class="f">Recall the <b>System</b> preset, not a Module/Frame preset. Re-store the band states after any routing edit.</div></div>
+            <div class="tsrow"><div class="p">Wrong band live / two bands bleeding</div><div class="f">Re-check the input-mixer mutes; recall the right band's System preset.</div></div>
+          </div>
+        </div>
+
+        <button class="tolink" data-go="ref-lm44">
+          <span class="lic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="1.5"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/></svg></span>
+          <span class="t"><b>The operating facts?</b><small>Open the LM44 Processor reference &mdash; I/O, clocking &amp; SRC, routing, presets.</small></span>
+          <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+        </button>
+
+        <p class="csources">Two LM44s as a routing matrix &mdash; all processing in R1. Sources: Lab.gruppen / Lake LM44 &amp; Lake Controller manuals (input router, clock, presets); AVL support (firmware). Confirm the per-input SRC screen &amp; the DB25 pinout on your units. Ticks live in this session.</p>
+      </div>
+    </section>
     <!-- ============ REFERENCE — CONNECTOR PINOUTS ============ -->
     <section class="view" id="view-ref-pins">
       <div class="toolhead">
@@ -2633,6 +2814,73 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
       <div class="pt-bar"><button class="linkbtn" data-go="net">Open Networking tool &rarr;</button></div>
       <div class="csources">Verified on A&amp;H (Avantis, GX4816, SQ SLink), Lab.gruppen / Lake (LM44) and d&amp;b (D40/D80, DN1, DS10) product docs.</div>
     </section>
+    <!-- ============ REFERENCE — LM44 PROCESSOR ============ -->
+    <section class="view" id="view-ref-lm44">
+      <div class="toolhead">
+        <h2>LM44 Processor</h2>
+        <p>The operating facts behind the setup guide &mdash; I/O, clocking, routing, presets and two-frame linking. Here the LM44 is a pure routing matrix; all processing lives in R1.</p>
+      </div>
+
+      <div class="refsec">
+        <h4>I/O (per frame)</h4>
+        <div class="reftable">
+          <div class="tsrow"><div class="p">Analog</div><div class="f">4 in / 4 out, XLR, Iso-Float. Sensitivity +12 / +26&nbsp;dBu; max out +21&nbsp;dBu.</div></div>
+          <div class="tsrow"><div class="p">AES3</div><div class="f">8 in / 8 out on <b>one DB25</b> (selectable 110&nbsp;&Omega; term); 44.1&ndash;192&nbsp;kHz; per-input SRC.</div></div>
+          <div class="tsrow"><div class="p">Dante</div><div class="f">4 in / 8 out, dual etherCON (also the control net). Not used on this rig.</div></div>
+          <div class="tsrow"><div class="p">Clock</div><div class="f">Internal VCXO, 96&nbsp;kHz. <b>No word-clock BNC.</b></div></div>
+        </div>
+        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><span>Two frames = <b>8 analog + 16 AES</b> ins. AES-first covers 4 bands &times; 4 lines; analog is the limit (reserve for XLR-only acts).</span></div>
+      </div>
+
+      <div class="refsec">
+        <h4>Clocking &amp; SRC</h4>
+        <div class="reftable">
+          <div class="tsrow"><div class="p">Two clocks</div><div class="f">Primary (synchronous &mdash; source must be locked) + SRC (asynchronous &mdash; source is converted).</div></div>
+          <div class="tsrow"><div class="p">Master</div><div class="f">One frame on <b>Internal 96&nbsp;kHz, fixed</b>. Never auto-follow a console.</div></div>
+          <div class="tsrow"><div class="p">Slave</div><div class="f">Expander locks to the master's AES sync feed (AES out &rarr; AES in).</div></div>
+          <div class="tsrow"><div class="p">Console AES</div><div class="f"><b>SRC every one</b> &mdash; converts a guest clock into your domain so it can't slip.</div></div>
+          <div class="tsrow"><div class="p">CLOCK SLIPPING</div><div class="f">Selected clock + AES input not aligned &rarr; modules mute. The &ldquo;out of sync&rdquo; fault.</div></div>
+        </div>
+      </div>
+
+      <div class="refsec">
+        <h4>Input routing</h4>
+        <div class="reftable">
+          <div class="tsrow"><div class="p">8 routers &times; 4 priorities</div><div class="f">Auto Select = signal-presence failover. AES/Dante outrank analog.</div></div>
+          <div class="tsrow"><div class="p">Force Priority</div><div class="f">Pins a source on regardless &mdash; use this so two consoles both pass. Not Auto Select.</div></div>
+          <div class="tsrow"><div class="p">One analog / router</div><div class="f">And it must sit at the lowest priority.</div></div>
+          <div class="tsrow"><div class="p">Band select</div><div class="f">Input-mixer mutes &mdash; sum all bands, unmute one.</div></div>
+        </div>
+      </div>
+
+      <div class="refsec">
+        <h4>Presets</h4>
+        <div class="reftable">
+          <div class="tsrow"><div class="p">Module file</div><div class="f">PC only. One module's config.</div></div>
+          <div class="tsrow"><div class="p">Frame Preset</div><div class="f"><b>100 on the device</b>; includes input mixer + routing. Front-panel recall.</div></div>
+          <div class="tsrow"><div class="p">System (.csc)</div><div class="f">Whole multi-frame system; <b>one recall = both frames</b>. Your changeover + show file.</div></div>
+        </div>
+      </div>
+
+      <div class="refsec">
+        <h4>Two-frame linking (no Dante)</h4>
+        <div class="reftable">
+          <div class="tsrow"><div class="p">Control</div><div class="f">One Lake Controller session; Groups + System presets. Carries control, <b>not</b> clock.</div></div>
+          <div class="tsrow"><div class="p">Clock</div><div class="f">AES genlink (master &rarr; expander). Handle separately from control.</div></div>
+          <div class="tsrow"><div class="p">Audio</div><div class="f">AES cascade &mdash; expander forwards its live band to the master.</div></div>
+        </div>
+      </div>
+
+      <div class="callout mono">
+        <div class="cl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg> <span>The two faults &rarr; the fixes</span></div>
+        <p><b>Analog masked by AES</b> &rarr; each console on its own <b>Force-Priority</b> channels. <b>CLOCK SLIPPING / mute</b> &rarr; one clock master + <b>SRC every console AES</b>.</p>
+      </div>
+
+      <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><span><b>Confirm on your units:</b> the exact per-input SRC toggle (I/O Config &rarr; Input Configuration &rarr; Display Details), and the <b>DB25 AES pinout</b> (hardware manual &sect;7.2) before building a loom.</span></div>
+
+      <div style="margin:16px 0 0"><button class="linkbtn" data-go="lm44">Open the LM44 setup guide &rarr;</button></div>
+      <div class="csources">Lab.gruppen / Lake LM44 Operation Manual (input router &sect;6.10.3.1, clock, faults &sect;8.1), Lake Controller Operation Manual (modules, presets, system files), AVL support (firmware), manufacturer datasheet.</div>
+    </section>
 
   </main>
 </div>
@@ -2659,7 +2907,7 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
   });
 
   /* ---------- router ---------- */
-  var titles={home:"",delay:"Delay & Distance",db:"dB Helper",conv:"Converter",spl:"SPL & Exposure",net:"Networking",power:"Power",rf:"RF Coordinator",patch:"Patch",smaart:"Smaart v9 Alignment",nosig:"No Audio & Hum/Buzz",gain:"Gain Structure",rfflow:"RF Coordination","ref-pins":"Connector Pinouts","ref-power":"Cam-lock & Power","ref-db":"d&b System Specs","ref-dante":"Dante Limits","ref-flow":"Rig Signal Flow"};
+  var titles={home:"",delay:"Delay & Distance",db:"dB Helper",conv:"Converter",spl:"SPL & Exposure",net:"Networking",power:"Power",rf:"RF Coordinator",patch:"Patch",smaart:"Smaart v9 Alignment",nosig:"No Audio & Hum/Buzz",gain:"Gain Structure",rfflow:"RF Coordination","ref-pins":"Connector Pinouts","ref-power":"Cam-lock & Power","ref-db":"d&b System Specs","ref-dante":"Dante Limits","ref-flow":"Rig Signal Flow",lm44:"LM44 Setup","ref-lm44":"LM44 Processor"};
   var stack=[];
   var backBtn=document.getElementById("backBtn");
   var brand=document.getElementById("brand");
@@ -2998,6 +3246,25 @@ table.clog input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px
       if(cp){var tx=document.getElementById("rfPlanText");tx.focus();tx.select();try{tx.setSelectionRange(0,99999);}catch(e0){}
         try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(tx.value);}else{document.execCommand("copy");}}catch(err){try{document.execCommand("copy");}catch(e2){}}
         var o=cp.textContent;cp.textContent="Copied ✓";setTimeout(function(){cp.textContent=o;},1400);return;}
+    });
+  })();
+
+  /* ================= GUIDE: LM44 SETUP ================= */
+  (function(){
+    var v=document.getElementById("view-lm44"); if(!v)return;
+    v.addEventListener("click",function(e){
+      var t=e.target;
+      var stk=t.closest(".cstuck");
+      if(stk){var st=stk.closest(".cstep");stk.textContent=st.classList.toggle("open")?"Close":"Stuck?";return;}
+      if(t.closest(".csec-h")){t.closest(".csec").classList.toggle("collapsed");return;}
+      if(t.closest(".tcard-h")){t.closest(".tcard").classList.toggle("open");return;}
+      if(t.closest(".tolink")){return;}
+      if(t.closest(".cstep-top")){t.closest(".cstep").classList.toggle("done");return;}
+    });
+    v.addEventListener("keydown",function(e){
+      if((e.key==="Enter"||e.key===" ")&&e.target.classList&&e.target.classList.contains("cstep-top")){
+        e.preventDefault();e.target.closest(".cstep").classList.toggle("done");
+      }
     });
   })();
 
