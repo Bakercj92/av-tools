@@ -3,7 +3,7 @@
    cache-first for static assets. Versioned cache; bump VERSION to force an update. */
 'use strict';
 
-var VERSION = 'v3';
+var VERSION = 'v2';
 var CACHE = 'fak-' + VERSION;
 var NET_TIMEOUT = 2000;
 
